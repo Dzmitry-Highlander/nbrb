@@ -2,9 +2,7 @@ package by.it_academy.jd2.Mk_JD2_98_23.core.dto;
 
 import java.time.LocalDateTime;
 
-public class CurrencyDTO {
-
-    private int id;
+public class CurrencyCreateDTO {
     private int Cur_ID;
     private int Cur_ParentID;
     private String Cur_Code;
@@ -22,11 +20,10 @@ public class CurrencyDTO {
     private LocalDateTime Cur_DateStart;
     private LocalDateTime Cur_DateEnd;
 
-    public CurrencyDTO() {
+    public CurrencyCreateDTO() {
     }
 
-    public CurrencyDTO(int id, int cur_ID, int cur_ParentID, String cur_Code, String cur_Abbreviation, String cur_Name, String cur_Name_Eng, String cur_QuotName, String cur_QuotName_Bel, String cur_QuotName_Eng, String cur_NameMulti, String cur_Name_BelMulti, String cur_Name_EngMulti, int cur_Scale, int cur_Periodicity, LocalDateTime cur_DateStart, LocalDateTime cur_DateEnd) {
-        this.id = id;
+    public CurrencyCreateDTO(int cur_ID, int cur_ParentID, String cur_Code, String cur_Abbreviation, String cur_Name, String cur_Name_Eng, String cur_QuotName, String cur_QuotName_Bel, String cur_QuotName_Eng, String cur_NameMulti, String cur_Name_BelMulti, String cur_Name_EngMulti, int cur_Scale, int cur_Periodicity, LocalDateTime cur_DateStart, LocalDateTime cur_DateEnd) {
         Cur_ID = cur_ID;
         Cur_ParentID = cur_ParentID;
         Cur_Code = cur_Code;
@@ -43,14 +40,6 @@ public class CurrencyDTO {
         Cur_Periodicity = cur_Periodicity;
         Cur_DateStart = cur_DateStart;
         Cur_DateEnd = cur_DateEnd;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
     }
 
     public int getCur_ID() {
