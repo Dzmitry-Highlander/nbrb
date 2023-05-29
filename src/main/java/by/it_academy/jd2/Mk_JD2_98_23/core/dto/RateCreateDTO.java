@@ -3,7 +3,6 @@ package by.it_academy.jd2.Mk_JD2_98_23.core.dto;
 import java.util.Date;
 
 public class RateCreateDTO {
-    private int id;
     private int Cur_ID;
     private Date Date;
     private String Cur_Abbreviation;
@@ -14,23 +13,14 @@ public class RateCreateDTO {
     public RateCreateDTO() {
     }
 
-    public RateCreateDTO(int id, int cur_ID, java.util.Date date, String cur_Abbreviation, int cur_Scale, String cur_Name,
+    public RateCreateDTO(int cur_ID, java.util.Date date, String cur_Abbreviation, int cur_Scale, String cur_Name,
                          double cur_OfficialRate) {
-        this.id = id;
         Cur_ID = cur_ID;
         Date = date;
         Cur_Abbreviation = cur_Abbreviation;
         Cur_Scale = cur_Scale;
         Cur_Name = cur_Name;
         Cur_OfficialRate = cur_OfficialRate;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
     }
 
     public int getCur_ID() {
