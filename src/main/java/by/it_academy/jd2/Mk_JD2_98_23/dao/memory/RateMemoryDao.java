@@ -26,6 +26,6 @@ public class RateMemoryDao implements IRateDao {
 
     @Override
     public RateDTO save(RateDTO item) {
-        return this.rateDTOMap.get(item);
+        return this.rateDTOMap.put(item.getId(), item);
     }
 }
