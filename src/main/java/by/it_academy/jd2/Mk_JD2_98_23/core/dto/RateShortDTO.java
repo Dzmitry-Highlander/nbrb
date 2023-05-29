@@ -12,6 +12,13 @@ public class RateShortDTO {
     public RateShortDTO() {
     }
 
+    public RateShortDTO(int id, int cur_ID, LocalDateTime date, double cur_OfficialRate) {
+        this.id = id;
+        Cur_ID = cur_ID;
+        Date = date;
+        Cur_OfficialRate = cur_OfficialRate;
+    }
+
     public int getId() {
         return id;
     }

@@ -8,6 +8,9 @@ public class RateShortCreateDTO {
     private LocalDateTime Date;
     private double Cur_OfficialRate;
 
+    public RateShortCreateDTO() {
+    }
+
     public RateShortCreateDTO(int cur_ID, LocalDateTime date, double cur_OfficialRate) {
         Cur_ID = cur_ID;
         Date = date;
