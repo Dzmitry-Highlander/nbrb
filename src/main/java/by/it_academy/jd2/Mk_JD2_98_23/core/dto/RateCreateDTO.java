@@ -1,10 +1,10 @@
 package by.it_academy.jd2.Mk_JD2_98_23.core.dto;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 public class RateCreateDTO {
     private int Cur_ID;
-    private Date Date;
+    private LocalDateTime Date;
     private String Cur_Abbreviation;
     private int Cur_Scale;
     private String Cur_Name;
@@ -13,7 +13,7 @@ public class RateCreateDTO {
     public RateCreateDTO() {
     }
 
-    public RateCreateDTO(int cur_ID, java.util.Date date, String cur_Abbreviation, int cur_Scale, String cur_Name,
+    public RateCreateDTO(int cur_ID, LocalDateTime date, String cur_Abbreviation, int cur_Scale, String cur_Name,
                          double cur_OfficialRate) {
         Cur_ID = cur_ID;
         Date = date;
@@ -31,11 +31,11 @@ public class RateCreateDTO {
         Cur_ID = cur_ID;
     }
 
-    public java.util.Date getDate() {
+    public LocalDateTime getDate() {
         return Date;
     }
 
-    public void setDate(java.util.Date date) {
+    public void setDate(LocalDateTime date) {
         Date = date;
     }
 
