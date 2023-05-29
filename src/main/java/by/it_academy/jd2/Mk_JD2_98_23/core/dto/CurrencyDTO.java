@@ -25,6 +25,26 @@ public class CurrencyDTO {
     public CurrencyDTO() {
     }
 
+    public CurrencyDTO(int id, int cur_ID, int cur_ParentID, String cur_Code, String cur_Abbreviation, String cur_Name, String cur_Name_Eng, String cur_QuotName, String cur_QuotName_Bel, String cur_QuotName_Eng, String cur_NameMulti, String cur_Name_BelMulti, String cur_Name_EngMulti, int cur_Scale, int cur_Periodicity, LocalDateTime cur_DateStart, LocalDateTime cur_DateEnd) {
+        this.id = id;
+        Cur_ID = cur_ID;
+        Cur_ParentID = cur_ParentID;
+        Cur_Code = cur_Code;
+        Cur_Abbreviation = cur_Abbreviation;
+        Cur_Name = cur_Name;
+        Cur_Name_Eng = cur_Name_Eng;
+        Cur_QuotName = cur_QuotName;
+        Cur_QuotName_Bel = cur_QuotName_Bel;
+        Cur_QuotName_Eng = cur_QuotName_Eng;
+        Cur_NameMulti = cur_NameMulti;
+        Cur_Name_BelMulti = cur_Name_BelMulti;
+        Cur_Name_EngMulti = cur_Name_EngMulti;
+        Cur_Scale = cur_Scale;
+        Cur_Periodicity = cur_Periodicity;
+        Cur_DateStart = cur_DateStart;
+        Cur_DateEnd = cur_DateEnd;
+    }
+
     public int getId() {
         return id;
     }
