@@ -3,7 +3,6 @@ package by.it_academy.jd2.Mk_JD2_98_23.servlets;
 import by.it_academy.jd2.Mk_JD2_98_23.core.dto.RateCreateDTO;
 import by.it_academy.jd2.Mk_JD2_98_23.service.api.ISaveService;
 import by.it_academy.jd2.Mk_JD2_98_23.service.factory.SaveServiceFactory;
-import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -30,10 +29,11 @@ public class SaveServlet extends HttpServlet {
     public SaveServlet() {
         this.saveService = SaveServiceFactory.getInstance();
         this.objectMapper = new ObjectMapper();
+        this.objectMapper.findAndRegisterModules();
     }
 
     @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         req.setCharacterEncoding("UTF-8");
         resp.setContentType("application/json; charset=UTF-8");
 
