@@ -1,6 +1,5 @@
 package by.it_academy.jd2.Mk_JD2_98_23.servlets;
 
-import by.it_academy.jd2.Mk_JD2_98_23.core.dto.RateDTO;
 import by.it_academy.jd2.Mk_JD2_98_23.service.api.ISaveService;
 import by.it_academy.jd2.Mk_JD2_98_23.service.factory.SaveServiceFactory;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -9,14 +8,16 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.PrintWriter;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Objects;
+
 
 @WebServlet(urlPatterns = "/save")
 public class SaveServlet extends HttpServlet {
@@ -42,8 +43,32 @@ public class SaveServlet extends HttpServlet {
 
         PrintWriter writer = resp.getWriter();
 
-        if (!Objects.equals(currency, "") && !Objects.equals(dateFrom, "") && !Objects.equals(dateTo, "")) {
+        if (!Objects.equals(currency, "" ) && !Objects.equals(dateFrom, "") && !Objects.equals(dateTo, "")) {
+            String url = "https://api.nbrb.by/exrates/rates/" + currency + "?parammode=2&ondate=";
+            LocalDate from = LocalDate.parse(dateFrom);
+            LocalDate to = LocalDate.parse(dateTo);
 
+            while (from != to) {
+                URL obj = new URL(url + from);
+                HttpURLConnection con = (HttpURLConnection) obj.openConnection();
+
+                con.setRequestMethod("GET");
+                con.setRequestProperty("User-Agent", "Mozilla/5.0");
+
+                BufferedReader in = new BufferedReader(
+                        new InputStreamReader(con.getInputStream()));
+                String inputLine;
+                StringBuilder response = new StringBuilder();
+
+                while ((inputLine = in.readLine()) != null) {
+                    response.append(inputLine);
+                }
+                in.close();
+                //print result
+                System.out.println(response.toString());
+
+                from = from.plusDays(1);
+            }
         }
     }
 }
