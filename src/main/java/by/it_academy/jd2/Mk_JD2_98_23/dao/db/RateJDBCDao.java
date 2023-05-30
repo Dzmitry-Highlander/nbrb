@@ -24,8 +24,8 @@ public class RateJDBCDao implements IRateDao {
 
             while (rs.next()) {
                 RateDTO dto = new RateDTO();
-                //TODO исправить создание DTO
                 dto.setId(rs.getInt("id"));
+                //TODO исправить создание DTO
                 data.add(dto);
             }
         } catch (SQLException e) {
@@ -37,11 +37,41 @@ public class RateJDBCDao implements IRateDao {
 
     @Override
     public RateDTO get(int id) {
-        return null;
+        RateDTO dto = null;
+        try (Connection conn = DatabaseConnectionFactory.getConnection();
+             Statement st = conn.createStatement();
+             //TODO исправить SQL запрос
+             ResultSet rs = st.executeQuery("SELECT id, name FROM app.artists WHERE id = " +
+                     id + " ORDER BY id ASC")) {
+
+            if (rs.next()) {
+                dto = new RateDTO();
+                dto.setId(rs.getInt("id"));
+                //TODO исправить создание DTO
+            }
+        } catch (SQLException e) {
+            throw new AccessDataException("Ошибка подключения к базе данных", e);
+        }
+
+        return dto;
     }
 
     @Override
     public RateDTO save(RateDTO item) {
-        return null;
+        try (Connection conn = DatabaseConnectionFactory.getConnection();
+             Statement st = conn.createStatement();
+             //TODO исправить SQL запрос
+             ResultSet rs = st.executeQuery("INSERT INTO app.artists(name) VALUES " +
+                     "('" + item.getCur_ID() + "') RETURNING id;")) {
+
+            while (rs.next()) {
+                item.setId(rs.getInt("id"));
+            }
+
+        } catch (SQLException e) {
+            throw new AccessDataException("Ошибка подключения к базе данных", e);
+        }
+
+        return item;
     }
 }
