@@ -42,7 +42,7 @@ public class CurencyServletTest extends HttpServlet {
         con.setRequestMethod("GET");
         con.setRequestProperty("User-Agent", "Mozilla/5.0");
 
-        List<CurrencyCreateDTO> list = this.objectMapper.readValue(con.getInputStream(), new TypeReference<List<CurrencyCreateDTO>>() {
+        List<CurrencyCreateDTO> list = this.objectMapper.readValue(con.getInputStream(), new TypeReference<>() {
         });
 
         for (CurrencyCreateDTO dto : list) {
