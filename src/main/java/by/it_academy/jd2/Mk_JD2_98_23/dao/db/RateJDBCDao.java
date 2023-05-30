@@ -24,7 +24,7 @@ public class RateJDBCDao implements IRateDao {
 
             while (rs.next()) {
                 RateDTO dto = new RateDTO();
-                dto.setCur_Name(rs.getString("id"));
+                dto.setCurName(rs.getString("id"));
                 //TODO исправить создание DTO
                 data.add(dto);
             }
@@ -46,7 +46,7 @@ public class RateJDBCDao implements IRateDao {
 
             if (rs.next()) {
                 dto = new RateDTO();
-                dto.setCur_Name(rs.getString("id"));
+                dto.setCurName(rs.getString("id"));
                 //TODO исправить создание DTO
             }
         } catch (SQLException e) {
@@ -65,7 +65,7 @@ public class RateJDBCDao implements IRateDao {
                      "('" + item.getCur_ID() + "') RETURNING id;")) {
 
             while (rs.next()) {
-                item.setCur_Name(rs.getString("id"));
+                item.setCurName(rs.getString("id"));
             }
 
         } catch (SQLException e) {

@@ -57,9 +57,10 @@ public class SaveServlet extends HttpServlet {
 
                 RateCreateDTO dto = this.objectMapper.readValue(con.getInputStream(), RateCreateDTO.class);
                 this.saveService.save(dto);
-                con.disconnect();
 
                 from = from.plusDays(1);
+
+                writer.write(dto.toString());
             }
         }
     }

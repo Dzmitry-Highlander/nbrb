@@ -12,9 +12,9 @@ public class RateDTO {
     @JsonProperty("Cur_Abbreviation")
     private String cur_Abbreviation;
     @JsonProperty("Cur_Scale")
-    private int cur_Scale;
+    private int curScale;
     @JsonProperty("Cur_Name")
-    private String cur_Name;
+    private String curName;
     @JsonProperty("Cur_OfficialRate")
     private double cur_OfficialRate;
 
@@ -26,8 +26,8 @@ public class RateDTO {
         this.cur_ID = cur_ID;
         this.date = date;
         this.cur_Abbreviation = cur_Abbreviation;
-        this.cur_Scale = cur_Scale;
-        this.cur_Name = cur_Name;
+        this.curScale = cur_Scale;
+        this.curName = cur_Name;
         this.cur_OfficialRate = cur_OfficialRate;
     }
     public int getCur_ID() {
@@ -54,20 +54,20 @@ public class RateDTO {
         this.cur_Abbreviation = cur_Abbreviation;
     }
 
-    public int getCur_Scale() {
-        return cur_Scale;
+    public int getCurScale() {
+        return curScale;
     }
 
-    public void setCur_Scale(int cur_Scale) {
-        this.cur_Scale = cur_Scale;
+    public void setCurScale(int curScale) {
+        this.curScale = curScale;
     }
 
-    public String getCur_Name() {
-        return cur_Name;
+    public String getCurName() {
+        return curName;
     }
 
-    public void setCur_Name(String cur_Name) {
-        this.cur_Name = cur_Name;
+    public void setCurName(String curName) {
+        this.curName = curName;
     }
 
     public double getCur_OfficialRate() {
