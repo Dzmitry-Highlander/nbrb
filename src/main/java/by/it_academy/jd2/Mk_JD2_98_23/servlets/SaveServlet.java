@@ -42,7 +42,7 @@ public class SaveServlet extends HttpServlet {
 
         PrintWriter writer = resp.getWriter();
 
-        if (!Objects.equals(dateFrom, "") && !Objects.equals(dateTo, "")) {
+        if (!Objects.equals(currency, "") && !Objects.equals(dateFrom, "") && !Objects.equals(dateTo, "")) {
 
         }
     }
