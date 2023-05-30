@@ -1,5 +1,7 @@
 package by.it_academy.jd2.Mk_JD2_98_23.servlets;
 
+import by.it_academy.jd2.Mk_JD2_98_23.core.dto.RateCreateDTO;
+import by.it_academy.jd2.Mk_JD2_98_23.core.dto.RateDTO;
 import by.it_academy.jd2.Mk_JD2_98_23.service.api.ISaveService;
 import by.it_academy.jd2.Mk_JD2_98_23.service.factory.SaveServiceFactory;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -64,6 +66,9 @@ public class SaveServlet extends HttpServlet {
                     response.append(inputLine);
                 }
                 in.close();
+
+                RateCreateDTO dto = this.objectMapper.readValue(req.getInputStream(), RateCreateDTO.class);
+                this.saveService.save(dto);
 
                 from = from.plusDays(1);
             }
