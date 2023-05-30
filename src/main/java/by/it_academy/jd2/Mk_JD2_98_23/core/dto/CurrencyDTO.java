@@ -12,6 +12,8 @@ public class CurrencyDTO {
     private String curAbbreviation;
     @JsonProperty("Cur_Name")
     private String curName;
+    @JsonProperty("Cur_Name_Bel")
+    private String curNameBel;
     @JsonProperty("Cur_Name_Eng")
     private String curNameEng;
     @JsonProperty("Cur_QuotName")
@@ -32,11 +34,12 @@ public class CurrencyDTO {
     public CurrencyDTO() {
     }
 
-    public CurrencyDTO(int curID, String curCode, String curAbbreviation, String curName, String curNameEng, String curQuotName, String curQuotNameBel, String curQuotNameEng, String curNameMulti, String curNameBelMulti, String curNameEngMulti, int curScale) {
+    public CurrencyDTO(int curID, String curCode, String curAbbreviation, String curName, String curNameBel, String curNameEng, String curQuotName, String curQuotNameBel, String curQuotNameEng, String curNameMulti, String curNameBelMulti, String curNameEngMulti, int curScale) {
         this.curID = curID;
         this.curCode = curCode;
         this.curAbbreviation = curAbbreviation;
         this.curName = curName;
+        this.curNameBel = curNameBel;
         this.curNameEng = curNameEng;
         this.curQuotName = curQuotName;
         this.curQuotNameBel = curQuotNameBel;
@@ -77,6 +80,14 @@ public class CurrencyDTO {
 
     public void setCurName(String curName) {
         this.curName = curName;
+    }
+
+    public String getCurNameBel() {
+        return curNameBel;
+    }
+
+    public void setCurNameBel(String curNameBel) {
+        this.curNameBel = curNameBel;
     }
 
     public String getCurNameEng() {

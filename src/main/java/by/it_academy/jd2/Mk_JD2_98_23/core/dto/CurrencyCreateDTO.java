@@ -15,6 +15,8 @@ public class CurrencyCreateDTO {
     private String curAbbreviation;
     @JsonProperty("Cur_Name")
     private String curName;
+    @JsonProperty("Cur_Name_Bel")
+    private String curNameBel;
     @JsonProperty("Cur_Name_Eng")
     private String curNameEng;
     @JsonProperty("Cur_QuotName")
@@ -41,12 +43,13 @@ public class CurrencyCreateDTO {
     public CurrencyCreateDTO() {
     }
 
-    public CurrencyCreateDTO(int curID, int curParentID, String curCode, String curAbbreviation, String curName, String curNameEng, String curQuotName, String curQuotNameBel, String curQuotNameEng, String curNameMulti, String curNameBelMulti, String curNameEngMulti, int curScale, int curPeriodicity, LocalDateTime curDateStart, LocalDateTime curDateEnd) {
+    public CurrencyCreateDTO(int curID, int curParentID, String curCode, String curAbbreviation, String curName, String curNameBel, String curNameEng, String curQuotName, String curQuotNameBel, String curQuotNameEng, String curNameMulti, String curNameBelMulti, String curNameEngMulti, int curScale, int curPeriodicity, LocalDateTime curDateStart, LocalDateTime curDateEnd) {
         this.curID = curID;
         this.curParentID = curParentID;
         this.curCode = curCode;
         this.curAbbreviation = curAbbreviation;
         this.curName = curName;
+        this.curNameBel = curNameBel;
         this.curNameEng = curNameEng;
         this.curQuotName = curQuotName;
         this.curQuotNameBel = curQuotNameBel;
@@ -98,6 +101,14 @@ public class CurrencyCreateDTO {
 
     public void setCurName(String curName) {
         this.curName = curName;
+    }
+
+    public String getCurNameBel() {
+        return curNameBel;
+    }
+
+    public void setCurNameBel(String curNameBel) {
+        this.curNameBel = curNameBel;
     }
 
     public String getCurNameEng() {
