@@ -20,6 +20,11 @@ public class SaveService implements ISaveService {
     }
 
     @Override
+    public RateDTO get(int id) {
+        return rateDao.get(id);
+    }
+
+    @Override
     public RateDTO save(RateCreateDTO item) {
         RateDTO dto = new RateDTO();
         int maxCurrentId = this.get()
