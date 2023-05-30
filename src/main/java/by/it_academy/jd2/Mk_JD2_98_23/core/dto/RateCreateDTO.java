@@ -13,9 +13,9 @@ public class RateCreateDTO {
     public RateCreateDTO() {
     }
 
-    public RateCreateDTO(int cur_ID, LocalDateTime date, String cur_Abbreviation, int cur_Scale, String cur_Name,
+    public RateCreateDTO(int Cur_ID, LocalDateTime date, String cur_Abbreviation, int cur_Scale, String cur_Name,
                          double cur_OfficialRate) {
-        Cur_ID = cur_ID;
+        this.Cur_ID = Cur_ID;
         Date = date;
         Cur_Abbreviation = cur_Abbreviation;
         Cur_Scale = cur_Scale;
@@ -28,7 +28,7 @@ public class RateCreateDTO {
     }
 
     public void setCur_ID(int cur_ID) {
-        Cur_ID = cur_ID;
+        this.Cur_ID = cur_ID;
     }
 
     public LocalDateTime getDate() {
