@@ -17,8 +17,8 @@ public class DatabaseConnectionFactory {
     public static Connection getConnection() throws SQLException {
         String url = "jdbc:postgresql://192.168.1.100:5432/rb-nb";
         Properties props = new Properties();
-        props.setProperty("user", "postgres");
-        props.setProperty("password", "postgres");
+        props.setProperty("user", "nbrb");
+        props.setProperty("password", "nbrb2023");
 
         return DriverManager.getConnection(url, props);
     }
