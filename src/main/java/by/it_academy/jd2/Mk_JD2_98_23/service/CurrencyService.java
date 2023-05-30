@@ -29,22 +29,18 @@ public class CurrencyService implements ICurrencyService {
     @Override
     public CurrencyDTO save(CurrencyCreateDTO item) {
         CurrencyDTO dto = new CurrencyDTO();
-        dto.setCur_ID(item.getCurID());
-        dto.setCur_ParentID(item.getCurParentID());
-        dto.setCur_Code(item.getCurCode());
-        dto.setCur_Abbreviation(item.getCurAbbreviation());
-        dto.setCur_Name(item.getCurName());
-        dto.setCur_Name_Eng(item.getCurNameEng());
-        dto.setCur_QuotName(item.getCurQuotName());
-        dto.setCur_QuotName_Bel(item.getCurQuotNameBel());
-        dto.setCur_QuotName_Eng(item.getCurQuotNameEng());
-        dto.setCur_NameMulti(item.getCurNameMulti());
-        dto.setCur_Name_BelMulti(item.getCurNameBelMulti());
-        dto.setCur_Name_EngMulti(item.getCurNameEngMulti());
-        dto.setCur_Scale(item.getCurScale());
-        dto.setCur_Periodicity(item.getCurPeriodicity());
-        dto.setCur_DateStart(item.getCurDateStart());
-        dto.setCur_DateEnd(item.getCurDateEnd());
+        dto.setCurID(item.getCurID());
+        dto.setCurCode(item.getCurCode());
+        dto.setCurAbbreviation(item.getCurAbbreviation());
+        dto.setCurName(item.getCurName());
+        dto.setCurNameEng(item.getCurNameEng());
+        dto.setCurQuotName(item.getCurQuotName());
+        dto.setCurQuotNameBel(item.getCurQuotNameBel());
+        dto.setCurQuotNameEng(item.getCurQuotNameEng());
+        dto.setCurNameMulti(item.getCurNameMulti());
+        dto.setCurNameBelMulti(item.getCurNameBelMulti());
+        dto.setCurNameEngMulti(item.getCurNameEngMulti());
+        dto.setCurScale(item.getCurScale());
 
         return currencyDao.save(dto);
     }
