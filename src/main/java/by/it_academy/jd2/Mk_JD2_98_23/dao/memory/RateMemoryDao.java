@@ -12,6 +12,10 @@ public class RateMemoryDao implements IRateDao {
     private final Map<Integer, RateDTO> rateDTOMap = new ConcurrentHashMap<>();
 
     public RateMemoryDao() {
+        {
+            RateDTO dto = new RateDTO();
+            rateDTOMap.put(dto.getCur_ID(), dto);
+        }
     }
 
     @Override
@@ -26,6 +30,6 @@ public class RateMemoryDao implements IRateDao {
 
     @Override
     public RateDTO save(RateDTO item) {
-        return this.rateDTOMap.put(item.getId(), item);
+        return this.rateDTOMap.put(item.getCur_ID(), item);
     }
 }
