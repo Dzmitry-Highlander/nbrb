@@ -65,7 +65,7 @@ public class SaveServlet extends HttpServlet {
                 }
                 in.close();
                 //print result
-                System.out.println(response.toString());
+                writer.write(response.toString());
 
                 from = from.plusDays(1);
             }
