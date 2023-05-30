@@ -16,6 +16,8 @@ import java.util.List;
 
 @WebServlet(urlPatterns = "/save")
 public class SaveServlet extends HttpServlet {
+    private static final String DATE_FROM = "dateFrom";
+    private static final String DATE_TO = "dateTo";
     private final ISaveService saveService;
     private final ObjectMapper objectMapper;
 
@@ -25,14 +27,13 @@ public class SaveServlet extends HttpServlet {
     }
 
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         req.setCharacterEncoding("UTF-8");
         resp.setContentType("application/json; charset=UTF-8");
 
+        String dateFrom = req.getParameter(DATE_FROM);
+        String dateTo = req.getParameter(DATE_TO);
+
         PrintWriter writer = resp.getWriter();
-
-        List<RateDTO> rateDTOS = this.saveService.get();
-
-        writer.write(objectMapper.writeValueAsString(rateDTOS));
     }
 }
