@@ -9,13 +9,18 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @WebServlet(urlPatterns = "/save")
 public class SaveServlet extends HttpServlet {
+    private static final String CURRENCY = "Cur_Abbreviation";
     private static final String DATE_FROM = "dateFrom";
     private static final String DATE_TO = "dateTo";
     private final ISaveService saveService;
@@ -31,9 +36,14 @@ public class SaveServlet extends HttpServlet {
         req.setCharacterEncoding("UTF-8");
         resp.setContentType("application/json; charset=UTF-8");
 
+        String currency = req.getParameter(CURRENCY);
         String dateFrom = req.getParameter(DATE_FROM);
         String dateTo = req.getParameter(DATE_TO);
 
         PrintWriter writer = resp.getWriter();
+
+        if (!Objects.equals(dateFrom, "") && !Objects.equals(dateTo, "")) {
+
+        }
     }
 }
