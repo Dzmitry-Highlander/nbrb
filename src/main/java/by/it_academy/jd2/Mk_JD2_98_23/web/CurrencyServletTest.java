@@ -19,12 +19,12 @@ import java.util.List;
 
 
 @WebServlet(urlPatterns = "/test")
-public class CurencyServletTest extends HttpServlet {
+public class CurrencyServletTest extends HttpServlet {
 
     private final ICurrencyService currencyService;
     private final ObjectMapper objectMapper;
 
-    public CurencyServletTest() {
+    public CurrencyServletTest() {
         this.currencyService = CurrencyServiceFactory.getInstance();
         this.objectMapper = new ObjectMapper();
         this.objectMapper.findAndRegisterModules();
@@ -49,6 +49,13 @@ public class CurencyServletTest extends HttpServlet {
             this.currencyService.save(dto);
         }
 
+        // test info block
         resp.getWriter().write("All currencies have been added to the database.");
+        resp.getWriter().write(list.size() + " - размер листа. Тест. " + list.get(1));
+
+        for (CurrencyCreateDTO currencyCreateDTO : list) {
+            resp.getWriter().write(currencyCreateDTO.getCurName() + "\n");
+
+        }
     }
 }
