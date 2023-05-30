@@ -33,6 +33,7 @@ public class CurrencyService implements ICurrencyService {
         dto.setCurCode(item.getCurCode());
         dto.setCurAbbreviation(item.getCurAbbreviation());
         dto.setCurName(item.getCurName());
+        dto.setCurNameBel(item.getCurNameBel());
         dto.setCurNameEng(item.getCurNameEng());
         dto.setCurQuotName(item.getCurQuotName());
         dto.setCurQuotNameBel(item.getCurQuotNameBel());

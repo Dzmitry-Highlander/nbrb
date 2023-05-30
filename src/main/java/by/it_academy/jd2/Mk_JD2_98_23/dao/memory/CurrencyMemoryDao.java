@@ -24,7 +24,7 @@ public class CurrencyMemoryDao implements ICurrencyDao {
 
     @Override
     public CurrencyDTO save(CurrencyDTO item) {
-        this.currencys.put(item.getId(),item);
+        this.currencys.put(item.getCurID(),item);
         return item;
     }
 }
