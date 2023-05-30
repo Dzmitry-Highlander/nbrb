@@ -44,11 +44,12 @@ public class SaveServlet extends HttpServlet {
         PrintWriter writer = resp.getWriter();
 
         if (!Objects.equals(currency, "" ) && !Objects.equals(dateFrom, "") && !Objects.equals(dateTo, "")) {
-            String url = "https://api.nbrb.by/exrates/rates/" + currency + "?parammode=2&ondate=";
+            StringBuilder response = new StringBuilder();
             LocalDate from = LocalDate.parse(dateFrom);
             LocalDate to = LocalDate.parse(dateTo);
+            String url = "https://api.nbrb.by/exrates/rates/" + currency + "?parammode=2&ondate=";
 
-            while (from != to) {
+            while (from.isBefore(to.plusDays(1))) {
                 URL obj = new URL(url + from);
                 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 
@@ -58,17 +59,16 @@ public class SaveServlet extends HttpServlet {
                 BufferedReader in = new BufferedReader(
                         new InputStreamReader(con.getInputStream()));
                 String inputLine;
-                StringBuilder response = new StringBuilder();
 
                 while ((inputLine = in.readLine()) != null) {
                     response.append(inputLine);
                 }
                 in.close();
-                //print result
-                writer.write(response.toString());
 
                 from = from.plusDays(1);
             }
+
+            writer.write(response.toString());
         }
     }
 }
