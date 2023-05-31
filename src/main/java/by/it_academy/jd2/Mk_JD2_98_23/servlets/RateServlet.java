@@ -61,6 +61,8 @@ public class RateServlet extends HttpServlet {
             RateCreateDTO createDTO = this.objectMapper.readValue(con.getInputStream(), RateCreateDTO.class);
             RateDTO dto = this.rateService.save(createDTO);
 
+            writer.write(dto.toString());
+
             rateDao.save(dto);
         }
     }
