@@ -1,6 +1,3 @@
-
-
-
 DROP TABLE IF EXISTS app.WEEKENDS cascade;
 
 CREATE TABLE app.WEEKENDS (
