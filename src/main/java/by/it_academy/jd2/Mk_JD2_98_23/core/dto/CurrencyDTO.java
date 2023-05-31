@@ -3,7 +3,6 @@ package by.it_academy.jd2.Mk_JD2_98_23.core.dto;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class CurrencyDTO {
-
     @JsonProperty("Cur_ID")
     private int curID;
     @JsonProperty("Cur_Code")
