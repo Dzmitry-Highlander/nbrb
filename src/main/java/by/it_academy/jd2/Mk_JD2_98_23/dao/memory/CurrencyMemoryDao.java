@@ -32,4 +32,9 @@ public class CurrencyMemoryDao implements ICurrencyDao {
     @Override
     public void uploadData(CurrencyCreateDTO item) {
     }
+
+    @Override
+    public int getCount() {
+        return 0;
+    }
 }
