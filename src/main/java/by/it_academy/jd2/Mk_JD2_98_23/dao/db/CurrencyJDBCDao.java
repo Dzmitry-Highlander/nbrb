@@ -108,7 +108,8 @@ public class CurrencyJDBCDao implements ICurrencyDao {
 
             int rowsInserted = ps.executeUpdate();
             if (rowsInserted == 0) {
-                throw new DataInsertionErrorException("Ошибка вставки данных: ни одна строка не была добавлена в таблицу.");
+                throw new DataInsertionErrorException("Ошибка вставки данных: ни одна строка не была добавлена в " +
+                        "таблицу.");
             }
         } catch (SQLException e) {
             throw new AccessDataException("Ошибка подключения к базе данных", e);

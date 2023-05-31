@@ -62,15 +62,18 @@ public class RateJDBCDao implements IRateDao {
     @Override
     public RateDTO save(RateDTO item) {
         try (Connection conn = DatabaseConnectionFactory.getConnection();
-             PreparedStatement ps = conn.prepareStatement("INSERT INTO app.rate(cur_id, date, ) " +
+             PreparedStatement ps = conn.prepareStatement("INSERT INTO app.rate(cur_id, date, cur_official_rate) " +
                      "VALUES (?, ?, ?);")) {
-            ps.setInt(1, item.getCurID());
-            ps.setDate(2, item.getDate());
-            ps.setDouble(3, item.getCurOfficialRate());
+            ps.setObject(1, item.getCurID());
+            ps.setObject(2, item.getDate());
+            ps.setObject(3, item.getCurOfficialRate());
 
-            int rowsInserted = st.executeUpdate();
-            if (rowsInserted == 0) {
-                throw new DataInsertionErrorException("Ошибка вставки данных: ни одна строка не была добавлена в таблицу.");
+            try (ResultSet rs = ps.executeQuery()){
+                while (rs.next()) {
+                    item.setCurID(rs.getInt("cur_id"));
+                    item.setDate(LocalDateTime.parse(rs.getString("date")));
+                    item.setCurOfficialRate(rs.getDouble("cur_official_rate"));
+                }
             }
         } catch (SQLException e) {
             throw new AccessDataException("Ошибка подключения к базе данных", e);
