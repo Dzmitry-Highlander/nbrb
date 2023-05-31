@@ -27,7 +27,9 @@ public class CurrencyDTO {
     public CurrencyDTO() {
     }
 
-    public CurrencyDTO(int curID, int curCode, String curAbbreviation, String curName, String curNameBel, String curNameEng, String curQuotName, String curQuotNameBel, String curQuotNameEng, int curScale) {
+    public CurrencyDTO(int curID, int curCode, String curAbbreviation, String curName, String curNameBel,
+                       String curNameEng, String curQuotName, String curQuotNameBel, String curQuotNameEng,
+                       int curScale) {
         this.curID = curID;
         this.curCode = curCode;
         this.curAbbreviation = curAbbreviation;
