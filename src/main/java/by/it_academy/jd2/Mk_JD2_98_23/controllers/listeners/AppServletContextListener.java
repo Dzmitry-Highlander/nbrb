@@ -35,21 +35,25 @@ public class AppServletContextListener implements ServletContextListener {
     public void contextInitialized(ServletContextEvent servletContextEvent) {
         try (Connection conn = DatabaseConnectionFactory.getConnection();
              Statement st = conn.createStatement()) {
-            ResultSet rs = conn.getMetaData().getTables("", "app", "CURRENCY", null);
+            ResultSet rs = conn.getMetaData().getTables("", "app", "CURRENCY",
+                    null);
             if (!rs.next()) {
-                String sqlScript = new String(AppServletContextListener.class.getClassLoader().getResourceAsStream("createCurrency.sql").readAllBytes());
+                String sqlScript = new String(Objects.requireNonNull(AppServletContextListener.class
+                        .getClassLoader().getResourceAsStream("createCurrency.sql")).readAllBytes());
                 st.executeUpdate(sqlScript);
             }
 
             rs = conn.getMetaData().getTables("", "app", "RATE", null);
             if (!rs.next()) {
-                String sqlScript = new String(AppServletContextListener.class.getClassLoader().getResourceAsStream("createRate.sql").readAllBytes());
+                String sqlScript = new String(Objects.requireNonNull(AppServletContextListener.class
+                        .getClassLoader().getResourceAsStream("createRate.sql")).readAllBytes());
                 st.executeUpdate(sqlScript);
             }
 
             rs = conn.getMetaData().getTables("", "app", "WEEKENDS", null);
             if (!rs.next()) {
-                String sqlScript = new String(AppServletContextListener.class.getClassLoader().getResourceAsStream("dataWeekend.sql").readAllBytes());
+                String sqlScript = new String(Objects.requireNonNull(AppServletContextListener.class
+                        .getClassLoader().getResourceAsStream("dataWeekend.sql")).readAllBytes());
                 st.executeUpdate(sqlScript);
             }
 
