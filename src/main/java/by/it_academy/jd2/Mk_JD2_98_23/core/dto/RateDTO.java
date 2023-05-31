@@ -2,20 +2,20 @@ package by.it_academy.jd2.Mk_JD2_98_23.core.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 public class RateDTO {
     @JsonProperty("Cur_ID")
     private int curID;
     @JsonProperty("Date")
-    private LocalDateTime date;
+    private LocalDate date;
     @JsonProperty("Cur_OfficialRate")
     private double curOfficialRate;
 
     public RateDTO() {
     }
 
-    public RateDTO(int cur_ID, LocalDateTime date, double cur_OfficialRate) {
+    public RateDTO(int cur_ID, LocalDate date, double cur_OfficialRate) {
         curID = cur_ID;
         this.date = date;
         curOfficialRate = cur_OfficialRate;
@@ -29,11 +29,11 @@ public class RateDTO {
         this.curID = curID;
     }
 
-    public LocalDateTime getDate() {
+    public LocalDate getDate() {
         return date;
     }
 
-    public void setDate(LocalDateTime date) {
+    public void setDate(LocalDate date) {
         this.date = date;
     }
 

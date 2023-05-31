@@ -4,7 +4,6 @@ import by.it_academy.jd2.Mk_JD2_98_23.core.dto.RateDTO;
 import by.it_academy.jd2.Mk_JD2_98_23.dao.api.IRateDao;
 import by.it_academy.jd2.Mk_JD2_98_23.dao.db.ds.DatabaseConnectionFactory;
 import by.it_academy.jd2.Mk_JD2_98_23.dao.exceptions.AccessDataException;
-import by.it_academy.jd2.Mk_JD2_98_23.dao.exceptions.DataInsertionErrorException;
 
 import java.sql.*;
 import java.time.LocalDateTime;
@@ -24,7 +23,7 @@ public class RateJDBCDao implements IRateDao {
             while (rs.next()) {
                 RateDTO dto = new RateDTO();
                 dto.setCurID(rs.getInt("cur_id"));
-                dto.setDate(LocalDateTime.parse(rs.getString("date")));
+                dto.setDate(rs.getDate("date").toLocalDate());
                 dto.setCurOfficialRate(rs.getDouble("cur_official_rate"));
 
                 data.add(dto);
@@ -49,7 +48,7 @@ public class RateJDBCDao implements IRateDao {
             if (rs.next()) {
                 dto = new RateDTO();
                 dto.setCurID(rs.getInt("cur_id"));
-                dto.setDate(LocalDateTime.parse(rs.getString("date")));
+                dto.setDate(rs.getDate("date").toLocalDate());
                 dto.setCurOfficialRate(rs.getDouble("cur_official_rate"));
             }
         } catch (SQLException e) {
@@ -71,7 +70,7 @@ public class RateJDBCDao implements IRateDao {
             try (ResultSet rs = ps.executeQuery()){
                 while (rs.next()) {
                     item.setCurID(rs.getInt("cur_id"));
-                    item.setDate(LocalDateTime.parse(rs.getString("date")));
+                    item.setDate(rs.getDate("date").toLocalDate());
                     item.setCurOfficialRate(rs.getDouble("cur_official_rate"));
                 }
             }

@@ -28,7 +28,7 @@ public class RateService implements IRateService {
     public RateDTO save(RateCreateDTO item) {
         RateDTO dto = new RateDTO();
         dto.setCurID(item.getCurID());
-        dto.setDate(item.getDate());
+        dto.setDate(item.getDate().toLocalDate());
         dto.setCurOfficialRate(item.getCurOfficialRate());
 
         return rateDao.save(dto);
