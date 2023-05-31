@@ -3,7 +3,6 @@ package by.it_academy.jd2.Mk_JD2_98_23.servlets;
 import by.it_academy.jd2.Mk_JD2_98_23.core.dto.RateCreateDTO;
 import by.it_academy.jd2.Mk_JD2_98_23.core.dto.RateDTO;
 import by.it_academy.jd2.Mk_JD2_98_23.dao.api.IRateDao;
-import by.it_academy.jd2.Mk_JD2_98_23.dao.db.RateJDBCDao;
 import by.it_academy.jd2.Mk_JD2_98_23.dao.db.factory.RateDaoFactory;
 import by.it_academy.jd2.Mk_JD2_98_23.service.api.IRateService;
 import by.it_academy.jd2.Mk_JD2_98_23.service.factory.RateServiceFactory;
@@ -19,6 +18,7 @@ import java.io.PrintWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Objects;
 
 @WebServlet(urlPatterns = "/save")
@@ -58,12 +58,15 @@ public class RateServlet extends HttpServlet {
             con.setRequestMethod("GET");
             con.setRequestProperty("User-Agent", "Mozilla/5.0");
 
-            RateCreateDTO createDTO = this.objectMapper.readValue(con.getInputStream(), RateCreateDTO.class);
-            RateDTO dto = this.rateService.save(createDTO);
+            List<RateCreateDTO> rateCreateDTOS = objectMapper.readValue(con.getInputStream(),
+                    objectMapper.getTypeFactory().constructCollectionType(List.class, RateCreateDTO.class));
 
-            rateDao.save(dto);
+            for (RateCreateDTO rateCreateDTO : rateCreateDTOS) {
+                RateDTO dto = this.rateService.save(rateCreateDTO);
 
-            writer.write(dto.toString());
+                rateDao.save(dto);
+                writer.write(dto.toString());
+            }
         }
     }
 }
