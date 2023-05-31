@@ -35,14 +35,26 @@ public class AppServletContextListener implements ServletContextListener {
     public void contextInitialized(ServletContextEvent servletContextEvent) {
         try (Connection conn = DatabaseConnectionFactory.getConnection();
              Statement st = conn.createStatement()) {
-            ResultSet rs = conn.getMetaData().getTables("", "app", "WEEKENDS", null);
+            ResultSet rs = conn.getMetaData().getTables("", "app", "CURRENCY", null);
             if (!rs.next()) {
-                String sqlScript = new String(AppServletContextListener.class.getClassLoader().getResourceAsStream("data.sql").readAllBytes());
+                String sqlScript = new String(AppServletContextListener.class.getClassLoader().getResourceAsStream("createCurrency.sql").readAllBytes());
+                st.executeUpdate(sqlScript);
+            }
+
+            rs = conn.getMetaData().getTables("", "app", "RATE", null);
+            if (!rs.next()) {
+                String sqlScript = new String(AppServletContextListener.class.getClassLoader().getResourceAsStream("createRate.sql").readAllBytes());
+                st.executeUpdate(sqlScript);
+            }
+
+            rs = conn.getMetaData().getTables("", "app", "WEEKENDS", null);
+            if (!rs.next()) {
+                String sqlScript = new String(AppServletContextListener.class.getClassLoader().getResourceAsStream("dataWeekend.sql").readAllBytes());
                 st.executeUpdate(sqlScript);
             }
 
         } catch (SQLException | IOException e) {
-            throw new AccessDataException("Ошибка загрузки данных из data.sql", e);
+            throw new AccessDataException("Ошибка загрузки данных из dataWeekend.sql", e);
         }
 
         int count = this.currencyService.getCount();
