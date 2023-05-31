@@ -41,8 +41,6 @@ public class RateServlet extends HttpServlet {
         String startDate = req.getParameter(START_DATE);
         String endDate = req.getParameter(END_DATE);
 
-        PrintWriter writer = resp.getWriter();
-
         if (!Objects.equals(currency, "" ) && !Objects.equals(startDate, "") && !Objects.equals(endDate, "")) {
             LocalDate start = LocalDate.parse(startDate);
             LocalDate end = LocalDate.parse(endDate);
