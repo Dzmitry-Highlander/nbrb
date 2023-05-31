@@ -7,7 +7,7 @@ public class CurrencyDTO {
     @JsonProperty("Cur_ID")
     private int curID;
     @JsonProperty("Cur_Code")
-    private String curCode;
+    private int curCode;
     @JsonProperty("Cur_Abbreviation")
     private String curAbbreviation;
     @JsonProperty("Cur_Name")
@@ -22,19 +22,13 @@ public class CurrencyDTO {
     private String curQuotNameBel;
     @JsonProperty("Cur_QuotName_Eng")
     private String curQuotNameEng;
-    @JsonProperty("Cur_NameMulti")
-    private String curNameMulti;
-    @JsonProperty("Cur_Name_BelMulti")
-    private String curNameBelMulti;
-    @JsonProperty("Cur_Name_EngMulti")
-    private String curNameEngMulti;
     @JsonProperty("Cur_Scale")
     private int curScale;
 
     public CurrencyDTO() {
     }
 
-    public CurrencyDTO(int curID, String curCode, String curAbbreviation, String curName, String curNameBel, String curNameEng, String curQuotName, String curQuotNameBel, String curQuotNameEng, String curNameMulti, String curNameBelMulti, String curNameEngMulti, int curScale) {
+    public CurrencyDTO(int curID, int curCode, String curAbbreviation, String curName, String curNameBel, String curNameEng, String curQuotName, String curQuotNameBel, String curQuotNameEng, int curScale) {
         this.curID = curID;
         this.curCode = curCode;
         this.curAbbreviation = curAbbreviation;
@@ -44,9 +38,6 @@ public class CurrencyDTO {
         this.curQuotName = curQuotName;
         this.curQuotNameBel = curQuotNameBel;
         this.curQuotNameEng = curQuotNameEng;
-        this.curNameMulti = curNameMulti;
-        this.curNameBelMulti = curNameBelMulti;
-        this.curNameEngMulti = curNameEngMulti;
         this.curScale = curScale;
     }
 
@@ -58,11 +49,11 @@ public class CurrencyDTO {
         this.curID = curID;
     }
 
-    public String getCurCode() {
+    public int getCurCode() {
         return curCode;
     }
 
-    public void setCurCode(String curCode) {
+    public void setCurCode(int curCode) {
         this.curCode = curCode;
     }
 
@@ -120,30 +111,6 @@ public class CurrencyDTO {
 
     public void setCurQuotNameEng(String curQuotNameEng) {
         this.curQuotNameEng = curQuotNameEng;
-    }
-
-    public String getCurNameMulti() {
-        return curNameMulti;
-    }
-
-    public void setCurNameMulti(String curNameMulti) {
-        this.curNameMulti = curNameMulti;
-    }
-
-    public String getCurNameBelMulti() {
-        return curNameBelMulti;
-    }
-
-    public void setCurNameBelMulti(String curNameBelMulti) {
-        this.curNameBelMulti = curNameBelMulti;
-    }
-
-    public String getCurNameEngMulti() {
-        return curNameEngMulti;
-    }
-
-    public void setCurNameEngMulti(String curNameEngMulti) {
-        this.curNameEngMulti = curNameEngMulti;
     }
 
     public int getCurScale() {
