@@ -1,7 +1,7 @@
 
 CREATE TABLE IF NOT EXISTS app.rate
 (
-    rate_id bigint NOT NULL,
+    rate_id INT NOT NULL,
     cur_id bigint NOT NULL,
     date timestamp without time zone NOT NULL,
     cur_official_rate numeric NOT NULL,
@@ -15,5 +15,5 @@ CREATE TABLE IF NOT EXISTS app.rate
     TABLESPACE pg_default;
 
 ALTER TABLE IF EXISTS app.rate
-    OWNER to root;
+    OWNER to nbrb;
 
