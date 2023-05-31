@@ -5,11 +5,9 @@ import by.it_academy.jd2.Mk_JD2_98_23.core.dto.CurrencyDTO;
 import by.it_academy.jd2.Mk_JD2_98_23.dao.api.ICurrencyDao;
 import by.it_academy.jd2.Mk_JD2_98_23.dao.db.ds.DatabaseConnectionFactory;
 import by.it_academy.jd2.Mk_JD2_98_23.dao.exceptions.AccessDataException;
-import by.it_academy.jd2.Mk_JD2_98_23.dao.exceptions.DataInsertionError;
+import by.it_academy.jd2.Mk_JD2_98_23.dao.exceptions.DataInsertionErrorException;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.List;
 
 public class CurrencyJDBCDao implements ICurrencyDao {
@@ -53,10 +51,27 @@ public class CurrencyJDBCDao implements ICurrencyDao {
 
             int rowsInserted = st.executeUpdate();
             if (rowsInserted == 0) {
-                throw new DataInsertionError("Ошибка вставки данных: ни одна строка не была добавлена в таблицу.");
+                throw new DataInsertionErrorException("Ошибка вставки данных: ни одна строка не была добавлена в таблицу.");
             }
         } catch (SQLException e) {
             throw new AccessDataException("Ошибка подключения к базе данных", e);
         }
     }
+
+    @Override
+    public int getCount() {
+        int count = 0;
+        try (Connection conn = DatabaseConnectionFactory.getConnection();
+             PreparedStatement st = conn.prepareStatement("SELECT COUNT(*) as count FROM app.currency");
+             ResultSet rs = st.executeQuery()) {
+
+            if (rs.next()) {
+                count = rs.getInt("count");
+            }
+        } catch (SQLException e) {
+            throw new AccessDataException("Ошибка подключения к базе данных", e);
+        }
+        return count;
+    }
+
 }
