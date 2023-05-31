@@ -1,6 +1,9 @@
 package by.it_academy.jd2.Mk_JD2_98_23.servlets;
 
 import by.it_academy.jd2.Mk_JD2_98_23.core.dto.RateCreateDTO;
+import by.it_academy.jd2.Mk_JD2_98_23.core.dto.RateDTO;
+import by.it_academy.jd2.Mk_JD2_98_23.dao.api.IRateDao;
+import by.it_academy.jd2.Mk_JD2_98_23.dao.db.factory.RateDaoFactory;
 import by.it_academy.jd2.Mk_JD2_98_23.service.api.IRateService;
 import by.it_academy.jd2.Mk_JD2_98_23.service.factory.RateServiceFactory;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -15,18 +18,21 @@ import java.io.PrintWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Objects;
 
 @WebServlet(urlPatterns = "/save")
 public class RateServlet extends HttpServlet {
-    private static final String CURRENCY = "Cur_Abbreviation";
-    private static final String DATE_FROM = "dateFrom";
-    private static final String DATE_TO = "dateTo";
-    private final IRateService rateService  ;
+    private static final String CURRENCY = "сur_abbreviation";
+    private static final String START_DATE = "dateFrom";
+    private static final String END_DATE = "dateTo";
+    private final IRateService rateService;
+    private final IRateDao rateDao;
     private final ObjectMapper objectMapper;
 
     public RateServlet() {
         this.rateService = RateServiceFactory.getInstance();
+        this.rateDao = RateDaoFactory.getInstance();
         this.objectMapper = new ObjectMapper();
         this.objectMapper.findAndRegisterModules();
     }
@@ -37,29 +43,26 @@ public class RateServlet extends HttpServlet {
         resp.setContentType("application/json; charset=UTF-8");
 
         String currency = req.getParameter(CURRENCY);
-        String dateFrom = req.getParameter(DATE_FROM);
-        String dateTo = req.getParameter(DATE_TO);
+        String startDate = req.getParameter(START_DATE);
+        String endDate = req.getParameter(END_DATE);
 
         PrintWriter writer = resp.getWriter();
 
-        if (!Objects.equals(currency, "" ) && !Objects.equals(dateFrom, "") && !Objects.equals(dateTo, "")) {
-            LocalDate from = LocalDate.parse(dateFrom);
-            LocalDate to = LocalDate.parse(dateTo);
-            String url = "https://api.nbrb.by/exrates/rates/" + currency + "?parammode=2&ondate=";
+        if (!Objects.equals(currency, "" ) && !Objects.equals(startDate, "") && !Objects.equals(endDate, "")) {
+            LocalDate start = LocalDate.parse(startDate);
+            LocalDate end = LocalDate.parse(endDate);
+            String url = "https://api.nbrb.by/exrates/rates/dynamics/456?startdate=" + start + "&enddate=" + end;
+            URL obj = new URL(url);
+            HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 
-            while (from.isBefore(to.plusDays(1))) {
-                URL obj = new URL(url + from);
-                HttpURLConnection con = (HttpURLConnection) obj.openConnection();
+            con.setRequestMethod("GET");
+            con.setRequestProperty("User-Agent", "Mozilla/5.0");
 
-                con.setRequestMethod("GET");
-                con.setRequestProperty("User-Agent", "Mozilla/5.0");
+            List<RateCreateDTO> rateCreateDTOS = objectMapper.readValue(con.getInputStream(),
+                    objectMapper.getTypeFactory().constructCollectionType(List.class, RateCreateDTO.class));
 
-                RateCreateDTO dto = this.objectMapper.readValue(con.getInputStream(), RateCreateDTO.class);
-                this.rateService.save(dto);
-
-                from = from.plusDays(1);
-
-                writer.write(dto.toString());
+            for (RateCreateDTO rateCreateDTO : rateCreateDTOS) {
+                rateService.upload(rateCreateDTO);
             }
         }
     }
