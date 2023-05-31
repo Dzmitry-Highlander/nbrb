@@ -15,15 +15,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class CurrencyJDBCDao implements ICurrencyDao {
-
     @Override
     public List<CurrencyDTO> get() {
         List<CurrencyDTO> data = new ArrayList<>();
 
         try (Connection conn = DatabaseConnectionFactory.getConnection();
-             PreparedStatement st = conn.prepareStatement("SELECT cur_id, cur_code, cur_abbreviation, cur_name, cur_name_bel, cur_name_eng, cur_quotname, cur_quotname_bel, cur_quotname_eng, cur_scale FROM app.currency ORDER BY cur_id ASC")) {
-
-            ResultSet rs = st.executeQuery();
+             PreparedStatement ps = conn
+                     .prepareStatement("SELECT cur_id, cur_code, cur_abbreviation, cur_name, cur_name_bel, " +
+                             "cur_name_eng, cur_quotname, cur_quotname_bel, cur_quotname_eng, cur_scale FROM " +
+                             "app.currency ORDER BY cur_id ASC")) {
+            ResultSet rs = ps.executeQuery();
 
             while (rs.next()) {
                 CurrencyDTO dto = new CurrencyDTO();
@@ -51,8 +52,10 @@ public class CurrencyJDBCDao implements ICurrencyDao {
     public CurrencyDTO get(int id) {
         CurrencyDTO dto = null;
         try (Connection conn = DatabaseConnectionFactory.getConnection();
-             PreparedStatement st = conn.prepareStatement("SELECT cur_id, cur_code, cur_abbreviation, cur_name, cur_name_bel, cur_name_eng, cur_quotname, cur_quotname_bel, cur_quotname_eng, cur_scale FROM app.currency WHERE cur_id = ? ORDER BY cur_id ASC")) {
-
+             PreparedStatement st = conn
+                     .prepareStatement("SELECT cur_id, cur_code, cur_abbreviation, cur_name, cur_name_bel, " +
+                             "cur_name_eng, cur_quotname, cur_quotname_bel, cur_quotname_eng, cur_scale FROM " +
+                             "app.currency WHERE cur_id = ? ORDER BY cur_id ASC")) {
             st.setInt(1, id);
             ResultSet rs = st.executeQuery();
 
@@ -70,7 +73,7 @@ public class CurrencyJDBCDao implements ICurrencyDao {
                 dto.setCurScale(rs.getInt("cur_scale"));
             }
         } catch (SQLException e) {
-            throw new AccessDataException("Ошибкаподключения к базе данных", e);
+            throw new AccessDataException("Ошибка подключения к базе данных", e);
         }
 
         return dto;
@@ -79,25 +82,29 @@ public class CurrencyJDBCDao implements ICurrencyDao {
     @Override
     public void uploadData(CurrencyCreateDTO item) {
         try (Connection conn = DatabaseConnectionFactory.getConnection();
-             PreparedStatement st = conn.prepareStatement("INSERT INTO app.currency(cur_id, cur_code, cur_abbreviation, cur_name, cur_name_bel, cur_name_eng, cur_quotname, cur_quotname_bel, cur_quotname_eng, cur_namemulti, cur_name_belmulti, cur_name_engmulti, cur_scale) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);")) {
+             PreparedStatement ps = conn
+                     .prepareStatement("INSERT INTO app.currency(cur_id, cur_code, cur_abbreviation, cur_name, " +
+                             "cur_name_bel, cur_name_eng, cur_quotname, cur_quotname_bel, cur_quotname_eng, " +
+                             "cur_namemulti, cur_name_belmulti, cur_name_engmulti, cur_scale) " +
+                             "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);")) {
+            ps.setInt(1, item.getCurID());
+            ps.setInt(2, Integer.parseInt(item.getCurCode()));
+            ps.setString(3, item.getCurAbbreviation());
+            ps.setString(4, item.getCurName());
+            ps.setString(5, item.getCurNameBel());
+            ps.setString(6, item.getCurNameEng());
+            ps.setString(7, item.getCurQuotName());
+            ps.setString(8, item.getCurQuotNameBel());
+            ps.setString(9, item.getCurQuotNameEng());
+            ps.setString(10, item.getCurNameMulti());
+            ps.setString(11, item.getCurNameBelMulti());
+            ps.setString(12, item.getCurNameEngMulti());
+            ps.setInt(13, item.getCurScale());
 
-            st.setInt(1, item.getCurID());
-            st.setInt(2, Integer.parseInt(item.getCurCode()));
-            st.setString(3, item.getCurAbbreviation());
-            st.setString(4, item.getCurName());
-            st.setString(5, item.getCurNameBel());
-            st.setString(6, item.getCurNameEng());
-            st.setString(7, item.getCurQuotName());
-            st.setString(8, item.getCurQuotNameBel());
-            st.setString(9, item.getCurQuotNameEng());
-            st.setString(10, item.getCurNameMulti());
-            st.setString(11, item.getCurNameBelMulti());
-            st.setString(12, item.getCurNameEngMulti());
-            st.setInt(13, item.getCurScale());
-
-            int rowsInserted = st.executeUpdate();
+            int rowsInserted = ps.executeUpdate();
             if (rowsInserted == 0) {
-                throw new DataInsertionErrorException("Ошибка вставки данных: ни одна строка не была добавлена в таблицу.");
+                throw new DataInsertionErrorException("Ошибка вставки данных: ни одна строка не была добавлена в " +
+                        "таблицу.");
             }
         } catch (SQLException e) {
             throw new AccessDataException("Ошибка подключения к базе данных", e);

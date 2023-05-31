@@ -5,20 +5,17 @@ import by.it_academy.jd2.Mk_JD2_98_23.core.dto.RateDTO;
 import by.it_academy.jd2.Mk_JD2_98_23.dao.api.IRateDao;
 import by.it_academy.jd2.Mk_JD2_98_23.service.api.IRateService;
 
-import java.time.LocalDate;
 import java.util.List;
 
 public class RateService implements IRateService {
-
     private final IRateDao rateDao;
 
     public RateService(IRateDao rateDao) {
         this.rateDao = rateDao;
     }
 
-
     @Override
-    public List get() {
+    public List<RateDTO> get() {
         return rateDao.get();
     }
 
@@ -28,13 +25,11 @@ public class RateService implements IRateService {
     }
 
     @Override
-    public void save(RateCreateDTO item) {
-     rateDao.save(item);
-    }
+    public void upload(RateCreateDTO item) {
+        item.setCurID(item.getCurID());
+        item.setDate(item.getDate().toLocalDate().atStartOfDay());
+        item.setCurOfficialRate(item.getCurOfficialRate());
 
-    @Override
-    public boolean checkPeriod(LocalDate from, LocalDate to) {
-        return false;
+        rateDao.save(item);
     }
-
 }

@@ -6,5 +6,4 @@ public interface ICRUDDao<T> {
     List<T> get();
 
     T get(int id);
-
 }

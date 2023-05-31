@@ -5,32 +5,28 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.LocalDateTime;
 
 public class RateCreateDTO {
-
     @JsonProperty("Cur_ID")
-    private int curId;
-
+    private int curID;
     @JsonProperty("Date")
     private LocalDateTime date;
-
     @JsonProperty("Cur_OfficialRate")
     private double curOfficialRate;
-
 
     public RateCreateDTO() {
     }
 
-    public RateCreateDTO(int curId, LocalDateTime date, double curOfficialRate) {
-        this.curId = curId;
+    public RateCreateDTO(int cur_ID, LocalDateTime date, double cur_OfficialRate) {
+        curID = cur_ID;
         this.date = date;
-        this.curOfficialRate = curOfficialRate;
+        curOfficialRate = cur_OfficialRate;
     }
 
-    public int getCurId() {
-        return curId;
+    public int getCurID() {
+        return curID;
     }
 
-    public void setCurId(int curId) {
-        this.curId = curId;
+    public void setCurID(int curID) {
+        this.curID = curID;
     }
 
     public LocalDateTime getDate() {

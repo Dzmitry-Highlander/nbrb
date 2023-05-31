@@ -1,77 +1,47 @@
 package by.it_academy.jd2.Mk_JD2_98_23.core.dto;
 
-import java.time.LocalDate;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.time.LocalDateTime;
 
 public class RateDTO {
-
-    private int Cur_ID;
-    private LocalDateTime Date;
-    private String Cur_Abbreviation;
-    private int Cur_Scale;
-    private String Cur_Name;
-    private double Cur_OfficialRate;
+    @JsonProperty("Cur_ID")
+    private int curID;
+    @JsonProperty("Date")
+    private LocalDateTime date;
+    @JsonProperty("Cur_OfficialRate")
+    private double curOfficialRate;
 
     public RateDTO() {
     }
 
-    public RateDTO(int cur_ID, LocalDateTime date, String cur_Abbreviation, int cur_Scale, String cur_Name, double cur_OfficialRate) {
-
-        Cur_ID = cur_ID;
-        Date = date;
-        Cur_Abbreviation = cur_Abbreviation;
-        Cur_Scale = cur_Scale;
-        Cur_Name = cur_Name;
-        Cur_OfficialRate = cur_OfficialRate;
+    public RateDTO(int cur_ID, LocalDateTime date, double cur_OfficialRate) {
+        curID = cur_ID;
+        this.date = date;
+        curOfficialRate = cur_OfficialRate;
     }
 
-
-
-    public int getCur_ID() {
-        return Cur_ID;
+    public int getCurID() {
+        return curID;
     }
 
-    public void setCur_ID(int cur_ID) {
-        Cur_ID = cur_ID;
+    public void setCurID(int curID) {
+        this.curID = curID;
     }
 
     public LocalDateTime getDate() {
-        return Date;
+        return date;
     }
 
     public void setDate(LocalDateTime date) {
-        Date = date;
+        this.date = date;
     }
 
-    public String getCur_Abbreviation() {
-        return Cur_Abbreviation;
+    public double getCurOfficialRate() {
+        return curOfficialRate;
     }
 
-    public void setCur_Abbreviation(String cur_Abbreviation) {
-        Cur_Abbreviation = cur_Abbreviation;
-    }
-
-    public int getCur_Scale() {
-        return Cur_Scale;
-    }
-
-    public void setCur_Scale(int cur_Scale) {
-        Cur_Scale = cur_Scale;
-    }
-
-    public String getCur_Name() {
-        return Cur_Name;
-    }
-
-    public void setCur_Name(String cur_Name) {
-        Cur_Name = cur_Name;
-    }
-
-    public double getCur_OfficialRate() {
-        return Cur_OfficialRate;
-    }
-
-    public void setCur_OfficialRate(double cur_OfficialRate) {
-        Cur_OfficialRate = cur_OfficialRate;
+    public void setCurOfficialRate(double curOfficialRate) {
+        this.curOfficialRate = curOfficialRate;
     }
 }

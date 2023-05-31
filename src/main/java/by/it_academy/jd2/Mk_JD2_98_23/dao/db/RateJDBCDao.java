@@ -8,38 +8,72 @@ import by.it_academy.jd2.Mk_JD2_98_23.dao.exceptions.AccessDataException;
 import by.it_academy.jd2.Mk_JD2_98_23.dao.exceptions.DataInsertionErrorException;
 
 import java.sql.*;
-import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 public class RateJDBCDao implements IRateDao {
     @Override
     public List<RateDTO> get() {
-        return null;
+        List<RateDTO> data = new ArrayList<>();
+
+        try (Connection conn = DatabaseConnectionFactory.getConnection();
+             PreparedStatement ps = conn.prepareStatement("SELECT cur_id, cur_date, cur_official_rate FROM " +
+                     "app.rate ORDER BY cur_id ASC")) {
+             ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+                RateDTO dto = new RateDTO();
+                dto.setCurID(rs.getInt("cur_id"));
+                dto.setDate(rs.getDate("cur_date").toLocalDate().atStartOfDay());
+                dto.setCurOfficialRate(rs.getDouble("cur_official_rate"));
+
+                data.add(dto);
+            }
+        } catch (SQLException e) {
+            throw new AccessDataException("Ошибка подключения к базе данных", e);
+        }
+
+        return data;
     }
 
     @Override
     public RateDTO get(int id) {
-        return null;
-    }
+        RateDTO dto = null;
+        try (Connection conn = DatabaseConnectionFactory.getConnection();
+             PreparedStatement st = conn
+                     .prepareStatement("SELECT cur_id, cur_date, cur_official_rate FROM " +
+                             "app.rate WHERE cur_id = ? ORDER BY cur_id ASC")) {
+            st.setInt(1, id);
+            ResultSet rs = st.executeQuery();
 
-    @Override
-    public boolean checkPeriod(LocalDate from, LocalDate to) {
-        return false;
+            if (rs.next()) {
+                dto = new RateDTO();
+                dto.setCurID(rs.getInt("cur_id"));
+                dto.setDate(rs.getDate("cur_date").toLocalDate().atStartOfDay());
+                dto.setCurOfficialRate(rs.getDouble("cur_official_rate"));
+            }
+        } catch (SQLException e) {
+            throw new AccessDataException("Ошибка подключения к базе данных", e);
+        }
+
+        return dto;
     }
 
     @Override
     public void save(RateCreateDTO item) {
         try (Connection conn = DatabaseConnectionFactory.getConnection();
-             PreparedStatement st = conn.prepareStatement("INSERT INTO app.rate(cur_id, date, cur_officialrate) VALUES (?, ?, ?)  RETURNING id;")) {
+             PreparedStatement ps = conn.prepareStatement("INSERT INTO app.rate(cur_id, cur_date, " +
+                     "cur_official_rate) VALUES (?, ?, ?);")) {
+            ps.setObject(1, item.getCurID());
+            ps.setObject(2, item.getDate());
+            ps.setObject(3, item.getCurOfficialRate());
 
-            st.setInt(1, item.getCurId());
-            st.setTimestamp(2, Timestamp.valueOf(item.getDate()));
-            st.setDouble(3, item.getCurOfficialRate());
-
-            int rowsInserted = st.executeUpdate();
+            int rowsInserted = ps.executeUpdate();
             if (rowsInserted == 0) {
-                throw new DataInsertionErrorException("Ошибка вставки данных: ни одна строка не была добавлена в таблицу.");
+                throw new DataInsertionErrorException("Ошибка вставки данных: ни одна строка не была добавлена " +
+                        "в таблицу.");
             }
+
         } catch (SQLException e) {
             throw new AccessDataException("Ошибка подключения к базе данных", e);
         }
