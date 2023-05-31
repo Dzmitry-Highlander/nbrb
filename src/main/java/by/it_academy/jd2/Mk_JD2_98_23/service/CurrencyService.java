@@ -27,11 +27,6 @@ public class CurrencyService implements ICurrencyService {
     }
 
     @Override
-    public CurrencyDTO save(CurrencyCreateDTO item) {
-        return null;
-    }
-
-    @Override
     public void uploadData(CurrencyCreateDTO item) {
          currencyDao.uploadData(item);
     }
