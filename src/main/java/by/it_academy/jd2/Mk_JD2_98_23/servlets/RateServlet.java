@@ -1,8 +1,8 @@
 package by.it_academy.jd2.Mk_JD2_98_23.servlets;
 
 import by.it_academy.jd2.Mk_JD2_98_23.core.dto.RateCreateDTO;
-import by.it_academy.jd2.Mk_JD2_98_23.service.api.ISaveService;
-import by.it_academy.jd2.Mk_JD2_98_23.service.factory.SaveServiceFactory;
+import by.it_academy.jd2.Mk_JD2_98_23.service.api.IRateService;
+import by.it_academy.jd2.Mk_JD2_98_23.service.factory.RateServiceFactory;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -19,15 +19,15 @@ import java.util.Objects;
 
 
 @WebServlet(urlPatterns = "/save")
-public class SaveServlet extends HttpServlet {
+public class RateServlet extends HttpServlet {
     private static final String CURRENCY = "Cur_Abbreviation";
     private static final String DATE_FROM = "dateFrom";
     private static final String DATE_TO = "dateTo";
-    private final ISaveService saveService;
+    private final IRateService rateService  ;
     private final ObjectMapper objectMapper;
 
-    public SaveServlet() {
-        this.saveService = SaveServiceFactory.getInstance();
+    public RateServlet() {
+        this.rateService = RateServiceFactory.getInstance();
         this.objectMapper = new ObjectMapper();
         this.objectMapper.findAndRegisterModules();
     }
@@ -56,7 +56,7 @@ public class SaveServlet extends HttpServlet {
                 con.setRequestProperty("User-Agent", "Mozilla/5.0");
 
                 RateCreateDTO dto = this.objectMapper.readValue(con.getInputStream(), RateCreateDTO.class);
-                this.saveService.save(dto);
+                this.rateService.save(dto);
 
                 from = from.plusDays(1);
 
