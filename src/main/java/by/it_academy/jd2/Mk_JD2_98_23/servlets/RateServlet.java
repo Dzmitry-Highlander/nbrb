@@ -19,7 +19,7 @@ import java.util.Objects;
 
 @WebServlet(urlPatterns = "/save")
 public class RateServlet extends HttpServlet {
-    private static final String CURRENCY = "Cur_Abbreviation";
+    private static final String CURRENCY = "сur_abbreviation";
     private static final String DATE_FROM = "dateFrom";
     private static final String DATE_TO = "dateTo";
     private final IRateService rateService  ;
