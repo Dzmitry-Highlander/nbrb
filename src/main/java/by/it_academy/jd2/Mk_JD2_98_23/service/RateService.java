@@ -25,12 +25,11 @@ public class RateService implements IRateService {
     }
 
     @Override
-    public RateDTO save(RateCreateDTO item) {
-        RateDTO dto = new RateDTO();
-        dto.setCurID(item.getCurID());
-        dto.setDate(item.getDate().toLocalDate());
-        dto.setCurOfficialRate(item.getCurOfficialRate());
+    public void upload(RateCreateDTO item) {
+        item.setCurID(item.getCurID());
+        item.setDate(item.getDate().toLocalDate().atStartOfDay());
+        item.setCurOfficialRate(item.getCurOfficialRate());
 
-        return rateDao.save(dto);
+        rateDao.save(item);
     }
 }

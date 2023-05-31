@@ -62,10 +62,7 @@ public class RateServlet extends HttpServlet {
                     objectMapper.getTypeFactory().constructCollectionType(List.class, RateCreateDTO.class));
 
             for (RateCreateDTO rateCreateDTO : rateCreateDTOS) {
-                RateDTO dto = this.rateService.save(rateCreateDTO);
-
-                rateDao.save(dto);
-                writer.write(dto.toString());
+                rateService.upload(rateCreateDTO);
             }
         }
     }

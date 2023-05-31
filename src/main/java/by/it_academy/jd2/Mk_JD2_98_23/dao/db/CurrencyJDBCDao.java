@@ -80,11 +80,6 @@ public class CurrencyJDBCDao implements ICurrencyDao {
     }
 
     @Override
-    public CurrencyDTO save(CurrencyDTO item) {
-        return null;
-    }
-
-    @Override
     public void uploadData(CurrencyCreateDTO item) {
         try (Connection conn = DatabaseConnectionFactory.getConnection();
              PreparedStatement ps = conn
