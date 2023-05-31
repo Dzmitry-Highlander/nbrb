@@ -15,14 +15,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class CurrencyJDBCDao implements ICurrencyDao {
-
     @Override
     public List<CurrencyDTO> get() {
         List<CurrencyDTO> data = new ArrayList<>();
 
         try (Connection conn = DatabaseConnectionFactory.getConnection();
-             PreparedStatement st = conn.prepareStatement("SELECT cur_id, cur_code, cur_abbreviation, cur_name, cur_name_bel, cur_name_eng, cur_quotname, cur_quotname_bel, cur_quotname_eng, cur_scale FROM app.currency ORDER BY cur_id ASC")) {
-
+             PreparedStatement st = conn
+                     .prepareStatement("SELECT cur_id, cur_code, cur_abbreviation, cur_name, cur_name_bel, " +
+                             "cur_name_eng, cur_quotname, cur_quotname_bel, cur_quotname_eng, cur_scale FROM " +
+                             "app.currency ORDER BY cur_id ASC")) {
             ResultSet rs = st.executeQuery();
 
             while (rs.next()) {
@@ -51,8 +52,10 @@ public class CurrencyJDBCDao implements ICurrencyDao {
     public CurrencyDTO get(int id) {
         CurrencyDTO dto = null;
         try (Connection conn = DatabaseConnectionFactory.getConnection();
-             PreparedStatement st = conn.prepareStatement("SELECT cur_id, cur_code, cur_abbreviation, cur_name, cur_name_bel, cur_name_eng, cur_quotname, cur_quotname_bel, cur_quotname_eng, cur_scale FROM app.currency WHERE cur_id = ? ORDER BY cur_id ASC")) {
-
+             PreparedStatement st = conn
+                     .prepareStatement("SELECT cur_id, cur_code, cur_abbreviation, cur_name, cur_name_bel, " +
+                             "cur_name_eng, cur_quotname, cur_quotname_bel, cur_quotname_eng, cur_scale FROM " +
+                             "app.currency WHERE cur_id = ? ORDER BY cur_id ASC")) {
             st.setInt(1, id);
             ResultSet rs = st.executeQuery();
 
@@ -81,12 +84,14 @@ public class CurrencyJDBCDao implements ICurrencyDao {
         return null;
     }
 
-
     @Override
     public void uploadData(CurrencyCreateDTO item) {
         try (Connection conn = DatabaseConnectionFactory.getConnection();
-             PreparedStatement st = conn.prepareStatement("INSERT INTO app.currency(cur_id, cur_code, cur_abbreviation, cur_name, cur_name_bel, cur_name_eng, cur_quotname, cur_quotname_bel, cur_quotname_eng, cur_namemulti, cur_name_belmulti, cur_name_engmulti, cur_scale) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);")) {
-
+             PreparedStatement st = conn
+                     .prepareStatement("INSERT INTO app.currency(cur_id, cur_code, cur_abbreviation, cur_name, " +
+                             "cur_name_bel, cur_name_eng, cur_quotname, cur_quotname_bel, cur_quotname_eng, " +
+                             "cur_namemulti, cur_name_belmulti, cur_name_engmulti, cur_scale) " +
+                             "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);")) {
             st.setInt(1, item.getCurID());
             st.setInt(2, Integer.parseInt(item.getCurCode()));
             st.setString(3, item.getCurAbbreviation());
@@ -125,5 +130,4 @@ public class CurrencyJDBCDao implements ICurrencyDao {
         }
         return count;
     }
-
 }

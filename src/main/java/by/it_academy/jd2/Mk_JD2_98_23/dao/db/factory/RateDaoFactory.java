@@ -4,7 +4,6 @@ import by.it_academy.jd2.Mk_JD2_98_23.dao.api.IRateDao;
 import by.it_academy.jd2.Mk_JD2_98_23.dao.db.RateJDBCDao;
 
 public class RateDaoFactory {
-
     private static volatile IRateDao instance;
 
     private RateDaoFactory() {
