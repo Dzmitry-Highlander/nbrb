@@ -19,6 +19,3 @@ CREATE TABLE IF NOT EXISTS app.currency
 
     TABLESPACE pg_default;
 
-ALTER TABLE IF EXISTS app.currency
-    OWNER to root;
-
