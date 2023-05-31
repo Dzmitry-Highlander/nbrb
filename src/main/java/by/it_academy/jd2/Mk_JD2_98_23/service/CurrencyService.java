@@ -35,4 +35,9 @@ public class CurrencyService implements ICurrencyService {
     public void uploadData(CurrencyCreateDTO item) {
          currencyDao.uploadData(item);
     }
+
+    @Override
+    public int getCount() {
+        return currencyDao.getCount();
+    }
 }
