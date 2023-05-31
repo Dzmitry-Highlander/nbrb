@@ -52,8 +52,10 @@ public class RateServlet extends HttpServlet {
             con.setRequestMethod("GET");
             con.setRequestProperty("User-Agent", "Mozilla/5.0");
 
+            /* TODO сохранить массив JSON
             RateCreateDTO dto = this.objectMapper.readValue(con.getInputStream(), RateCreateDTO.class);
             this.rateService.save(dto);
+             */
         }
     }
 }
