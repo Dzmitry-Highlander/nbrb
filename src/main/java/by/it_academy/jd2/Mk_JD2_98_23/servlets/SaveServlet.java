@@ -1,6 +1,6 @@
 package by.it_academy.jd2.Mk_JD2_98_23.servlets;
 
-import by.it_academy.jd2.Mk_JD2_98_23.core.dto.RateDTO;
+import by.it_academy.jd2.Mk_JD2_98_23.core.dto.RateCreateDTO;
 import by.it_academy.jd2.Mk_JD2_98_23.service.api.ISaveService;
 import by.it_academy.jd2.Mk_JD2_98_23.service.factory.SaveServiceFactory;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -55,7 +55,7 @@ public class SaveServlet extends HttpServlet {
                 con.setRequestMethod("GET");
                 con.setRequestProperty("User-Agent", "Mozilla/5.0");
 
-                RateDTO dto = this.objectMapper.readValue(con.getInputStream(), RateDTO.class);
+                RateCreateDTO dto = this.objectMapper.readValue(con.getInputStream(), RateCreateDTO.class);
                 this.saveService.save(dto);
 
                 from = from.plusDays(1);

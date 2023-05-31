@@ -1,7 +1,6 @@
 package by.it_academy.jd2.Mk_JD2_98_23.service;
 
 import by.it_academy.jd2.Mk_JD2_98_23.core.dto.RateCreateDTO;
-import by.it_academy.jd2.Mk_JD2_98_23.core.dto.RateDTO;
 import by.it_academy.jd2.Mk_JD2_98_23.dao.api.IRateDao;
 import by.it_academy.jd2.Mk_JD2_98_23.service.api.IRateService;
 
@@ -22,19 +21,19 @@ public class RateService implements IRateService {
     }
 
     @Override
-    public RateDTO get(int id) {
+    public RateCreateDTO get(int id) {
         return rateDao.get(id);
     }
 
     @Override
-    public RateDTO save(RateCreateDTO item) {
-        RateDTO dto = new RateDTO();
-        dto.setCur_ID(item.getCur_ID());
+    public RateCreateDTO save(RateCreateDTO item) {
+        RateCreateDTO dto = new RateCreateDTO();
+        dto.setCurID(item.getCurID());
         dto.setDate(item.getDate());
-        dto.setCur_Abbreviation(item.getCur_Abbreviation());
-        dto.setCur_Scale(item.getCur_Scale());
-        dto.setCur_Name(item.getCur_Name());
-        dto.setCur_OfficialRate(item.getCur_OfficialRate());
+        dto.setCurAbbreviation(item.getCurAbbreviation());
+        dto.setCurScale(item.getCurScale());
+        dto.setCurName(item.getCurName());
+        dto.setCurOfficialRate(item.getCurOfficialRate());
 
         return rateDao.save(dto);
     }

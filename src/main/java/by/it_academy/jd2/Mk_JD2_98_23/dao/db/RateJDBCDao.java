@@ -1,6 +1,6 @@
 package by.it_academy.jd2.Mk_JD2_98_23.dao.db;
 
-import by.it_academy.jd2.Mk_JD2_98_23.core.dto.RateDTO;
+import by.it_academy.jd2.Mk_JD2_98_23.core.dto.RateCreateDTO;
 import by.it_academy.jd2.Mk_JD2_98_23.dao.api.IRateDao;
 import by.it_academy.jd2.Mk_JD2_98_23.dao.db.ds.DatabaseConnectionFactory;
 import by.it_academy.jd2.Mk_JD2_98_23.exceptions.AccessDataException;
@@ -14,8 +14,8 @@ import java.util.List;
 
 public class RateJDBCDao implements IRateDao {
     @Override
-    public List<RateDTO> get() {
-        List<RateDTO> data = new ArrayList<>();
+    public List<RateCreateDTO> get() {
+        List<RateCreateDTO> data = new ArrayList<>();
 
         try (Connection conn = DatabaseConnectionFactory.getConnection();
              Statement st = conn.createStatement();
@@ -23,7 +23,7 @@ public class RateJDBCDao implements IRateDao {
              ResultSet rs = st.executeQuery("SELECT id, name FROM app.artists ORDER BY id ASC")) {
 
             while (rs.next()) {
-                RateDTO dto = new RateDTO();
+                RateCreateDTO dto = new RateCreateDTO();
                 dto.setCurName(rs.getString("id"));
                 //TODO исправить создание DTO
                 data.add(dto);
@@ -36,8 +36,8 @@ public class RateJDBCDao implements IRateDao {
     }
 
     @Override
-    public RateDTO get(int id) {
-        RateDTO dto = null;
+    public RateCreateDTO get(int id) {
+        RateCreateDTO dto = null;
         try (Connection conn = DatabaseConnectionFactory.getConnection();
              Statement st = conn.createStatement();
              //TODO исправить SQL запрос
@@ -45,7 +45,7 @@ public class RateJDBCDao implements IRateDao {
                      id + " ORDER BY id ASC")) {
 
             if (rs.next()) {
-                dto = new RateDTO();
+                dto = new RateCreateDTO();
                 dto.setCurName(rs.getString("id"));
                 //TODO исправить создание DTO
             }
@@ -57,12 +57,12 @@ public class RateJDBCDao implements IRateDao {
     }
 
     @Override
-    public RateDTO save(RateDTO item) {
+    public RateCreateDTO save(RateCreateDTO item) {
         try (Connection conn = DatabaseConnectionFactory.getConnection();
              Statement st = conn.createStatement();
              //TODO исправить SQL запрос
              ResultSet rs = st.executeQuery("INSERT INTO app.artists(name) VALUES " +
-                     "('" + item.getCur_ID() + "') RETURNING id;")) {
+                     "('" + item.getCurID() + "') RETURNING id;")) {
 
             while (rs.next()) {
                 item.setCurName(rs.getString("id"));
