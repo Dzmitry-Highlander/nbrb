@@ -1,6 +1,10 @@
 package by.it_academy.jd2.Mk_JD2_98_23.servlets;
 
 import by.it_academy.jd2.Mk_JD2_98_23.core.dto.RateCreateDTO;
+import by.it_academy.jd2.Mk_JD2_98_23.core.dto.RateDTO;
+import by.it_academy.jd2.Mk_JD2_98_23.dao.api.IRateDao;
+import by.it_academy.jd2.Mk_JD2_98_23.dao.db.RateJDBCDao;
+import by.it_academy.jd2.Mk_JD2_98_23.dao.db.factory.RateDaoFactory;
 import by.it_academy.jd2.Mk_JD2_98_23.service.api.IRateService;
 import by.it_academy.jd2.Mk_JD2_98_23.service.factory.RateServiceFactory;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -22,11 +26,13 @@ public class RateServlet extends HttpServlet {
     private static final String CURRENCY = "сur_abbreviation";
     private static final String START_DATE = "dateFrom";
     private static final String END_DATE = "dateTo";
-    private final IRateService rateService  ;
+    private final IRateService rateService;
+    private final IRateDao rateDao;
     private final ObjectMapper objectMapper;
 
     public RateServlet() {
         this.rateService = RateServiceFactory.getInstance();
+        this.rateDao = RateDaoFactory.getInstance();
         this.objectMapper = new ObjectMapper();
         this.objectMapper.findAndRegisterModules();
     }
@@ -52,10 +58,10 @@ public class RateServlet extends HttpServlet {
             con.setRequestMethod("GET");
             con.setRequestProperty("User-Agent", "Mozilla/5.0");
 
-            /* TODO сохранить массив JSON
-            RateCreateDTO dto = this.objectMapper.readValue(con.getInputStream(), RateCreateDTO.class);
-            this.rateService.save(dto);
-             */
+            RateCreateDTO createDTO = this.objectMapper.readValue(con.getInputStream(), RateCreateDTO.class);
+            RateDTO dto = this.rateService.save(createDTO);
+
+            rateDao.save(dto);
         }
     }
 }
