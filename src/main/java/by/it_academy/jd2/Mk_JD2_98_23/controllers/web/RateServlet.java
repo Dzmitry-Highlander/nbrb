@@ -5,6 +5,7 @@ import by.it_academy.jd2.Mk_JD2_98_23.core.dto.RateDTO;
 import by.it_academy.jd2.Mk_JD2_98_23.dao.api.IRateDao;
 import by.it_academy.jd2.Mk_JD2_98_23.dao.db.factory.RateDaoFactory;
 import by.it_academy.jd2.Mk_JD2_98_23.service.api.IRateService;
+import by.it_academy.jd2.Mk_JD2_98_23.service.factory.ObjectMapperFactory;
 import by.it_academy.jd2.Mk_JD2_98_23.service.factory.RateServiceFactory;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.ServletException;
@@ -27,13 +28,11 @@ public class RateServlet extends HttpServlet {
     private static final String START_DATE = "dateFrom";
     private static final String END_DATE = "dateTo";
     private final IRateService rateService;
-    private final IRateDao rateDao;
     private final ObjectMapper objectMapper;
 
     public RateServlet() {
         this.rateService = RateServiceFactory.getInstance();
-        this.rateDao = RateDaoFactory.getInstance();
-        this.objectMapper = new ObjectMapper();
+        this.objectMapper = ObjectMapperFactory.getInstance();
         this.objectMapper.findAndRegisterModules();
     }
 
