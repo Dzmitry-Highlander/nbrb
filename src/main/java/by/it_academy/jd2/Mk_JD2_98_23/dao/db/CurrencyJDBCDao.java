@@ -9,7 +9,6 @@ import by.it_academy.jd2.Mk_JD2_98_23.dao.exceptions.DataInsertionError;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 
