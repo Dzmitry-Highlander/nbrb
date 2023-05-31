@@ -8,16 +8,14 @@ import by.it_academy.jd2.Mk_JD2_98_23.service.api.ICurrencyService;
 import java.util.List;
 
 public class CurrencyService implements ICurrencyService {
-
     private final ICurrencyDao currencyDao;
 
     public CurrencyService(ICurrencyDao currencyDao) {
         this.currencyDao = currencyDao;
     }
 
-
     @Override
-    public List get() {
+    public List<CurrencyDTO> get() {
         return currencyDao.get();
     }
 

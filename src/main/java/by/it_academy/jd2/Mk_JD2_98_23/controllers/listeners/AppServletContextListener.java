@@ -1,4 +1,4 @@
-package by.it_academy.jd2.Mk_JD2_98_23.controllers.listiners;
+package by.it_academy.jd2.Mk_JD2_98_23.controllers.listeners;
 
 import by.it_academy.jd2.Mk_JD2_98_23.core.dto.CurrencyCreateDTO;
 import by.it_academy.jd2.Mk_JD2_98_23.dao.db.ds.DatabaseConnectionFactory;
@@ -19,9 +19,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.List;
+import java.util.Objects;
 
 public class AppServletContextListener implements ServletContextListener {
-
     private final ICurrencyService currencyService;
     private final ObjectMapper objectMapper;
 

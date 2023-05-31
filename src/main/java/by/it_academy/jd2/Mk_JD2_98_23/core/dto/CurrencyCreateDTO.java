@@ -43,7 +43,10 @@ public class CurrencyCreateDTO {
     public CurrencyCreateDTO() {
     }
 
-    public CurrencyCreateDTO(int curID, int curParentID, String curCode, String curAbbreviation, String curName, String curNameBel, String curNameEng, String curQuotName, String curQuotNameBel, String curQuotNameEng, String curNameMulti, String curNameBelMulti, String curNameEngMulti, int curScale, int curPeriodicity, LocalDateTime curDateStart, LocalDateTime curDateEnd) {
+    public CurrencyCreateDTO(int curID, int curParentID, String curCode, String curAbbreviation, String curName,
+                             String curNameBel, String curNameEng, String curQuotName, String curQuotNameBel,
+                             String curQuotNameEng, String curNameMulti, String curNameBelMulti, String curNameEngMulti,
+                             int curScale, int curPeriodicity, LocalDateTime curDateStart, LocalDateTime curDateEnd) {
         this.curID = curID;
         this.curParentID = curParentID;
         this.curCode = curCode;

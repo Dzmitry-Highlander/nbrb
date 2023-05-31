@@ -3,7 +3,6 @@ package by.it_academy.jd2.Mk_JD2_98_23.core.dto;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class CurrencyDTO {
-
     @JsonProperty("Cur_ID")
     private int curID;
     @JsonProperty("Cur_Code")
@@ -28,7 +27,9 @@ public class CurrencyDTO {
     public CurrencyDTO() {
     }
 
-    public CurrencyDTO(int curID, int curCode, String curAbbreviation, String curName, String curNameBel, String curNameEng, String curQuotName, String curQuotNameBel, String curQuotNameEng, int curScale) {
+    public CurrencyDTO(int curID, int curCode, String curAbbreviation, String curName, String curNameBel,
+                       String curNameEng, String curQuotName, String curQuotNameBel, String curQuotNameEng,
+                       int curScale) {
         this.curID = curID;
         this.curCode = curCode;
         this.curAbbreviation = curAbbreviation;

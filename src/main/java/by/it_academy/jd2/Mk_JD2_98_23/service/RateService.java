@@ -8,16 +8,14 @@ import by.it_academy.jd2.Mk_JD2_98_23.service.api.IRateService;
 import java.util.List;
 
 public class RateService implements IRateService {
-
     private final IRateDao rateDao;
 
     public RateService(IRateDao rateDao) {
         this.rateDao = rateDao;
     }
 
-
     @Override
-    public List get() {
+    public List<RateDTO> get() {
         return rateDao.get();
     }
 
@@ -29,12 +27,9 @@ public class RateService implements IRateService {
     @Override
     public RateDTO save(RateCreateDTO item) {
         RateDTO dto = new RateDTO();
-        dto.setCur_ID(item.getCur_ID());
-        dto.setDate(item.getDate());
-        dto.setCur_Abbreviation(item.getCur_Abbreviation());
-        dto.setCur_Scale(item.getCur_Scale());
-        dto.setCur_Name(item.getCur_Name());
-        dto.setCur_OfficialRate(item.getCur_OfficialRate());
+        dto.setCurID(item.getCurID());
+        dto.setDate(item.getDate().toLocalDate());
+        dto.setCurOfficialRate(item.getCurOfficialRate());
 
         return rateDao.save(dto);
     }

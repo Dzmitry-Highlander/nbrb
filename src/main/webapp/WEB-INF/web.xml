@@ -8,17 +8,7 @@
     <display-name>Mk-JD2-98-23</display-name>
 
     <listener>
-        <listener-class>by.it_academy.jd2.Mk_JD2_98_23.controllers.listiners.AppServletContextListener</listener-class>
+        <listener-class>by.it_academy.jd2.Mk_JD2_98_23.controllers.listeners.AppServletContextListener</listener-class>
     </listener>
-
-<!--    <servlet>-->
-<!--        <servlet-name>testServlet</servlet-name>-->
-<!--        <servlet-class>com.example.CurrencyServletTest</servlet-class>-->
-<!--    </servlet>-->
-
-<!--    <servlet-mapping>-->
-<!--        <servlet-name>testServlet</servlet-name>-->
-<!--        <url-pattern>/test</url-pattern>-->
-<!--    </servlet-mapping>-->
 
 </web-app>
