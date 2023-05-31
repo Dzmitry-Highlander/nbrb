@@ -17,7 +17,6 @@ import java.net.URL;
 import java.time.LocalDate;
 import java.util.Objects;
 
-
 @WebServlet(urlPatterns = "/save")
 public class RateServlet extends HttpServlet {
     private static final String CURRENCY = "Cur_Abbreviation";
