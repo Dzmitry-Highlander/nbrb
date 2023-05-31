@@ -6,6 +6,7 @@ import java.sql.SQLException;
 import java.util.Properties;
 
 public class DatabaseConnectionFactory {
+
     static {
         try {
             Class.forName("org.postgresql.Driver");
@@ -15,10 +16,10 @@ public class DatabaseConnectionFactory {
     }
 
     public static Connection getConnection() throws SQLException {
-        String url = "jdbc:postgresql://192.168.1.100:5432/rb-nb";
+        String url = "jdbc:postgresql://localhost:5432/currencys";
         Properties props = new Properties();
-        props.setProperty("user", "nbrb");
-        props.setProperty("password", "nbrb2023");
+        props.setProperty("user", "root");
+        props.setProperty("password", "root");
 
         return DriverManager.getConnection(url, props);
     }
