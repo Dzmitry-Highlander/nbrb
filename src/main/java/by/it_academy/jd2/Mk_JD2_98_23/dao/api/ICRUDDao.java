@@ -7,5 +7,4 @@ public interface ICRUDDao<T> {
 
     T get(int id);
 
-    T save(T item);
 }
