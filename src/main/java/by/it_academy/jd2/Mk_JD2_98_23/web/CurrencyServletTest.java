@@ -46,7 +46,7 @@ public class CurrencyServletTest extends HttpServlet {
         });
 
         for (CurrencyCreateDTO dto : list) {
-            this.currencyService.save(dto);
+            this.currencyService.uploadData(dto);
         }
 
         // test info block
