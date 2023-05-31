@@ -35,19 +35,19 @@ public class AppServletContextListener implements ServletContextListener {
     public void contextInitialized(ServletContextEvent servletContextEvent) {
         try (Connection conn = DatabaseConnectionFactory.getConnection();
              Statement st = conn.createStatement()) {
-            ResultSet rs = conn.getMetaData().getTables("", "app", "CURRENCY", null);
+            ResultSet rs = conn.getMetaData().getTables("", "app", "currency", null);
             if (!rs.next()) {
                 String sqlScript = new String(AppServletContextListener.class.getClassLoader().getResourceAsStream("createCurrency.sql").readAllBytes());
                 st.executeUpdate(sqlScript);
             }
 
-            rs = conn.getMetaData().getTables("", "app", "RATE", null);
+            rs = conn.getMetaData().getTables("", "app", "rate", null);
             if (!rs.next()) {
                 String sqlScript = new String(AppServletContextListener.class.getClassLoader().getResourceAsStream("createRate.sql").readAllBytes());
                 st.executeUpdate(sqlScript);
             }
 
-            rs = conn.getMetaData().getTables("", "app", "WEEKENDS", null);
+            rs = conn.getMetaData().getTables("", "app", "weekends", null);
             if (!rs.next()) {
                 String sqlScript = new String(AppServletContextListener.class.getClassLoader().getResourceAsStream("dataWeekend.sql").readAllBytes());
                 st.executeUpdate(sqlScript);
@@ -66,8 +66,7 @@ public class AppServletContextListener implements ServletContextListener {
                 con.setRequestMethod("GET");
                 con.setRequestProperty("User-Agent", "Mozilla/5.0");
 
-                List<CurrencyCreateDTO> list = this.objectMapper.readValue(con.getInputStream(), new TypeReference<>() {
-                });
+                List<CurrencyCreateDTO> list = this.objectMapper.readerForListOf(CurrencyCreateDTO.class).readValue(con.getInputStream());
 
                 for (CurrencyCreateDTO dto : list) {
                     this.currencyService.uploadData(dto);

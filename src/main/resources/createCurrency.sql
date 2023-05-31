@@ -1,4 +1,3 @@
-DROP TABLE IF EXISTS app.CURRENCY cascade;
 
 CREATE TABLE IF NOT EXISTS app.currency
 (

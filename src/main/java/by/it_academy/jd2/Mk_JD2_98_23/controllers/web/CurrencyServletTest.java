@@ -4,6 +4,7 @@ package by.it_academy.jd2.Mk_JD2_98_23.controllers.web;
 import by.it_academy.jd2.Mk_JD2_98_23.core.dto.CurrencyDTO;
 import by.it_academy.jd2.Mk_JD2_98_23.service.api.ICurrencyService;
 import by.it_academy.jd2.Mk_JD2_98_23.service.factory.CurrencyServiceFactory;
+import by.it_academy.jd2.Mk_JD2_98_23.service.factory.ObjectMapperFactory;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -23,7 +24,7 @@ public class CurrencyServletTest extends HttpServlet {
 
     public CurrencyServletTest() {
         this.currencyService = CurrencyServiceFactory.getInstance();
-        this.objectMapper = new ObjectMapper();
+        this.objectMapper = ObjectMapperFactory.getInstance();
         this.objectMapper.findAndRegisterModules();
     }
 
