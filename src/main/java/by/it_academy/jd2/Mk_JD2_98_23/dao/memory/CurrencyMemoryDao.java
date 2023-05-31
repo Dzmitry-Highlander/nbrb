@@ -1,5 +1,6 @@
 package by.it_academy.jd2.Mk_JD2_98_23.dao.memory;
 
+import by.it_academy.jd2.Mk_JD2_98_23.core.dto.CurrencyCreateDTO;
 import by.it_academy.jd2.Mk_JD2_98_23.core.dto.CurrencyDTO;
 import by.it_academy.jd2.Mk_JD2_98_23.dao.api.ICurrencyDao;
 
@@ -26,5 +27,9 @@ public class CurrencyMemoryDao implements ICurrencyDao {
     public CurrencyDTO save(CurrencyDTO item) {
         this.currencys.put(item.getCurID(),item);
         return item;
+    }
+
+    @Override
+    public void uploadData(CurrencyCreateDTO item) {
     }
 }
