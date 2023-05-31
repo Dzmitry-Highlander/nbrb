@@ -1,172 +1,201 @@
 package by.it_academy.jd2.Mk_JD2_98_23.core.dto;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.time.LocalDateTime;
 
 public class CurrencyCreateDTO {
-    private int Cur_ID;
-    private int Cur_ParentID;
-    private String Cur_Code;
-    private String Cur_Abbreviation;
-    private String Cur_Name;
-    private String Cur_Name_Eng;
-    private String Cur_QuotName;
-    private String Cur_QuotName_Bel;
-    private String Cur_QuotName_Eng;
-    private String Cur_NameMulti;
-    private String Cur_Name_BelMulti;
-    private String Cur_Name_EngMulti;
-    private int Cur_Scale;
-    private int Cur_Periodicity;
-    private LocalDateTime Cur_DateStart;
-    private LocalDateTime Cur_DateEnd;
+    @JsonProperty("Cur_ID")
+    private int curID;
+    @JsonProperty("Cur_ParentID")
+    private int curParentID;
+    @JsonProperty("Cur_Code")
+    private String curCode;
+    @JsonProperty("Cur_Abbreviation")
+    private String curAbbreviation;
+    @JsonProperty("Cur_Name")
+    private String curName;
+    @JsonProperty("Cur_Name_Bel")
+    private String curNameBel;
+    @JsonProperty("Cur_Name_Eng")
+    private String curNameEng;
+    @JsonProperty("Cur_QuotName")
+    private String curQuotName;
+    @JsonProperty("Cur_QuotName_Bel")
+    private String curQuotNameBel;
+    @JsonProperty("Cur_QuotName_Eng")
+    private String curQuotNameEng;
+    @JsonProperty("Cur_NameMulti")
+    private String curNameMulti;
+    @JsonProperty("Cur_Name_BelMulti")
+    private String curNameBelMulti;
+    @JsonProperty("Cur_Name_EngMulti")
+    private String curNameEngMulti;
+    @JsonProperty("Cur_Scale")
+    private int curScale;
+    @JsonProperty("Cur_Periodicity")
+    private int curPeriodicity;
+    @JsonProperty("Cur_DateStart")
+    private LocalDateTime curDateStart;
+    @JsonProperty("Cur_DateEnd")
+    private LocalDateTime curDateEnd;
 
     public CurrencyCreateDTO() {
     }
 
-    public CurrencyCreateDTO(int cur_ID, int cur_ParentID, String cur_Code, String cur_Abbreviation, String cur_Name, String cur_Name_Eng, String cur_QuotName, String cur_QuotName_Bel, String cur_QuotName_Eng, String cur_NameMulti, String cur_Name_BelMulti, String cur_Name_EngMulti, int cur_Scale, int cur_Periodicity, LocalDateTime cur_DateStart, LocalDateTime cur_DateEnd) {
-        Cur_ID = cur_ID;
-        Cur_ParentID = cur_ParentID;
-        Cur_Code = cur_Code;
-        Cur_Abbreviation = cur_Abbreviation;
-        Cur_Name = cur_Name;
-        Cur_Name_Eng = cur_Name_Eng;
-        Cur_QuotName = cur_QuotName;
-        Cur_QuotName_Bel = cur_QuotName_Bel;
-        Cur_QuotName_Eng = cur_QuotName_Eng;
-        Cur_NameMulti = cur_NameMulti;
-        Cur_Name_BelMulti = cur_Name_BelMulti;
-        Cur_Name_EngMulti = cur_Name_EngMulti;
-        Cur_Scale = cur_Scale;
-        Cur_Periodicity = cur_Periodicity;
-        Cur_DateStart = cur_DateStart;
-        Cur_DateEnd = cur_DateEnd;
+    public CurrencyCreateDTO(int curID, int curParentID, String curCode, String curAbbreviation, String curName, String curNameBel, String curNameEng, String curQuotName, String curQuotNameBel, String curQuotNameEng, String curNameMulti, String curNameBelMulti, String curNameEngMulti, int curScale, int curPeriodicity, LocalDateTime curDateStart, LocalDateTime curDateEnd) {
+        this.curID = curID;
+        this.curParentID = curParentID;
+        this.curCode = curCode;
+        this.curAbbreviation = curAbbreviation;
+        this.curName = curName;
+        this.curNameBel = curNameBel;
+        this.curNameEng = curNameEng;
+        this.curQuotName = curQuotName;
+        this.curQuotNameBel = curQuotNameBel;
+        this.curQuotNameEng = curQuotNameEng;
+        this.curNameMulti = curNameMulti;
+        this.curNameBelMulti = curNameBelMulti;
+        this.curNameEngMulti = curNameEngMulti;
+        this.curScale = curScale;
+        this.curPeriodicity = curPeriodicity;
+        this.curDateStart = curDateStart;
+        this.curDateEnd = curDateEnd;
     }
 
-    public int getCur_ID() {
-        return Cur_ID;
+    public int getCurID() {
+        return curID;
     }
 
-    public void setCur_ID(int cur_ID) {
-        Cur_ID = cur_ID;
+    public void setCurID(int curID) {
+        this.curID = curID;
     }
 
-    public int getCur_ParentID() {
-        return Cur_ParentID;
+    public int getCurParentID() {
+        return curParentID;
     }
 
-    public void setCur_ParentID(int cur_ParentID) {
-        Cur_ParentID = cur_ParentID;
+    public void setCurParentID(int curParentID) {
+        this.curParentID = curParentID;
     }
 
-    public String getCur_Code() {
-        return Cur_Code;
+    public String getCurCode() {
+        return curCode;
     }
 
-    public void setCur_Code(String cur_Code) {
-        Cur_Code = cur_Code;
+    public void setCurCode(String curCode) {
+        this.curCode = curCode;
     }
 
-    public String getCur_Abbreviation() {
-        return Cur_Abbreviation;
+    public String getCurAbbreviation() {
+        return curAbbreviation;
     }
 
-    public void setCur_Abbreviation(String cur_Abbreviation) {
-        Cur_Abbreviation = cur_Abbreviation;
+    public void setCurAbbreviation(String curAbbreviation) {
+        this.curAbbreviation = curAbbreviation;
     }
 
-    public String getCur_Name() {
-        return Cur_Name;
+    public String getCurName() {
+        return curName;
     }
 
-    public void setCur_Name(String cur_Name) {
-        Cur_Name = cur_Name;
+    public void setCurName(String curName) {
+        this.curName = curName;
     }
 
-    public String getCur_Name_Eng() {
-        return Cur_Name_Eng;
+    public String getCurNameBel() {
+        return curNameBel;
     }
 
-    public void setCur_Name_Eng(String cur_Name_Eng) {
-        Cur_Name_Eng = cur_Name_Eng;
+    public void setCurNameBel(String curNameBel) {
+        this.curNameBel = curNameBel;
     }
 
-    public String getCur_QuotName() {
-        return Cur_QuotName;
+    public String getCurNameEng() {
+        return curNameEng;
     }
 
-    public void setCur_QuotName(String cur_QuotName) {
-        Cur_QuotName = cur_QuotName;
+    public void setCurNameEng(String curNameEng) {
+        this.curNameEng = curNameEng;
     }
 
-    public String getCur_QuotName_Bel() {
-        return Cur_QuotName_Bel;
+    public String getCurQuotName() {
+        return curQuotName;
     }
 
-    public void setCur_QuotName_Bel(String cur_QuotName_Bel) {
-        Cur_QuotName_Bel = cur_QuotName_Bel;
+    public void setCurQuotName(String curQuotName) {
+        this.curQuotName = curQuotName;
     }
 
-    public String getCur_QuotName_Eng() {
-        return Cur_QuotName_Eng;
+    public String getCurQuotNameBel() {
+        return curQuotNameBel;
     }
 
-    public void setCur_QuotName_Eng(String cur_QuotName_Eng) {
-        Cur_QuotName_Eng = cur_QuotName_Eng;
+    public void setCurQuotNameBel(String curQuotNameBel) {
+        this.curQuotNameBel = curQuotNameBel;
     }
 
-    public String getCur_NameMulti() {
-        return Cur_NameMulti;
+    public String getCurQuotNameEng() {
+        return curQuotNameEng;
     }
 
-    public void setCur_NameMulti(String cur_NameMulti) {
-        Cur_NameMulti = cur_NameMulti;
+    public void setCurQuotNameEng(String curQuotNameEng) {
+        this.curQuotNameEng = curQuotNameEng;
     }
 
-    public String getCur_Name_BelMulti() {
-        return Cur_Name_BelMulti;
+    public String getCurNameMulti() {
+        return curNameMulti;
     }
 
-    public void setCur_Name_BelMulti(String cur_Name_BelMulti) {
-        Cur_Name_BelMulti = cur_Name_BelMulti;
+    public void setCurNameMulti(String curNameMulti) {
+        this.curNameMulti = curNameMulti;
     }
 
-    public String getCur_Name_EngMulti() {
-        return Cur_Name_EngMulti;
+    public String getCurNameBelMulti() {
+        return curNameBelMulti;
     }
 
-    public void setCur_Name_EngMulti(String cur_Name_EngMulti) {
-        Cur_Name_EngMulti = cur_Name_EngMulti;
+    public void setCurNameBelMulti(String curNameBelMulti) {
+        this.curNameBelMulti = curNameBelMulti;
     }
 
-    public int getCur_Scale() {
-        return Cur_Scale;
+    public String getCurNameEngMulti() {
+        return curNameEngMulti;
     }
 
-    public void setCur_Scale(int cur_Scale) {
-        Cur_Scale = cur_Scale;
+    public void setCurNameEngMulti(String curNameEngMulti) {
+        this.curNameEngMulti = curNameEngMulti;
     }
 
-    public int getCur_Periodicity() {
-        return Cur_Periodicity;
+    public int getCurScale() {
+        return curScale;
     }
 
-    public void setCur_Periodicity(int cur_Periodicity) {
-        Cur_Periodicity = cur_Periodicity;
+    public void setCurScale(int curScale) {
+        this.curScale = curScale;
     }
 
-    public LocalDateTime getCur_DateStart() {
-        return Cur_DateStart;
+    public int getCurPeriodicity() {
+        return curPeriodicity;
     }
 
-    public void setCur_DateStart(LocalDateTime cur_DateStart) {
-        Cur_DateStart = cur_DateStart;
+    public void setCurPeriodicity(int curPeriodicity) {
+        this.curPeriodicity = curPeriodicity;
     }
 
-    public LocalDateTime getCur_DateEnd() {
-        return Cur_DateEnd;
+    public LocalDateTime getCurDateStart() {
+        return curDateStart;
     }
 
-    public void setCur_DateEnd(LocalDateTime cur_DateEnd) {
-        Cur_DateEnd = cur_DateEnd;
+    public void setCurDateStart(LocalDateTime curDateStart) {
+        this.curDateStart = curDateStart;
+    }
+
+    public LocalDateTime getCurDateEnd() {
+        return curDateEnd;
+    }
+
+    public void setCurDateEnd(LocalDateTime curDateEnd) {
+        this.curDateEnd = curDateEnd;
     }
 }

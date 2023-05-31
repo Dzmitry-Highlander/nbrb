@@ -1,11 +1,11 @@
 package by.it_academy.jd2.Mk_JD2_98_23.core.dto;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 public class RateDTO {
     private int id;
     private int Cur_ID;
-    private Date Date;
+    private LocalDateTime Date;
     private String Cur_Abbreviation;
     private int Cur_Scale;
     private String Cur_Name;
@@ -14,7 +14,7 @@ public class RateDTO {
     public RateDTO() {
     }
 
-    public RateDTO(int id, int cur_ID, java.util.Date date, String cur_Abbreviation, int cur_Scale, String cur_Name,
+    public RateDTO(int id, int cur_ID, LocalDateTime date, String cur_Abbreviation, int cur_Scale, String cur_Name,
                    double cur_OfficialRate) {
         this.id = id;
         Cur_ID = cur_ID;
@@ -41,11 +41,11 @@ public class RateDTO {
         Cur_ID = cur_ID;
     }
 
-    public java.util.Date getDate() {
+    public LocalDateTime getDate() {
         return Date;
     }
 
-    public void setDate(java.util.Date date) {
+    public void setDate(LocalDateTime date) {
         Date = date;
     }
 
