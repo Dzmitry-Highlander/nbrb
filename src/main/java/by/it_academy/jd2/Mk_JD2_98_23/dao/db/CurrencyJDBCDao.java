@@ -73,7 +73,7 @@ public class CurrencyJDBCDao implements ICurrencyDao {
                 dto.setCurScale(rs.getInt("cur_scale"));
             }
         } catch (SQLException e) {
-            throw new AccessDataException("Ошибкаподключения к базе данных", e);
+            throw new AccessDataException("Ошибка подключения к базе данных", e);
         }
 
         return dto;
