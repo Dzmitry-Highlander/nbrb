@@ -7,6 +7,4 @@ public interface ICRUDService<T, S> {
     List<T> get();
 
     T get(int id);
-
-    T save (S item);
 }
