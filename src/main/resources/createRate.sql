@@ -1,7 +1,7 @@
 
 CREATE TABLE IF NOT EXISTS app.rate
 (
-    rate_id big bigint NOT NULL DEFAULT nextval('app.test_big_seq'::regclass),
+    rate_id bigint NOT NULL DEFAULT nextval('app.test_big_seq'::regclass),
     cur_id bigint NOT NULL,
     date timestamp without time zone NOT NULL,
     cur_official_rate numeric NOT NULL,
