@@ -15,8 +15,7 @@ public class RateDTO {
     public RateDTO() {
     }
 
-    public RateDTO(int cur_ID, LocalDateTime date, String cur_Abbreviation, int cur_Scale, String cur_Name,
-                   double cur_OfficialRate) {
+    public RateDTO(int cur_ID, LocalDateTime date, double cur_OfficialRate) {
         curID = cur_ID;
         this.date = date;
         curOfficialRate = cur_OfficialRate;
