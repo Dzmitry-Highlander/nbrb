@@ -77,12 +77,6 @@ public class CurrencyJDBCDao implements ICurrencyDao {
     }
 
     @Override
-    public CurrencyDTO save(CurrencyDTO item) {
-        return null;
-    }
-
-
-    @Override
     public void uploadData(CurrencyCreateDTO item) {
         try (Connection conn = DatabaseConnectionFactory.getConnection();
              PreparedStatement st = conn.prepareStatement("INSERT INTO app.currency(cur_id, cur_code, cur_abbreviation, cur_name, cur_name_bel, cur_name_eng, cur_quotname, cur_quotname_bel, cur_quotname_eng, cur_namemulti, cur_name_belmulti, cur_name_engmulti, cur_scale) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);")) {
