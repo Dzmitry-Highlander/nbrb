@@ -13,16 +13,17 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.List;
 
 
-@WebServlet(urlPatterns = "/test")
-public class CurrencyServletTest extends HttpServlet {
+@WebServlet(urlPatterns = "/allCurrency")
+public class CurrencyServlet extends HttpServlet {
 
     private final ICurrencyService currencyService;
     private final ObjectMapper objectMapper;
 
-    public CurrencyServletTest() {
+    public CurrencyServlet() {
         this.currencyService = CurrencyServiceFactory.getInstance();
         this.objectMapper = ObjectMapperFactory.getInstance();
         this.objectMapper.findAndRegisterModules();
@@ -34,16 +35,9 @@ public class CurrencyServletTest extends HttpServlet {
         resp.setContentType("application/json; charset=UTF-8");
 
 
-
+        PrintWriter writer = resp.getWriter();
         List<CurrencyDTO> list = currencyService.get();
+        writer.write(objectMapper.writeValueAsString(list));
 
-
-
-        for (CurrencyDTO currencyCreateDTO : list) {
-            resp.getWriter().write(currencyCreateDTO.getCurName() + "\n");
-
-        }
-
-        resp.getWriter().write(currencyService.get(456).getCurName() + "\n" + "TEEEEST ONLY ID");
     }
 }
