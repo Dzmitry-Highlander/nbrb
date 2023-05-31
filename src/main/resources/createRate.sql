@@ -1,7 +1,7 @@
 
 CREATE TABLE IF NOT EXISTS app.rate
 (
-    rate_id INT NOT NULL,
+    rate_id bigint NOT NULL,
     cur_id bigint NOT NULL,
     date timestamp without time zone NOT NULL,
     cur_official_rate numeric NOT NULL,
