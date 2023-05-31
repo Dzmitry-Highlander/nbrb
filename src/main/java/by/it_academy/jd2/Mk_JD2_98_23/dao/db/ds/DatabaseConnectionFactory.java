@@ -15,7 +15,7 @@ public class DatabaseConnectionFactory {
     }
 
     public static Connection getConnection() throws SQLException {
-        String url = "jdbc:postgresql://192.168.1.100:5432/nbrb";
+        String url = "jdbc:postgresql://localhost:5432/nbrb";
         Properties props = new Properties();
         props.setProperty("user", "nbrb");
         props.setProperty("password", "nbrb2023");
