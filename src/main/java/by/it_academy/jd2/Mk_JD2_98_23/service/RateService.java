@@ -26,7 +26,7 @@ public class RateService implements IRateService {
 
     @Override
     public List<RateDTO> get(String curAbbreviation) {
-        return null;
+        return rateDao.get(curAbbreviation);
     }
 
 
