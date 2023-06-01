@@ -157,6 +157,36 @@ public class RateJDBCDao implements IRateDao {
     }
 
     @Override
+    public double getAverageCurrency(LocalDate date, String curAbbreviation) {
+
+        double result = 0;
+        try (Connection conn = DatabaseConnectionFactory.getConnection();
+             PreparedStatement ps = conn
+                     .prepareStatement("SELECT ROUND(AVG(cur_official_rate)::numeric, 4)  FROM (SELECT DATE(cur_date) as cur_date, cur_abbreviation," +
+                             "  cur_official_rate, calendar_date, is_day_off" +
+                             "  FROM app.rate" +
+                             " JOIN app.currency USING (cur_id)" +
+                             " JOIN  app.weekends ON app.rate.cur_date = app.weekends.calendar_date" +
+                             " WHERE cur_abbreviation  = '"+ curAbbreviation +"' AND is_day_off > 0 " +
+                             " AND  EXTRACT(MONTH FROM cur_date) = EXTRACT(MONTH FROM DATE '"+ date +"')" +
+                             " AND EXTRACT(YEAR FROM cur_date) = EXTRACT(YEAR FROM DATE '"+ date +"')" +
+                             "ORDER BY cur_date) as sub;")) {
+
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                result = rs.getDouble(1);
+            } else {
+                throw new DataInsertionErrorException("Ошибка получения данных: средний курс не был получен");
+            }
+
+        } catch (SQLException e) {
+            throw new AccessDataException("Ошибка подключения к базе данных", e);
+        }
+
+        return result;
+    }
+
+    @Override
     public List<RateCreateDTO> getPeriod(LocalDate dateStart, LocalDate dateEnd) {
         List<RateCreateDTO> data = new ArrayList<>();
 
