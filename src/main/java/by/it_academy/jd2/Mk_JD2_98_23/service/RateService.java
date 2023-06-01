@@ -5,7 +5,12 @@ import by.it_academy.jd2.Mk_JD2_98_23.core.dto.RateDTO;
 import by.it_academy.jd2.Mk_JD2_98_23.dao.api.IRateDao;
 import by.it_academy.jd2.Mk_JD2_98_23.service.api.IRateService;
 import by.it_academy.jd2.Mk_JD2_98_23.service.exceptions.ServiceException;
+import by.it_academy.jd2.Mk_JD2_98_23.service.factory.ObjectMapperFactory;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
+import java.io.IOException;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -126,4 +131,25 @@ public class RateService implements IRateService {
             return false;
         }
     }
+
+    public List<RateCreateDTO> getRatesFromExternalAPI(int cur, String currency, LocalDate start, LocalDate end) {
+        String url = "https://api.nbrb.by/exrates/rates/dynamics/" + cur + "?startdate=" + start + "&enddate=" + end;
+        URL obj = null;
+        HttpURLConnection con = null;
+        List<RateCreateDTO> rateCreateDTOS = null;
+        try {
+            obj = new URL(url);
+            con = (HttpURLConnection) obj.openConnection();
+            con.setRequestMethod("GET");
+            con.setRequestProperty("User-Agent", "Mozilla/5.0");
+            ObjectMapper objectMapper = ObjectMapperFactory.getInstance();
+            rateCreateDTOS = objectMapper.readValue(con.getInputStream(),
+                    objectMapper.getTypeFactory().constructCollectionType(List.class, RateCreateDTO.class));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+        return rateCreateDTOS;
+    }
+
 }
