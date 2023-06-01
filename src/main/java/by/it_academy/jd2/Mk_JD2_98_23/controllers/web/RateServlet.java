@@ -75,7 +75,8 @@ public class RateServlet extends HttpServlet {
 
                 writer.write(rateCreateDTOS.toString());
             } else {
-                throw new ServletException("Некорректная дата");
+                throw new ServletException("Некорректная дата! Введите дату в формате yyyy-mm-dd, с 2022-12-01 до " +
+                        "2023-05-31");
             }
         } catch (Exception e) {
             writer.write(e.getMessage());
