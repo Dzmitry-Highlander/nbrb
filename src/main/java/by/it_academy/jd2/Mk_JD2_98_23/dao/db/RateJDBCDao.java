@@ -8,6 +8,8 @@ import by.it_academy.jd2.Mk_JD2_98_23.dao.exceptions.AccessDataException;
 import by.it_academy.jd2.Mk_JD2_98_23.dao.exceptions.DataInsertionErrorException;
 
 import java.sql.*;
+import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -107,7 +109,35 @@ public class RateJDBCDao implements IRateDao {
     }
 
     @Override
-    public boolean validate(RateCreateDTO item) {
+    public boolean checkRateDataPeriod(String curAbbreviation, LocalDate dateStart, LocalDate dateEnd) {
+        boolean result = false;
+        long dateBetween = ChronoUnit.DAYS.between(dateStart, dateEnd) + 1;
+
+        try (Connection conn = DatabaseConnectionFactory.getConnection();
+             PreparedStatement st = conn
+                     .prepareStatement("SELECT COUNT(*) FROM ( " +
+                             "    SELECT cur_id, DATE(cur_date) AS hoho, COUNT(cur_abbreviation) " +
+                             "    FROM app.rate " +
+                             "    JOIN app.currency USING (cur_id) " +
+                             "    WHERE DATE(cur_date) BETWEEN DATE('"+ dateStart + "') " +
+                             "      AND DATE('"+ dateEnd +"') " +
+                             "      AND cur_abbreviation = '" + curAbbreviation + "' " +
+                             "    GROUP BY cur_id, hoho " +
+                             ") AS sub;")) {
+            ResultSet rs = st.executeQuery();
+
+            if (rs.next() && dateBetween == rs.getLong(1)) {
+                result = true;
+            }
+        } catch (SQLException e) {
+            throw new AccessDataException("Ошибка подключения к базе данных", e);
+        }
+
+        return result;
+    }
+
+    @Override
+    public boolean checkRateData(RateCreateDTO item) {
         boolean result = true;
         try (Connection conn = DatabaseConnectionFactory.getConnection();
              PreparedStatement st = conn
