@@ -39,7 +39,19 @@ public class RateService implements IRateService {
     }
 
     @Override
-    public boolean dateValidate(LocalDate item) {
-        return true;
+    public boolean dateValidate(String item) {
+        boolean result = false;
+        LocalDate after = LocalDate.parse("2022-12-01");
+        LocalDate before = LocalDate.parse("2023-05-31");
+
+        if (item.matches("\\d{4}-\\d{2}-\\d{2}")) {
+            LocalDate dateToCheck = LocalDate.parse(item);
+
+            if (dateToCheck.isBefore(before) && dateToCheck.isAfter(after)) {
+                result = true;
+            }
+        }
+
+        return result;
     }
 }
