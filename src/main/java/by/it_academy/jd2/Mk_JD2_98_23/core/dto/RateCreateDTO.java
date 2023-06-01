@@ -47,6 +47,10 @@ public class RateCreateDTO {
 
     @Override
     public String toString() {
-        return super.toString();
+        return "{ \n" +
+                "Cur_ID: " + getCurID() + "\n" +
+                "Date: " + getDate() + "\n" +
+                "Cur_OfficialRate: " + getCurOfficialRate() + "\n" +
+                "}";
     }
 }
