@@ -68,7 +68,7 @@ public class RateService implements IRateService {
     }
 
     @Override
-    public boolean currencyValidate(String item) {
-        return true;
+    public List<RateCreateDTO> getPeriod(LocalDate dateStart, LocalDate dateEnd) {
+        return rateDao.getPeriod(dateStart, dateEnd);
     }
 }
