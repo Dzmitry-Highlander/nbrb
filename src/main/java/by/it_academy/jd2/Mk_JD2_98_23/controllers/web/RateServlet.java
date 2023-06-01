@@ -57,7 +57,7 @@ public class RateServlet extends HttpServlet {
                 LocalDate start = LocalDate.parse(startDate);
                 LocalDate end = LocalDate.parse(endDate);
 
-                if (rateService.checkRateData(currency, start, end)) {
+                if (!rateService.checkRateData(currency, start, end)) {
                     String url = "https://api.nbrb.by/exrates/rates/dynamics/" + cur + "?startdate=" + start
                             + "&enddate=" + end;
                     URL obj = new URL(url);
