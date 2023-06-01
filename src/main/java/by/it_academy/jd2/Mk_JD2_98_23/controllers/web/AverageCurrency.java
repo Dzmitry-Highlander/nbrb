@@ -47,7 +47,7 @@ public class AverageCurrency extends HttpServlet {
             double result = rateService.getAverageCurrency(currency, year, month);
             writer.write("Средний курс " + currency + " за месяц равен - " + result);
         } else {
-            writer.write("Нет такой валюты!");
+            writer.write("Нет такой валюты или неправильная дата!");
         }
     }
 }
