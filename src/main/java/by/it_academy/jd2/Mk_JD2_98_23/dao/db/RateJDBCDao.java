@@ -1,6 +1,7 @@
 package by.it_academy.jd2.Mk_JD2_98_23.dao.db;
 
 import by.it_academy.jd2.Mk_JD2_98_23.core.dto.RateCreateDTO;
+import by.it_academy.jd2.Mk_JD2_98_23.core.dto.RateDTO;
 import by.it_academy.jd2.Mk_JD2_98_23.dao.api.IRateDao;
 import by.it_academy.jd2.Mk_JD2_98_23.dao.db.ds.DatabaseConnectionFactory;
 import by.it_academy.jd2.Mk_JD2_98_23.dao.exceptions.AccessDataException;
@@ -56,6 +57,30 @@ public class RateJDBCDao implements IRateDao {
         }
 
         return dto;
+    }
+
+    @Override
+    public List<RateDTO> get(String curAbbreviation) {
+        List<RateDTO> data = new ArrayList<>();
+
+        try (Connection conn = DatabaseConnectionFactory.getConnection();
+             PreparedStatement ps = conn.prepareStatement("SELECT cur_id, cur_date, cur_official_rate FROM " +
+                     "app.rate ORDER BY cur_id ASC")) {
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+                RateDTO dto = new RateDTO();
+                dto.setCurID(rs.getInt("cur_id"));
+                dto.setDate(rs.getDate("cur_date").toLocalDate().atStartOfDay());
+                dto.setCurOfficialRate(rs.getDouble("cur_official_rate"));
+
+                data.add(dto);
+            }
+        } catch (SQLException e) {
+            throw new AccessDataException("Ошибка подключения к базе данных", e);
+        }
+
+        return data;
     }
 
     @Override
