@@ -133,7 +133,7 @@ public class CurrencyJDBCDao implements ICurrencyDao {
     public int getCurID(String curAbbreviation) {
         int id = 0;
         try (Connection conn = DatabaseConnectionFactory.getConnection();
-             PreparedStatement ps = conn.prepareStatement("SELECT cur_id, cur_abbreviation FROM app.currency WHERE " +
+             PreparedStatement ps = conn.prepareStatement("SELECT cur_id FROM app.currency WHERE " +
                      "cur_abbreviation = '" + curAbbreviation + "' ORDER BY cur_id DESC LIMIT 1;")) {
             ResultSet rs = ps.executeQuery();
 
