@@ -59,4 +59,9 @@ public class RateService implements IRateService {
 
         return result;
     }
+
+    @Override
+    public List<RateCreateDTO> getPeriod(LocalDate dateStart, LocalDate dateEnd) {
+        return rateDao.getPeriod(dateStart, dateEnd);
+    }
 }
