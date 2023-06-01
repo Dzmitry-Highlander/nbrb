@@ -34,8 +34,8 @@ public class RateService implements IRateService {
     }
 
     @Override
-    public boolean checkRateData(RateCreateDTO item) {
-        return rateDao.checkRateData(item);
+    public boolean checkRateData(String curAbbreviation, LocalDate dateStart, LocalDate dateEnd) {
+        return rateDao.checkRateData(curAbbreviation, dateStart, dateEnd);
     }
 
     @Override
