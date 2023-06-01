@@ -66,10 +66,7 @@ public class RateServlet extends HttpServlet {
                     objectMapper.getTypeFactory().constructCollectionType(List.class, RateCreateDTO.class));
 
             for (RateCreateDTO rateCreateDTO : rateCreateDTOS) {
-                if (rateCreateDTO.getCurID() == rateService.get(rateCreateDTO.getCurID()).getCurID()
-                        && rateCreateDTO.getDate() == rateService.get(rateCreateDTO.getCurID()).getDate()) {
-                    rateService.upload(rateCreateDTO);
-                }
+                rateService.upload(rateCreateDTO);
             }
 
             writer.write(rateCreateDTOS.toString());
