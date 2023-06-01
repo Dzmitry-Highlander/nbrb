@@ -45,7 +45,7 @@ public class RateServlet extends HttpServlet {
         req.setCharacterEncoding("UTF-8");
         resp.setContentType("application/json; charset=UTF-8");
 
-        String currency = req.getParameter(CURRENCY);
+        String currency = req.getParameter(CURRENCY).toUpperCase();
         String startDate = req.getParameter(START_DATE);
         String endDate = req.getParameter(END_DATE);
         PrintWriter writer = resp.getWriter();
