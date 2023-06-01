@@ -4,6 +4,7 @@ import by.it_academy.jd2.Mk_JD2_98_23.core.dto.RateCreateDTO;
 import by.it_academy.jd2.Mk_JD2_98_23.core.dto.RateDTO;
 import by.it_academy.jd2.Mk_JD2_98_23.dao.api.IRateDao;
 import by.it_academy.jd2.Mk_JD2_98_23.service.api.IRateService;
+import by.it_academy.jd2.Mk_JD2_98_23.service.exceptions.ServiceException;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -28,6 +29,26 @@ public class RateService implements IRateService {
     @Override
     public List<RateDTO> get(String curAbbreviation) {
         return rateDao.get(curAbbreviation);
+    }
+
+    @Override
+    public double getAverageCurrency(String currency, String year, String month) {
+
+        try {
+            LocalDate date;
+            if (year == null || year.isEmpty() && monthValidate(month)) {
+                date = LocalDate.now().withMonth(Integer.parseInt(month)).withDayOfMonth(1);
+                if (dateValidate(date)) { return rateDao.getAverageCurrency(date);}
+
+            } else if (monthValidate(month) || yearValidate(year)) {
+                date = LocalDate.parse(year + "-" + month + "-01");
+                if (dateValidate(date)) { return rateDao.getAverageCurrency(date);}
+            }
+        } catch (NumberFormatException e) {
+            throw new ServiceException("Ошибка при формировании даты для среднего курса", e);
+        }
+
+        return 0;
     }
 
 
@@ -68,7 +89,38 @@ public class RateService implements IRateService {
     }
 
     @Override
+    public boolean dateValidate(LocalDate date) {
+        boolean result = false;
+        LocalDate after = LocalDate.parse("2022-12-01");
+        LocalDate before = LocalDate.parse("2023-05-31");
+
+        if (date.isBefore(before) && date.isAfter(after)) {
+            result = true;
+        }
+
+        return result;
+    }
+
+    @Override
     public boolean currencyValidate(String item) {
         return true;
+    }
+
+    public boolean monthValidate(String month) {
+        try {
+            int monthInt = Integer.parseInt(month);
+            return monthInt >= 1 && monthInt <= 12;
+        } catch (NumberFormatException e) {
+            return false;
+        }
+    }
+
+    public boolean yearValidate(String year) {
+        try {
+            int yearInt = Integer.parseInt(year);
+            return year.length() == 4;
+        } catch (NumberFormatException e) {
+            return false;
+        }
     }
 }
