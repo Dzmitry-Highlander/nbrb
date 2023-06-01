@@ -131,11 +131,11 @@ public class CurrencyJDBCDao implements ICurrencyDao {
     public int getCurID(String curAbbreviation) {
         int id = 0;
         try (Connection conn = DatabaseConnectionFactory.getConnection();
-             PreparedStatement ps = conn.prepareStatement("SELECT cur_ID, cur_abbreviation FROM app.currency" +
-                     "WHERE cur_abbreviation = " + curAbbreviation + ";")) {
+             PreparedStatement ps = conn.prepareStatement("SELECT cur_id FROM app.currency WHERE " +
+                     "cur_abbreviation = " + curAbbreviation + " ORDER BY cur_id DESC;")) {
             ResultSet rs = ps.executeQuery();
             if (rs.next()) {
-                id = rs.getInt(2);
+                id = rs.getInt(1);
             }
         } catch (SQLException e) {
             throw new AccessDataException("Ошибка при получении ID валюты в таблице app.currency", e);
