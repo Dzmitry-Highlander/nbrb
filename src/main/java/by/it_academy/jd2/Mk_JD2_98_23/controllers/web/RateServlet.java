@@ -57,24 +57,26 @@ public class RateServlet extends HttpServlet {
                 LocalDate start = LocalDate.parse(startDate);
                 LocalDate end = LocalDate.parse(endDate);
 
-                String url = "https://api.nbrb.by/exrates/rates/dynamics/" + cur + "?startdate=" + start
-                        + "&enddate=" + end;
-                URL obj = new URL(url);
-                HttpURLConnection con = (HttpURLConnection) obj.openConnection();
+                if (rateService.checkRateData(currency, start, end)) {
+                    String url = "https://api.nbrb.by/exrates/rates/dynamics/" + cur + "?startdate=" + start
+                            + "&enddate=" + end;
+                    URL obj = new URL(url);
+                    HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 
-                con.setRequestMethod("GET");
-                con.setRequestProperty("User-Agent", "Mozilla/5.0");
+                    con.setRequestMethod("GET");
+                    con.setRequestProperty("User-Agent", "Mozilla/5.0");
 
-                List<RateCreateDTO> rateCreateDTOS = objectMapper.readValue(con.getInputStream(),
-                        objectMapper.getTypeFactory().constructCollectionType(List.class, RateCreateDTO.class));
+                    List<RateCreateDTO> rateCreateDTOS = objectMapper.readValue(con.getInputStream(),
+                            objectMapper.getTypeFactory().constructCollectionType(List.class, RateCreateDTO.class));
 
-                for (RateCreateDTO rateCreateDTO : rateCreateDTOS) {
-                    if (rateService.checkRateData(rateCreateDTO)) {
-                        rateService.upload(rateCreateDTO);
+                    for (RateCreateDTO rateCreateDTO : rateCreateDTOS) {
+                        if (rateService.checkRateData(rateCreateDTO)) {
+                            rateService.upload(rateCreateDTO);
+                        }
                     }
-                }
 
-                writer.write(objectMapper.writeValueAsString(rateCreateDTOS));
+                    writer.write(objectMapper.writeValueAsString(rateCreateDTOS));
+                }
             } else {
                 throw new ServletException("Некорректная дата! Введите дату в формате yyyy-mm-dd, с 2022-12-01 до " +
                         "2023-05-31");
