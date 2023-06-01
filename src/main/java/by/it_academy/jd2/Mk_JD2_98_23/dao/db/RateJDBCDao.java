@@ -167,7 +167,7 @@ public class RateJDBCDao implements IRateDao {
                              "  FROM app.rate" +
                              " JOIN app.currency USING (cur_id)" +
                              " JOIN  app.weekends ON app.rate.cur_date = app.weekends.calendar_date" +
-                             " WHERE cur_abbreviation  = '"+ curAbbreviation +"' AND is_day_off > 0 " +
+                             " WHERE cur_abbreviation  = '"+ curAbbreviation +"' AND is_day_off = 0 " +
                              " AND  EXTRACT(MONTH FROM cur_date) = EXTRACT(MONTH FROM DATE '"+ date +"')" +
                              " AND EXTRACT(YEAR FROM cur_date) = EXTRACT(YEAR FROM DATE '"+ date +"')" +
                              "ORDER BY cur_date) as sub;")) {
