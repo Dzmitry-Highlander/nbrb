@@ -21,6 +21,7 @@ import java.io.PrintWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -68,14 +69,16 @@ public class RateServlet extends HttpServlet {
 
                     List<RateCreateDTO> rateCreateDTOS = objectMapper.readValue(con.getInputStream(),
                             objectMapper.getTypeFactory().constructCollectionType(List.class, RateCreateDTO.class));
+                    List<RateCreateDTO> uploadedRateCreateDTOS = new ArrayList<>();
 
                     for (RateCreateDTO rateCreateDTO : rateCreateDTOS) {
                         if (rateService.checkRateData(rateCreateDTO)) {
+                            uploadedRateCreateDTOS.add(rateCreateDTO);
                             rateService.upload(rateCreateDTO);
                         }
                     }
 
-                    writer.write(objectMapper.writeValueAsString(rateCreateDTOS));
+                    writer.write(objectMapper.writeValueAsString(uploadedRateCreateDTOS));
                 } else {
                     writer.write("Объекты уже содержаться в базе!");
                 }
