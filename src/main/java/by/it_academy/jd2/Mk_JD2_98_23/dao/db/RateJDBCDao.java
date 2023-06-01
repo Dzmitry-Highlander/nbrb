@@ -1,7 +1,6 @@
 package by.it_academy.jd2.Mk_JD2_98_23.dao.db;
 
 import by.it_academy.jd2.Mk_JD2_98_23.core.dto.RateCreateDTO;
-import by.it_academy.jd2.Mk_JD2_98_23.core.dto.RateDTO;
 import by.it_academy.jd2.Mk_JD2_98_23.dao.api.IRateDao;
 import by.it_academy.jd2.Mk_JD2_98_23.dao.db.ds.DatabaseConnectionFactory;
 import by.it_academy.jd2.Mk_JD2_98_23.dao.exceptions.AccessDataException;
@@ -77,5 +76,26 @@ public class RateJDBCDao implements IRateDao {
         } catch (SQLException e) {
             throw new AccessDataException("Ошибка подключения к базе данных", e);
         }
+    }
+
+    @Override
+    public boolean validate(RateCreateDTO item) {
+        boolean result = false;
+        try (Connection conn = DatabaseConnectionFactory.getConnection();
+             PreparedStatement st = conn
+                     .prepareStatement("SELECT cur_id, cur_date FROM " +
+                             "app.rate WHERE cur_id = ? AND cur_date = ? ORDER BY cur_id ASC")) {
+            st.setInt(1, item.getCurID());
+            st.setObject(2, item.getDate());
+            ResultSet rs = st.executeQuery();
+
+            if (rs.wasNull()) {
+                result = true;
+            }
+        } catch (SQLException e) {
+            throw new AccessDataException("Ошибка подключения к базе данных", e);
+        }
+
+        return result;
     }
 }
