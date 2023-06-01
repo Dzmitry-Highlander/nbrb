@@ -80,17 +80,16 @@ public class RateJDBCDao implements IRateDao {
 
     @Override
     public boolean validate(RateCreateDTO item) {
-        boolean result = false;
+        boolean result = true;
         try (Connection conn = DatabaseConnectionFactory.getConnection();
              PreparedStatement st = conn
                      .prepareStatement("SELECT cur_id, cur_date FROM " +
-                             "app.rate WHERE cur_id = ? AND cur_date = ? ORDER BY cur_id ASC")) {
-            st.setInt(1, item.getCurID());
-            st.setObject(2, item.getDate());
+                             "app.rate WHERE cur_id = " + item.getCurID() +" AND cur_date = '" +
+                             item.getDate() + "' ORDER BY cur_id ASC")) {
             ResultSet rs = st.executeQuery();
 
-            if (rs.wasNull()) {
-                result = true;
+            if (rs.next()) {
+                result = false;
             }
         } catch (SQLException e) {
             throw new AccessDataException("Ошибка подключения к базе данных", e);
