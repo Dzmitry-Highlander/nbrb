@@ -127,4 +127,9 @@ public class RateJDBCDao implements IRateDao {
 
         return result;
     }
+
+    @Override
+    public List<RateCreateDTO> getPeriod(LocalDate dateStart, LocalDate dateEnd) {
+        return null;
+    }
 }
