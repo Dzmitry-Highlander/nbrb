@@ -13,8 +13,8 @@ import java.util.List;
 
 public class RateJDBCDao implements IRateDao {
     @Override
-    public List<RateDTO> get() {
-        List<RateDTO> data = new ArrayList<>();
+    public List<RateCreateDTO> get() {
+        List<RateCreateDTO> data = new ArrayList<>();
 
         try (Connection conn = DatabaseConnectionFactory.getConnection();
              PreparedStatement ps = conn.prepareStatement("SELECT cur_id, cur_date, cur_official_rate FROM " +
@@ -22,7 +22,7 @@ public class RateJDBCDao implements IRateDao {
              ResultSet rs = ps.executeQuery();
 
             while (rs.next()) {
-                RateDTO dto = new RateDTO();
+                RateCreateDTO dto = new RateCreateDTO();
                 dto.setCurID(rs.getInt("cur_id"));
                 dto.setDate(rs.getDate("cur_date").toLocalDate().atStartOfDay());
                 dto.setCurOfficialRate(rs.getDouble("cur_official_rate"));
@@ -37,8 +37,8 @@ public class RateJDBCDao implements IRateDao {
     }
 
     @Override
-    public RateDTO get(int id) {
-        RateDTO dto = null;
+    public RateCreateDTO get(int id) {
+        RateCreateDTO dto = null;
         try (Connection conn = DatabaseConnectionFactory.getConnection();
              PreparedStatement st = conn
                      .prepareStatement("SELECT cur_id, cur_date, cur_official_rate FROM " +
@@ -47,7 +47,7 @@ public class RateJDBCDao implements IRateDao {
             ResultSet rs = st.executeQuery();
 
             if (rs.next()) {
-                dto = new RateDTO();
+                dto = new RateCreateDTO();
                 dto.setCurID(rs.getInt("cur_id"));
                 dto.setDate(rs.getDate("cur_date").toLocalDate().atStartOfDay());
                 dto.setCurOfficialRate(rs.getDouble("cur_official_rate"));
