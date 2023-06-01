@@ -158,25 +158,27 @@ public class RateJDBCDao implements IRateDao {
 
     @Override
     public double getAverageCurrency(LocalDate date) {
-        double result = 1;
-        long dateBetween = ChronoUnit.DAYS.between(dateStart, dateEnd) + 1;
 
+        double result = 0;
         try (Connection conn = DatabaseConnectionFactory.getConnection();
-             PreparedStatement st = conn
-                     .prepareStatement("SELECT COUNT(*) FROM ( " +
-                             "    SELECT cur_id, DATE(cur_date) AS hoho, COUNT(cur_abbreviation) " +
-                             "    FROM app.rate " +
-                             "    JOIN app.currency USING (cur_id) " +
-                             "    WHERE DATE(cur_date) BETWEEN DATE('"+ dateStart + "') " +
-                             "      AND DATE('"+ dateEnd +"') " +
-                             "      AND cur_abbreviation = '" + curAbbreviation + "' " +
-                             "    GROUP BY cur_id, hoho " +
-                             ") AS sub;")) {
-            ResultSet rs = st.executeQuery();
+             PreparedStatement ps = conn
+                     .prepareStatement("SELECT ROUND(AVG(cur_official_rate)::numeric, 4)  FROM (SELECT DATE(cur_date) as cur_date, cur_abbreviation," +
+                             "  cur_official_rate, calendar_date, is_day_off" +
+                             "  FROM app.rate" +
+                             " JOIN app.currency USING (cur_id)" +
+                             " JOIN  app.weekends ON app.rate.cur_date = app.weekends.calendar_date" +
+                             " WHERE cur_abbreviation  = 'USD' AND is_day_off > 0 " +
+                             " AND  EXTRACT(MONTH FROM cur_date) = EXTRACT(MONTH FROM DATE '2023-01-01')" +
+                             " AND EXTRACT(YEAR FROM cur_date) = EXTRACT(YEAR FROM DATE '2023-01-01')" +
+                             "ORDER BY cur_date) as sub;")) {
 
-            if (rs.next() && dateBetween == rs.getLong(1)) {
-                result = true;
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                result = rs.getDouble(1);
+            } else {
+                throw new DataInsertionErrorException("Ошибка получения данных: средний курс не был получен");
             }
+
         } catch (SQLException e) {
             throw new AccessDataException("Ошибка подключения к базе данных", e);
         }
