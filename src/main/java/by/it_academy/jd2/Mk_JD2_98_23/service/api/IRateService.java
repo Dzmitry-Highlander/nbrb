@@ -14,6 +14,7 @@ public interface IRateService  extends ICRUDService<RateCreateDTO, RateCreateDTO
     boolean checkRateData(RateCreateDTO item);
 
     boolean dateValidate(String item);
+
     boolean dateValidate(LocalDate date);
 
     List<RateCreateDTO> getPeriod(LocalDate dateStart, LocalDate dateEnd);
