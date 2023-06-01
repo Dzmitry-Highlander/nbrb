@@ -155,4 +155,32 @@ public class RateJDBCDao implements IRateDao {
 
         return result;
     }
+
+    @Override
+    public double getAverageCurrency(LocalDate date) {
+        double result = 1;
+        long dateBetween = ChronoUnit.DAYS.between(dateStart, dateEnd) + 1;
+
+        try (Connection conn = DatabaseConnectionFactory.getConnection();
+             PreparedStatement st = conn
+                     .prepareStatement("SELECT COUNT(*) FROM ( " +
+                             "    SELECT cur_id, DATE(cur_date) AS hoho, COUNT(cur_abbreviation) " +
+                             "    FROM app.rate " +
+                             "    JOIN app.currency USING (cur_id) " +
+                             "    WHERE DATE(cur_date) BETWEEN DATE('"+ dateStart + "') " +
+                             "      AND DATE('"+ dateEnd +"') " +
+                             "      AND cur_abbreviation = '" + curAbbreviation + "' " +
+                             "    GROUP BY cur_id, hoho " +
+                             ") AS sub;")) {
+            ResultSet rs = st.executeQuery();
+
+            if (rs.next() && dateBetween == rs.getLong(1)) {
+                result = true;
+            }
+        } catch (SQLException e) {
+            throw new AccessDataException("Ошибка подключения к базе данных", e);
+        }
+
+        return result;
+    }
 }
