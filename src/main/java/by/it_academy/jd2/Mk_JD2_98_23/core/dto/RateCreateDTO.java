@@ -44,4 +44,9 @@ public class RateCreateDTO {
     public void setCurOfficialRate(double curOfficialRate) {
         this.curOfficialRate = curOfficialRate;
     }
+
+    @Override
+    public String toString() {
+        return super.toString();
+    }
 }
