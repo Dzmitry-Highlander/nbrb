@@ -64,14 +64,17 @@ public class RateJDBCDao implements IRateDao {
         List<RateDTO> data = new ArrayList<>();
 
         try (Connection conn = DatabaseConnectionFactory.getConnection();
-             PreparedStatement ps = conn.prepareStatement("SELECT cur_id, cur_date, cur_official_rate FROM " +
-                     "app.rate ORDER BY cur_id ASC")) {
+             PreparedStatement ps = conn.prepareStatement("SELECT DATE(cur_date) as cur_date, cur_abbreviation, cur_official_rate " +
+                                                                    "FROM app.rate " +
+                                                                    "JOIN app.currency USING (cur_id) " +
+                                                                    "WHERE cur_abbreviation  = '" + curAbbreviation + "' " +
+                                                                    "ORDER BY cur_date;")) {
             ResultSet rs = ps.executeQuery();
 
             while (rs.next()) {
                 RateDTO dto = new RateDTO();
-                dto.setCurID(rs.getInt("cur_id"));
-                dto.setDate(rs.getDate("cur_date").toLocalDate().atStartOfDay());
+                dto.setDate(rs.getDate("cur_date").toLocalDate());
+                dto.setCurAbbreviation(rs.getString("cur_abbreviation"));
                 dto.setCurOfficialRate(rs.getDouble("cur_official_rate"));
 
                 data.add(dto);
