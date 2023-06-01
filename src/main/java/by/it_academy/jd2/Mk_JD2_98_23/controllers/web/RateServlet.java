@@ -51,7 +51,8 @@ public class RateServlet extends HttpServlet {
         PrintWriter writer = resp.getWriter();
 
         try {
-            if (rateService.dateValidate(startDate) && rateService.dateValidate(endDate)) {
+            if (rateService.dateValidate(startDate) && rateService.dateValidate(endDate)
+                    && rateService.currencyValidate(currency)) {
                 int cur = currencyService.getCurID(currency);
                 LocalDate start = LocalDate.parse(startDate);
                 LocalDate end = LocalDate.parse(endDate);
