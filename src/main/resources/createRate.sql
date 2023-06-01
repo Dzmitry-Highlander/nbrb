@@ -15,6 +15,3 @@ CREATE TABLE IF NOT EXISTS app.rate
 
     TABLESPACE pg_default;
 
-ALTER TABLE IF EXISTS app.rate
-    OWNER to nbrb;
-
