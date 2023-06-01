@@ -62,6 +62,6 @@ public class RateService implements IRateService {
 
     @Override
     public boolean currencyValidate(String item) {
-        return true;
+        return item.matches("\\.{3}");
     }
 }
