@@ -133,7 +133,8 @@ public class RateJDBCDao implements IRateDao {
         boolean result = true;
         try (Connection conn = DatabaseConnectionFactory.getConnection();
              PreparedStatement st = conn
-                     .prepareStatement("SELECT cur_abbreviation FROM app.currency;")) {
+                     .prepareStatement("SELECT cur_abbreviation FROM app.currency WHERE cur_abbreviation = " +
+                             "'" + item.toUpperCase() + "';")) {
             ResultSet rs = st.executeQuery();
 
             if (rs.next()) {
