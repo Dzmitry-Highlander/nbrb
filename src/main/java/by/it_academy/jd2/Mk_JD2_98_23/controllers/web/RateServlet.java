@@ -69,18 +69,14 @@ public class RateServlet extends HttpServlet {
 
                     List<RateCreateDTO> rateCreateDTOS = objectMapper.readValue(con.getInputStream(),
                             objectMapper.getTypeFactory().constructCollectionType(List.class, RateCreateDTO.class));
-                    List<RateCreateDTO> uploadedRateCreateDTOS = new ArrayList<>();
 
                     for (RateCreateDTO rateCreateDTO : rateCreateDTOS) {
                         if (rateService.checkRateData(rateCreateDTO)) {
-                            uploadedRateCreateDTOS.add(rateCreateDTO);
                             rateService.upload(rateCreateDTO);
                         }
                     }
 
-                    writer.write(objectMapper.writeValueAsString(uploadedRateCreateDTOS));
-                } else {
-                    writer.write("Объекты уже содержаться в базе!");
+                    writer.write(objectMapper.writeValueAsString(rateCreateDTOS));
                 }
             } else {
                 throw new ServletException("Некорректная дата или код валюты! Введите дату в формате yyyy-mm-dd, " +
