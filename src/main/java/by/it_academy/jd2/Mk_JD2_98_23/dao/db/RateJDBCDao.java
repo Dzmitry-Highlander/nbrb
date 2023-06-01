@@ -89,7 +89,8 @@ public class RateJDBCDao implements IRateDao {
                              "    FROM app.rate\n" +
                              "    JOIN app.currency USING (cur_id)\n" +
                              "    WHERE DATE(cur_date) BETWEEN DATE('"+ dateStart + "') " +
-                             "    AND DATE('"+ dateEnd +"')\n" +
+                             "      AND DATE('"+ dateEnd +"')\n" +
+                             "      AND cur_abbreviation = '" + curAbbreviation + "'" +
                              "    GROUP BY cur_id, hoho\n" +
                              ") AS sub;")) {
             ResultSet rs = st.executeQuery();
