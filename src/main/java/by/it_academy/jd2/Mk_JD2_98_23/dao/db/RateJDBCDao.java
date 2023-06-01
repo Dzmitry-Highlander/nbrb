@@ -143,6 +143,6 @@ public class RateJDBCDao implements IRateDao {
             throw new AccessDataException("Ошибка подключения к базе данных", e);
         }
 
-        return true;
+        return result;
     }
 }
