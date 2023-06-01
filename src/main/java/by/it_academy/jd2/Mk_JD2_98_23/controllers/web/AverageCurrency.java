@@ -12,14 +12,14 @@ import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.time.LocalDate;
+
 
 
 @WebServlet(urlPatterns = "/average-currency")
 public class AverageCurrency extends HttpServlet {
     private static final String CURRENCY = "сur_abbreviation";
     private static final String MONTH = "month";
-    private static final String YEAR = "";
+    private static final String YEAR = "year";
     private final IRateService rateService;
 
     private final ObjectMapper objectMapper;
@@ -40,7 +40,7 @@ public class AverageCurrency extends HttpServlet {
         String year = req.getParameter(YEAR);
         PrintWriter writer = resp.getWriter();
 
-        rateService.getAverageCurrency(currency, year, month);
-
+        double result =  rateService.getAverageCurrency(currency, year, month);
+        writer.write("Средний курс " + currency + " за месяц равен - " + result);
     }
 }
