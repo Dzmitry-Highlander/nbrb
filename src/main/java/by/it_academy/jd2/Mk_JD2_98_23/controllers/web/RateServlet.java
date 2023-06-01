@@ -1,7 +1,11 @@
-package by.it_academy.jd2.Mk_JD2_98_23.servlets;
+package by.it_academy.jd2.Mk_JD2_98_23.controllers.web;
 
 import by.it_academy.jd2.Mk_JD2_98_23.core.dto.RateCreateDTO;
+import by.it_academy.jd2.Mk_JD2_98_23.core.dto.RateDTO;
+import by.it_academy.jd2.Mk_JD2_98_23.dao.api.IRateDao;
+import by.it_academy.jd2.Mk_JD2_98_23.dao.db.factory.RateDaoFactory;
 import by.it_academy.jd2.Mk_JD2_98_23.service.api.IRateService;
+import by.it_academy.jd2.Mk_JD2_98_23.service.factory.ObjectMapperFactory;
 import by.it_academy.jd2.Mk_JD2_98_23.service.factory.RateServiceFactory;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.ServletException;
@@ -11,6 +15,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.time.LocalDate;
@@ -27,7 +32,7 @@ public class RateServlet extends HttpServlet {
 
     public RateServlet() {
         this.rateService = RateServiceFactory.getInstance();
-        this.objectMapper = new ObjectMapper();
+        this.objectMapper = ObjectMapperFactory.getInstance();
         this.objectMapper.findAndRegisterModules();
     }
 
@@ -39,6 +44,8 @@ public class RateServlet extends HttpServlet {
         String currency = req.getParameter(CURRENCY);
         String startDate = req.getParameter(START_DATE);
         String endDate = req.getParameter(END_DATE);
+
+        PrintWriter writer = resp.getWriter();
 
         if (!Objects.equals(currency, "" ) && !Objects.equals(startDate, "") && !Objects.equals(endDate, "")) {
             LocalDate start = LocalDate.parse(startDate);

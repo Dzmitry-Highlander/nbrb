@@ -115,14 +115,13 @@ public class CurrencyJDBCDao implements ICurrencyDao {
     public int getCount() {
         int count = 0;
         try (Connection conn = DatabaseConnectionFactory.getConnection();
-             PreparedStatement st = conn.prepareStatement("SELECT COUNT(*) as count FROM app.currency");
-             ResultSet rs = st.executeQuery()) {
-
+             PreparedStatement ps = conn.prepareStatement("SELECT COUNT(*) FROM app.currency;")) {
+            ResultSet rs = ps.executeQuery();
             if (rs.next()) {
-                count = rs.getInt("count");
+                count = rs.getInt(1);
             }
         } catch (SQLException e) {
-            throw new AccessDataException("Ошибка подключения к базе данных", e);
+            throw new AccessDataException("Ошибка при получении количества записей в таблице app.currency", e);
         }
         return count;
     }

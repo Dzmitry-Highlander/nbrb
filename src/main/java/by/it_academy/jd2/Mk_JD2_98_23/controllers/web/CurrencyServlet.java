@@ -4,6 +4,7 @@ package by.it_academy.jd2.Mk_JD2_98_23.controllers.web;
 import by.it_academy.jd2.Mk_JD2_98_23.core.dto.CurrencyDTO;
 import by.it_academy.jd2.Mk_JD2_98_23.service.api.ICurrencyService;
 import by.it_academy.jd2.Mk_JD2_98_23.service.factory.CurrencyServiceFactory;
+import by.it_academy.jd2.Mk_JD2_98_23.service.factory.ObjectMapperFactory;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -12,16 +13,19 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.List;
 
-@WebServlet(urlPatterns = "/test")
-public class CurrencyServletTest extends HttpServlet {
+
+@WebServlet(urlPatterns = "/allCurrency")
+public class CurrencyServlet extends HttpServlet {
+
     private final ICurrencyService currencyService;
     private final ObjectMapper objectMapper;
 
-    public CurrencyServletTest() {
+    public CurrencyServlet() {
         this.currencyService = CurrencyServiceFactory.getInstance();
-        this.objectMapper = new ObjectMapper();
+        this.objectMapper = ObjectMapperFactory.getInstance();
         this.objectMapper.findAndRegisterModules();
     }
 
@@ -30,12 +34,10 @@ public class CurrencyServletTest extends HttpServlet {
         req.setCharacterEncoding("UTF-8");
         resp.setContentType("application/json; charset=UTF-8");
 
+
+        PrintWriter writer = resp.getWriter();
         List<CurrencyDTO> list = currencyService.get();
+        writer.write(objectMapper.writeValueAsString(list));
 
-        for (CurrencyDTO currencyCreateDTO : list) {
-            resp.getWriter().write(currencyCreateDTO.getCurName() + "\n");
-        }
-
-        resp.getWriter().write(currencyService.get(456).getCurName() + "\n" + "TEEEEST ONLY ID");
     }
 }
