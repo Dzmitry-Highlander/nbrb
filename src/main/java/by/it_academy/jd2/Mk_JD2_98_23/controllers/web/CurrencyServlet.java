@@ -31,13 +31,9 @@ public class CurrencyServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        req.setCharacterEncoding("UTF-8");
-        resp.setContentType("application/json; charset=UTF-8");
-
 
         PrintWriter writer = resp.getWriter();
         List<CurrencyDTO> list = currencyService.get();
         writer.write(objectMapper.writeValueAsString(list));
-
     }
 }

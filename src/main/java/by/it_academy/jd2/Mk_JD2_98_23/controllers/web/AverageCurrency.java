@@ -35,19 +35,17 @@ public class AverageCurrency extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        req.setCharacterEncoding("UTF-8");
-        resp.setContentType("application/json; charset=UTF-8");
 
         String currency = req.getParameter(CURRENCY).toUpperCase();
         String month = req.getParameter(MONTH);
         String year = req.getParameter(YEAR);
         PrintWriter writer = resp.getWriter();
 
-        if (currencyService.currencyValidate(currency) && (year.matches("202[2-3]") || year.matches(""))) {
+        if (currencyService.currencyValidate(currency) && (year.matches("202[2-3]") || year.matches("")) && rateService.monthValidate(month)) {
             double result = rateService.getAverageCurrency(currency, year, month);
             writer.write("Средний курс " + currency + " за месяц равен - " + result);
         } else {
-            writer.write("Нет такой валюты или неправильный год!");
+            writer.write("Нет такой валюты или неправильный год или месяц!");
         }
     }
 }

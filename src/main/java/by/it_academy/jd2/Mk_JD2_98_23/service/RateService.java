@@ -40,7 +40,10 @@ public class RateService implements IRateService {
                 date = LocalDate.now().withMonth(Integer.parseInt(month)).withDayOfMonth(1);
                 if (dateValidate(date)) { return rateDao.getAverageCurrency(date, currency);}
 
-            } else if (monthValidate(month) || yearValidate(year)) {
+            } else if (monthValidate(month) && yearValidate(year)) {
+                if (Integer.parseInt(month) < 10) {
+                    month = "0" + month;
+                }
                 date = LocalDate.parse(year + "-" + month + "-01");
                 if (dateValidate(date)) { return rateDao.getAverageCurrency(date, currency);}
             }

@@ -43,8 +43,6 @@ public class RateServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        req.setCharacterEncoding("UTF-8");
-        resp.setContentType("application/json; charset=UTF-8");
 
         String currency = req.getParameter(CURRENCY).toUpperCase();
         String startDate = req.getParameter(START_DATE);
