@@ -34,6 +34,6 @@ public class RateService implements IRateService {
 
     @Override
     public boolean validate(RateCreateDTO item) {
-        return false;
+        return true;
     }
 }
