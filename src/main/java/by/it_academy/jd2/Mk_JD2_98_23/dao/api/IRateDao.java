@@ -10,6 +10,4 @@ public interface IRateDao extends ICRUDDao<RateCreateDTO> {
     boolean checkRateDataPeriod(String curAbbreviation, LocalDate dateStart, LocalDate dateEnd);
 
     boolean checkRateData(RateCreateDTO item);
-
-    boolean currencyValidate(String item);
 }
