@@ -45,31 +45,44 @@ public class RateServlet extends HttpServlet {
         req.setCharacterEncoding("UTF-8");
         resp.setContentType("application/json; charset=UTF-8");
 
-        String currency = req.getParameter(CURRENCY);
+        String currency = req.getParameter(CURRENCY).toUpperCase();
         String startDate = req.getParameter(START_DATE);
         String endDate = req.getParameter(END_DATE);
         PrintWriter writer = resp.getWriter();
 
-        if (!Objects.equals(currency, "" ) && !Objects.equals(startDate, "") && !Objects.equals(endDate, "")) {
-            int cur = currencyService.getCurID(currency);
-            LocalDate start = LocalDate.parse(startDate);
-            LocalDate end = LocalDate.parse(endDate);
-            String url = "https://api.nbrb.by/exrates/rates/dynamics/" + cur + "?startdate=" + start
-                    + "&enddate=" + end;
-            URL obj = new URL(url);
-            HttpURLConnection con = (HttpURLConnection) obj.openConnection();
+        try {
+            if (rateService.dateValidate(startDate) && rateService.dateValidate(endDate)
+                    && rateService.currencyValidate(currency)) {
+                int cur = currencyService.getCurID(currency);
+                LocalDate start = LocalDate.parse(startDate);
+                LocalDate end = LocalDate.parse(endDate);
 
-            con.setRequestMethod("GET");
-            con.setRequestProperty("User-Agent", "Mozilla/5.0");
+                if (!rateService.checkRateDataPeriod(currency, start, end)) {
+                    String url = "https://api.nbrb.by/exrates/rates/dynamics/" + cur + "?startdate=" + start
+                            + "&enddate=" + end;
+                    URL obj = new URL(url);
+                    HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 
-            List<RateCreateDTO> rateCreateDTOS = objectMapper.readValue(con.getInputStream(),
-                    objectMapper.getTypeFactory().constructCollectionType(List.class, RateCreateDTO.class));
+                    con.setRequestMethod("GET");
+                    con.setRequestProperty("User-Agent", "Mozilla/5.0");
 
-            for (RateCreateDTO rateCreateDTO : rateCreateDTOS) {
-                rateService.upload(rateCreateDTO);
+                    List<RateCreateDTO> rateCreateDTOS = objectMapper.readValue(con.getInputStream(),
+                            objectMapper.getTypeFactory().constructCollectionType(List.class, RateCreateDTO.class));
+
+                    for (RateCreateDTO rateCreateDTO : rateCreateDTOS) {
+                        if (rateService.checkRateData(rateCreateDTO)) {
+                            rateService.upload(rateCreateDTO);
+                        }
+                    }
+
+                    writer.write(objectMapper.writeValueAsString(rateCreateDTOS));
+                }
+            } else {
+                throw new ServletException("Некорректная дата! Введите дату в формате yyyy-mm-dd, с 2022-12-01 до " +
+                        "2023-05-31");
             }
-
-            writer.write(rateCreateDTOS.toString());
+        } catch (Exception e) {
+            writer.write(e.getMessage());
         }
     }
 }

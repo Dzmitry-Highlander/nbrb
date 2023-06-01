@@ -1,20 +1,21 @@
 package by.it_academy.jd2.Mk_JD2_98_23.dao.db;
 
 import by.it_academy.jd2.Mk_JD2_98_23.core.dto.RateCreateDTO;
-import by.it_academy.jd2.Mk_JD2_98_23.core.dto.RateDTO;
 import by.it_academy.jd2.Mk_JD2_98_23.dao.api.IRateDao;
 import by.it_academy.jd2.Mk_JD2_98_23.dao.db.ds.DatabaseConnectionFactory;
 import by.it_academy.jd2.Mk_JD2_98_23.dao.exceptions.AccessDataException;
 import by.it_academy.jd2.Mk_JD2_98_23.dao.exceptions.DataInsertionErrorException;
 
 import java.sql.*;
+import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 
 public class RateJDBCDao implements IRateDao {
     @Override
-    public List<RateDTO> get() {
-        List<RateDTO> data = new ArrayList<>();
+    public List<RateCreateDTO> get() {
+        List<RateCreateDTO> data = new ArrayList<>();
 
         try (Connection conn = DatabaseConnectionFactory.getConnection();
              PreparedStatement ps = conn.prepareStatement("SELECT cur_id, cur_date, cur_official_rate FROM " +
@@ -22,7 +23,7 @@ public class RateJDBCDao implements IRateDao {
              ResultSet rs = ps.executeQuery();
 
             while (rs.next()) {
-                RateDTO dto = new RateDTO();
+                RateCreateDTO dto = new RateCreateDTO();
                 dto.setCurID(rs.getInt("cur_id"));
                 dto.setDate(rs.getDate("cur_date").toLocalDate().atStartOfDay());
                 dto.setCurOfficialRate(rs.getDouble("cur_official_rate"));
@@ -37,8 +38,8 @@ public class RateJDBCDao implements IRateDao {
     }
 
     @Override
-    public RateDTO get(int id) {
-        RateDTO dto = null;
+    public RateCreateDTO get(int id) {
+        RateCreateDTO dto = null;
         try (Connection conn = DatabaseConnectionFactory.getConnection();
              PreparedStatement st = conn
                      .prepareStatement("SELECT cur_id, cur_date, cur_official_rate FROM " +
@@ -47,7 +48,7 @@ public class RateJDBCDao implements IRateDao {
             ResultSet rs = st.executeQuery();
 
             if (rs.next()) {
-                dto = new RateDTO();
+                dto = new RateCreateDTO();
                 dto.setCurID(rs.getInt("cur_id"));
                 dto.setDate(rs.getDate("cur_date").toLocalDate().atStartOfDay());
                 dto.setCurOfficialRate(rs.getDouble("cur_official_rate"));
@@ -77,5 +78,53 @@ public class RateJDBCDao implements IRateDao {
         } catch (SQLException e) {
             throw new AccessDataException("Ошибка подключения к базе данных", e);
         }
+    }
+
+    @Override
+    public boolean checkRateDataPeriod(String curAbbreviation, LocalDate dateStart, LocalDate dateEnd) {
+        boolean result = false;
+        long dateBetween = ChronoUnit.DAYS.between(dateStart, dateEnd) + 1;
+
+        try (Connection conn = DatabaseConnectionFactory.getConnection();
+             PreparedStatement st = conn
+                     .prepareStatement("SELECT COUNT(*) FROM ( " +
+                             "    SELECT cur_id, DATE(cur_date) AS hoho, COUNT(cur_abbreviation) " +
+                             "    FROM app.rate " +
+                             "    JOIN app.currency USING (cur_id) " +
+                             "    WHERE DATE(cur_date) BETWEEN DATE('"+ dateStart + "') " +
+                             "      AND DATE('"+ dateEnd +"') " +
+                             "      AND cur_abbreviation = '" + curAbbreviation + "' " +
+                             "    GROUP BY cur_id, hoho " +
+                             ") AS sub;")) {
+            ResultSet rs = st.executeQuery();
+
+            if (rs.next() && dateBetween == rs.getLong(1)) {
+                result = true;
+            }
+        } catch (SQLException e) {
+            throw new AccessDataException("Ошибка подключения к базе данных", e);
+        }
+
+        return result;
+    }
+
+    @Override
+    public boolean checkRateData(RateCreateDTO item) {
+        boolean result = true;
+        try (Connection conn = DatabaseConnectionFactory.getConnection();
+             PreparedStatement st = conn
+                     .prepareStatement("SELECT cur_id, cur_date FROM " +
+                             "app.rate WHERE cur_id = " + item.getCurID() +" AND cur_date = '" +
+                             item.getDate() + "' ORDER BY cur_id ASC")) {
+            ResultSet rs = st.executeQuery();
+
+            if (rs.next()) {
+                result = false;
+            }
+        } catch (SQLException e) {
+            throw new AccessDataException("Ошибка подключения к базе данных", e);
+        }
+
+        return result;
     }
 }
