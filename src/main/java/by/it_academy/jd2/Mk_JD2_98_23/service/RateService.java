@@ -54,4 +54,9 @@ public class RateService implements IRateService {
 
         return result;
     }
+
+    @Override
+    public boolean currencyValidate(String item) {
+        return true;
+    }
 }
