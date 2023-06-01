@@ -53,7 +53,7 @@ public class RateServlet extends HttpServlet {
 
         try {
             if (rateService.dateValidate(startDate) && rateService.dateValidate(endDate)
-                    && rateService.currencyValidate(currency)) {
+                    && currencyService.currencyValidate(currency)) {
                 int cur = currencyService.getCurID(currency);
                 LocalDate start = LocalDate.parse(startDate);
                 LocalDate end = LocalDate.parse(endDate);
