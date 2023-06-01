@@ -7,6 +7,7 @@ import by.it_academy.jd2.Mk_JD2_98_23.dao.exceptions.AccessDataException;
 import by.it_academy.jd2.Mk_JD2_98_23.dao.exceptions.DataInsertionErrorException;
 
 import java.sql.*;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -79,13 +80,18 @@ public class RateJDBCDao implements IRateDao {
     }
 
     @Override
-    public boolean checkRateData(RateCreateDTO item) {
+    public boolean checkRateData(String curAbbreviation, LocalDate dateStart, LocalDate dateEnd) {
         boolean result = true;
         try (Connection conn = DatabaseConnectionFactory.getConnection();
              PreparedStatement st = conn
-                     .prepareStatement("SELECT cur_id, cur_date FROM " +
-                             "app.rate WHERE cur_id = " + item.getCurID() +" AND cur_date = '" +
-                             item.getDate() + "' ORDER BY cur_id ASC")) {
+                     .prepareStatement("SELECT COUNT(*) FROM (\n" +
+                             "    SELECT cur_id, DATE(cur_date) AS hoho, COUNT(cur_abbreviation)\n" +
+                             "    FROM app.rate\n" +
+                             "    JOIN app.currency USING (cur_id)\n" +
+                             "    WHERE DATE(cur_date) BETWEEN DATE('"+ dateStart + "') " +
+                             "    AND DATE('"+ dateEnd +"')\n" +
+                             "    GROUP BY cur_id, hoho\n" +
+                             ") AS sub;")) {
             ResultSet rs = st.executeQuery();
 
             if (rs.next()) {
