@@ -2,39 +2,41 @@ package by.it_academy.jd2.Mk_JD2_98_23.core.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 public class RateDTO {
-    @JsonProperty("Cur_ID")
-    private int curID;
+
     @JsonProperty("Date")
-    private LocalDateTime date;
+    private LocalDate date;
+    @JsonProperty("Cur_Abbreviation")
+    private String curAbbreviation;
     @JsonProperty("Cur_OfficialRate")
     private double curOfficialRate;
 
     public RateDTO() {
     }
 
-    public RateDTO(int cur_ID, LocalDateTime date, double cur_OfficialRate) {
-        curID = cur_ID;
+    public RateDTO(LocalDate date, String curAbbreviation, double curOfficialRate) {
         this.date = date;
-        curOfficialRate = cur_OfficialRate;
+        this.curAbbreviation = curAbbreviation;
+        this.curOfficialRate = curOfficialRate;
     }
 
-    public int getCurID() {
-        return curID;
-    }
-
-    public void setCurID(int curID) {
-        this.curID = curID;
-    }
-
-    public LocalDateTime getDate() {
+    public LocalDate getDate() {
         return date;
     }
 
-    public void setDate(LocalDateTime date) {
+    public void setDate(LocalDate date) {
         this.date = date;
+    }
+
+    public String getCurAbbreviation() {
+        return curAbbreviation;
+    }
+
+    public void setCurAbbreviation(String curAbbreviation) {
+        this.curAbbreviation = curAbbreviation;
     }
 
     public double getCurOfficialRate() {
@@ -43,14 +45,5 @@ public class RateDTO {
 
     public void setCurOfficialRate(double curOfficialRate) {
         this.curOfficialRate = curOfficialRate;
-    }
-
-    @Override
-    public String toString() {
-        return "{ \n" +
-                "Cur_ID: " + getCurID() + "\n" +
-                "Date: " + getDate() + "\n" +
-                "Cur_OfficialRate: " + getCurOfficialRate() + "\n" +
-                "}";
     }
 }
