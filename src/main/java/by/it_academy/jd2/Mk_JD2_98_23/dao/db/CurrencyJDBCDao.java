@@ -85,8 +85,8 @@ public class CurrencyJDBCDao implements ICurrencyDao {
              PreparedStatement ps = conn
                      .prepareStatement("INSERT INTO app.currency(cur_id, cur_code, cur_abbreviation, cur_name, " +
                              "cur_name_bel, cur_name_eng, cur_quotname, cur_quotname_bel, cur_quotname_eng, " +
-                             "cur_namemulti, cur_name_belmulti, cur_name_engmulti, cur_scale) " +
-                             "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);")) {
+                             "cur_namemulti, cur_name_belmulti, cur_name_engmulti, cur_scale, cur_date_start, cur_date_end) " +
+                             "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);")) {
             ps.setInt(1, item.getCurID());
             ps.setInt(2, Integer.parseInt(item.getCurCode()));
             ps.setString(3, item.getCurAbbreviation());
@@ -100,6 +100,8 @@ public class CurrencyJDBCDao implements ICurrencyDao {
             ps.setString(11, item.getCurNameBelMulti());
             ps.setString(12, item.getCurNameEngMulti());
             ps.setInt(13, item.getCurScale());
+            ps.setObject(14, item.getCurDateStart());
+            ps.setObject(15, item.getCurDateEnd());
 
             int rowsInserted = ps.executeUpdate();
             if (rowsInserted == 0) {
