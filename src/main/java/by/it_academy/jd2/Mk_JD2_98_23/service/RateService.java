@@ -1,6 +1,7 @@
 package by.it_academy.jd2.Mk_JD2_98_23.service;
 
 import by.it_academy.jd2.Mk_JD2_98_23.core.dto.RateCreateDTO;
+import by.it_academy.jd2.Mk_JD2_98_23.core.dto.RateDTO;
 import by.it_academy.jd2.Mk_JD2_98_23.dao.api.IRateDao;
 import by.it_academy.jd2.Mk_JD2_98_23.service.api.IRateService;
 
@@ -23,6 +24,12 @@ public class RateService implements IRateService {
     public RateCreateDTO get(int cur_ID) {
         return rateDao.get(cur_ID);
     }
+
+    @Override
+    public List<RateDTO> get(String curAbbreviation) {
+        return rateDao.get(curAbbreviation);
+    }
+
 
     @Override
     public void upload(RateCreateDTO item) {

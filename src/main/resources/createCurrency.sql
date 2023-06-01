@@ -14,6 +14,8 @@ CREATE TABLE IF NOT EXISTS app.currency
     cur_name_belmulti text COLLATE pg_catalog."default",
     cur_name_engmulti text COLLATE pg_catalog."default",
     cur_scale bigint NOT NULL,
+    cur_date_start timestamp without time zone,
+    cur_date_end timestamp without time zone,
     CONSTRAINT currency_pkey PRIMARY KEY (cur_id)
 )
 
