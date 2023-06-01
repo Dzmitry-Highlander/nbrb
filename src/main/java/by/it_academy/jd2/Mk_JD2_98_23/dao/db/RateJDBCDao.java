@@ -130,6 +130,25 @@ public class RateJDBCDao implements IRateDao {
 
     @Override
     public List<RateCreateDTO> getPeriod(LocalDate dateStart, LocalDate dateEnd) {
-        return null;
+        List<RateCreateDTO> data = new ArrayList<>();
+
+        try (Connection conn = DatabaseConnectionFactory.getConnection();
+             PreparedStatement ps = conn.prepareStatement("SELECT cur_id, cur_date, cur_official_rate FROM " +
+                     "app.rate ORDER BY cur_id ASC")) {
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+                RateCreateDTO dto = new RateCreateDTO();
+                dto.setCurID(rs.getInt("cur_id"));
+                dto.setDate(rs.getDate("cur_date").toLocalDate().atStartOfDay());
+                dto.setCurOfficialRate(rs.getDouble("cur_official_rate"));
+
+                data.add(dto);
+            }
+        } catch (SQLException e) {
+            throw new AccessDataException("Ошибка подключения к базе данных", e);
+        }
+
+        return data;
     }
 }
