@@ -15,5 +15,5 @@ public interface IRateDao extends ICRUDDao<RateCreateDTO> {
 
     List<RateDTO> get(String curAbbreviation);
 
-    double getAverageCurrency(LocalDate date);
+    double getAverageCurrency(LocalDate date, String curAbbreviation);
 }
