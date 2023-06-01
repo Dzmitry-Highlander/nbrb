@@ -38,4 +38,9 @@ public class CurrencyService implements ICurrencyService {
     public int getCurID(String curAbbreviation) {
         return currencyDao.getCurID(curAbbreviation);
     }
+
+    @Override
+    public boolean currencyValidate(String item) {
+        return currencyDao.currencyValidate(item);
+    }
 }

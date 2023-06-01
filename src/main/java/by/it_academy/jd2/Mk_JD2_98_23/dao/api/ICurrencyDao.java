@@ -9,4 +9,6 @@ public interface ICurrencyDao extends ICRUDDao <CurrencyDTO>{
     int getCount();
 
     int getCurID(String curAbbreviation);
+
+    boolean currencyValidate(String item);
 }

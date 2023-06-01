@@ -21,6 +21,7 @@ import java.io.PrintWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -52,7 +53,7 @@ public class RateServlet extends HttpServlet {
 
         try {
             if (rateService.dateValidate(startDate) && rateService.dateValidate(endDate)
-                    && rateService.currencyValidate(currency)) {
+                    && currencyService.currencyValidate(currency)) {
                 int cur = currencyService.getCurID(currency);
                 LocalDate start = LocalDate.parse(startDate);
                 LocalDate end = LocalDate.parse(endDate);
@@ -76,10 +77,14 @@ public class RateServlet extends HttpServlet {
                     }
 
                     writer.write(objectMapper.writeValueAsString(rateCreateDTOS));
+                } else {
+                    List<RateCreateDTO> rateGetDTOS = rateService.getPeriod(start, end);
+
+                    writer.write(objectMapper.writeValueAsString(rateGetDTOS));
                 }
             } else {
-                throw new ServletException("Некорректная дата! Введите дату в формате yyyy-mm-dd, с 2022-12-01 до " +
-                        "2023-05-31");
+                throw new ServletException("Некорректная дата или код валюты! Введите дату в формате yyyy-mm-dd, " +
+                        "с 2022-12-01 до 2023-05-31. Код валюты например USD.");
             }
         } catch (Exception e) {
             writer.write(e.getMessage());

@@ -146,4 +146,23 @@ public class CurrencyJDBCDao implements ICurrencyDao {
 
         return id;
     }
+
+    @Override
+    public boolean currencyValidate(String item) {
+        boolean result = false;
+        try (Connection conn = DatabaseConnectionFactory.getConnection();
+             PreparedStatement st = conn
+                     .prepareStatement("SELECT cur_abbreviation FROM app.currency WHERE cur_abbreviation = " +
+                             "'" + item.toUpperCase() + "';")) {
+            ResultSet rs = st.executeQuery();
+
+            if (rs.next()) {
+                result = true;
+            }
+        } catch (SQLException e) {
+            throw new AccessDataException("Ошибка подключения к базе данных", e);
+        }
+
+        return result;
+    }
 }
