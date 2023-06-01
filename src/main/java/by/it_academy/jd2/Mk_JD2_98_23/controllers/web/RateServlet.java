@@ -4,7 +4,9 @@ import by.it_academy.jd2.Mk_JD2_98_23.core.dto.RateCreateDTO;
 import by.it_academy.jd2.Mk_JD2_98_23.core.dto.RateDTO;
 import by.it_academy.jd2.Mk_JD2_98_23.dao.api.IRateDao;
 import by.it_academy.jd2.Mk_JD2_98_23.dao.db.factory.RateDaoFactory;
+import by.it_academy.jd2.Mk_JD2_98_23.service.api.ICurrencyService;
 import by.it_academy.jd2.Mk_JD2_98_23.service.api.IRateService;
+import by.it_academy.jd2.Mk_JD2_98_23.service.factory.CurrencyServiceFactory;
 import by.it_academy.jd2.Mk_JD2_98_23.service.factory.ObjectMapperFactory;
 import by.it_academy.jd2.Mk_JD2_98_23.service.factory.RateServiceFactory;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -28,10 +30,12 @@ public class RateServlet extends HttpServlet {
     private static final String START_DATE = "dateFrom";
     private static final String END_DATE = "dateTo";
     private final IRateService rateService;
+    private final ICurrencyService currencyService;
     private final ObjectMapper objectMapper;
 
     public RateServlet() {
         this.rateService = RateServiceFactory.getInstance();
+        this.currencyService = CurrencyServiceFactory.getInstance();
         this.objectMapper = ObjectMapperFactory.getInstance();
         this.objectMapper.findAndRegisterModules();
     }
@@ -47,9 +51,10 @@ public class RateServlet extends HttpServlet {
         PrintWriter writer = resp.getWriter();
 
         if (!Objects.equals(currency, "" ) && !Objects.equals(startDate, "") && !Objects.equals(endDate, "")) {
+            int cur = currencyService.getCurID(currency);
             LocalDate start = LocalDate.parse(startDate);
             LocalDate end = LocalDate.parse(endDate);
-            String url = "https://api.nbrb.by/exrates/rates/dynamics/" + currency + "?startdate=" + start
+            String url = "https://api.nbrb.by/exrates/rates/dynamics/" + cur + "?startdate=" + start
                     + "&enddate=" + end;
             URL obj = new URL(url);
             HttpURLConnection con = (HttpURLConnection) obj.openConnection();

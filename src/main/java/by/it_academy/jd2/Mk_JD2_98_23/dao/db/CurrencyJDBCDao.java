@@ -123,6 +123,25 @@ public class CurrencyJDBCDao implements ICurrencyDao {
         } catch (SQLException e) {
             throw new AccessDataException("Ошибка при получении количества записей в таблице app.currency", e);
         }
+
         return count;
+    }
+
+    @Override
+    public int getCurID(String curAbbreviation) {
+        int id = 0;
+        try (Connection conn = DatabaseConnectionFactory.getConnection();
+             PreparedStatement ps = conn.prepareStatement("SELECT cur_id, cur_abbreviation FROM app.currency WHERE " +
+                     "cur_abbreviation = '" + curAbbreviation + "' ORDER BY cur_id DESC LIMIT 1;")) {
+            ResultSet rs = ps.executeQuery();
+
+            if (rs.next()) {
+                id = rs.getInt(1);
+            }
+        } catch (SQLException e) {
+            throw new AccessDataException("Ошибка при получении ID валюты в таблице app.currency", e);
+        }
+
+        return id;
     }
 }
