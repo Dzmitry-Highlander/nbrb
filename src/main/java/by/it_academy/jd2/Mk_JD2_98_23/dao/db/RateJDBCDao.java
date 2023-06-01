@@ -135,10 +135,9 @@ public class RateJDBCDao implements IRateDao {
         try (Connection conn = DatabaseConnectionFactory.getConnection();
              PreparedStatement ps = conn.prepareStatement("SELECT cur_id, cur_date, cur_official_rate " +
                      "FROM app.rate " +
-                     "WHERE DATE(cur_date) BETWEEN DATE('?') AND DATE('?');")) {
+                     "WHERE DATE(cur_date) BETWEEN DATE('"+ dateStart.toString() +"') AND DATE('"+ dateEnd.toString() +
+                     "');")) {
             ResultSet rs = ps.executeQuery();
-            ps.setObject(1, dateStart);
-            ps.setObject(2, dateEnd);
 
             while (rs.next()) {
                 RateCreateDTO dto = new RateCreateDTO();
