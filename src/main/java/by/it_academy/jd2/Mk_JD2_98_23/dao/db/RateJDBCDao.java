@@ -84,14 +84,14 @@ public class RateJDBCDao implements IRateDao {
         boolean result = true;
         try (Connection conn = DatabaseConnectionFactory.getConnection();
              PreparedStatement st = conn
-                     .prepareStatement("SELECT COUNT(*) FROM (\n" +
-                             "    SELECT cur_id, DATE(cur_date) AS hoho, COUNT(cur_abbreviation)\n" +
-                             "    FROM app.rate\n" +
-                             "    JOIN app.currency USING (cur_id)\n" +
+                     .prepareStatement("SELECT COUNT(*) FROM ( " +
+                             "    SELECT cur_id, DATE(cur_date) AS hoho, COUNT(cur_abbreviation) " +
+                             "    FROM app.rate " +
+                             "    JOIN app.currency USING (cur_id) " +
                              "    WHERE DATE(cur_date) BETWEEN DATE('"+ dateStart + "') " +
-                             "      AND DATE('"+ dateEnd +"')\n" +
-                             "      AND cur_abbreviation = '" + curAbbreviation + "'" +
-                             "    GROUP BY cur_id, hoho\n" +
+                             "      AND DATE('"+ dateEnd +"') " +
+                             "      AND cur_abbreviation = '" + curAbbreviation + "' " +
+                             "    GROUP BY cur_id, hoho " +
                              ") AS sub;")) {
             ResultSet rs = st.executeQuery();
 
