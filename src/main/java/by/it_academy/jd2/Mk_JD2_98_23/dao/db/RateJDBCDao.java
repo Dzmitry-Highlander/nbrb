@@ -79,7 +79,7 @@ public class RateJDBCDao implements IRateDao {
     }
 
     @Override
-    public boolean validate(RateCreateDTO item) {
+    public boolean checkRateData(RateCreateDTO item) {
         boolean result = true;
         try (Connection conn = DatabaseConnectionFactory.getConnection();
              PreparedStatement st = conn

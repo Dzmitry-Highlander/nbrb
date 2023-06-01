@@ -8,6 +8,4 @@ public interface IRateDao extends ICRUDDao<RateCreateDTO> {
     void save(RateCreateDTO item);
 
     boolean checkRateData(RateCreateDTO item);
-
-    boolean dateValidate(LocalDate item);
 }

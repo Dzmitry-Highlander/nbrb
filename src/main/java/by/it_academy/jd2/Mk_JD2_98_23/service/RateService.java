@@ -40,6 +40,6 @@ public class RateService implements IRateService {
 
     @Override
     public boolean dateValidate(LocalDate item) {
-        return rateDao.dateValidate(item);
+        return true;
     }
 }

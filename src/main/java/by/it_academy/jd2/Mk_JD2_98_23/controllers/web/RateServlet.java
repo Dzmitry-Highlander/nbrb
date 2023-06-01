@@ -76,7 +76,7 @@ public class RateServlet extends HttpServlet {
                 objectMapper.getTypeFactory().constructCollectionType(List.class, RateCreateDTO.class));
 
         for (RateCreateDTO rateCreateDTO : rateCreateDTOS) {
-            if (rateService.validate(rateCreateDTO)) {
+            if (rateService.checkRateData(rateCreateDTO)) {
                 rateService.upload(rateCreateDTO);
             }
         }
