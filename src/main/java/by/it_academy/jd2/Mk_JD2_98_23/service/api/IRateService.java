@@ -21,4 +21,8 @@ public interface IRateService  extends ICRUDService<RateCreateDTO, RateCreateDTO
     List<RateDTO> get(String curAbbreviation);
 
     double getAverageCurrency(String currency, String year, String month);
+
+    boolean monthValidate(String month);
+
+    boolean yearValidate(String year);
 }
