@@ -43,11 +43,11 @@ public class AverageCurrency extends HttpServlet {
         String year = req.getParameter(YEAR);
         PrintWriter writer = resp.getWriter();
 
-        if (currencyService.currencyValidate(currency) && year.matches("202[2-3]")) {
+        if (currencyService.currencyValidate(currency) && (year.matches("202[2-3]") || year.matches(""))) {
             double result = rateService.getAverageCurrency(currency, year, month);
             writer.write("Средний курс " + currency + " за месяц равен - " + result);
         } else {
-            writer.write("Нет такой валюты или неправильная дата!");
+            writer.write("Нет такой валюты или неправильный год!");
         }
     }
 }
