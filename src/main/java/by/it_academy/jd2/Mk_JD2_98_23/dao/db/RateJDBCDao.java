@@ -130,6 +130,19 @@ public class RateJDBCDao implements IRateDao {
 
     @Override
     public boolean currencyValidate(String item) {
+        boolean result = true;
+        try (Connection conn = DatabaseConnectionFactory.getConnection();
+             PreparedStatement st = conn
+                     .prepareStatement("SELECT cur_abbreviation FROM app.currency;")) {
+            ResultSet rs = st.executeQuery();
+
+            if (rs.next()) {
+                result = false;
+            }
+        } catch (SQLException e) {
+            throw new AccessDataException("Ошибка подключения к базе данных", e);
+        }
+
         return true;
     }
 }
