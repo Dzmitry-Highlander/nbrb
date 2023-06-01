@@ -34,12 +34,12 @@ public class RateService implements IRateService {
     }
 
     @Override
-    public boolean validate(RateCreateDTO item) {
-        return rateDao.validate(item);
+    public boolean checkRateData(RateCreateDTO item) {
+        return rateDao.checkRateData(item);
     }
 
     @Override
     public boolean dateValidate(LocalDate item) {
-        return true;
+        return rateDao.dateValidate(item);
     }
 }
