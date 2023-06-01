@@ -31,4 +31,9 @@ public class RateService implements IRateService {
 
         rateDao.save(item);
     }
+
+    @Override
+    public boolean validate(RateCreateDTO item) {
+        return false;
+    }
 }
