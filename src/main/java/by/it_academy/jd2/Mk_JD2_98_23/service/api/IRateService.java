@@ -14,8 +14,11 @@ public interface IRateService  extends ICRUDService<RateCreateDTO, RateCreateDTO
     boolean checkRateData(RateCreateDTO item);
 
     boolean dateValidate(String item);
+    boolean dateValidate(LocalDate date);
 
     boolean currencyValidate(String item);
 
     List<RateDTO> get(String curAbbreviation);
+
+    double getAverageCurrency(String currency, String year, String month);
 }
