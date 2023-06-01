@@ -38,11 +38,11 @@ public class RateService implements IRateService {
             LocalDate date;
             if (year == null || year.isEmpty() && monthValidate(month)) {
                 date = LocalDate.now().withMonth(Integer.parseInt(month)).withDayOfMonth(1);
-                if (dateValidate(date)) { return rateDao.getAverageCurrency(date);}
+                if (dateValidate(date)) { return rateDao.getAverageCurrency(date, currency);}
 
             } else if (monthValidate(month) || yearValidate(year)) {
                 date = LocalDate.parse(year + "-" + month + "-01");
-                if (dateValidate(date)) { return rateDao.getAverageCurrency(date);}
+                if (dateValidate(date)) { return rateDao.getAverageCurrency(date, currency);}
             }
         } catch (NumberFormatException e) {
             throw new ServiceException("Ошибка при формировании даты для среднего курса", e);
