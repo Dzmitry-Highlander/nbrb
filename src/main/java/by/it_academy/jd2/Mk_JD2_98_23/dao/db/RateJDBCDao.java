@@ -137,7 +137,7 @@ public class RateJDBCDao implements IRateDao {
                              "'" + item.toUpperCase() + "';")) {
             ResultSet rs = st.executeQuery();
 
-            if (rs.getString(1).length() > 1) {
+            if (rs.getString(1).matches("\\.{3}")) {
                 result = true;
             }
         } catch (SQLException e) {
