@@ -26,4 +26,6 @@ public interface IRateService  extends ICRUDService<RateCreateDTO, RateCreateDTO
     boolean monthValidate(String month);
 
     boolean yearValidate(String year);
+
+    List<RateCreateDTO> getRatesFromExternalAPI(int cur, String currency, LocalDate start, LocalDate end);
 }
