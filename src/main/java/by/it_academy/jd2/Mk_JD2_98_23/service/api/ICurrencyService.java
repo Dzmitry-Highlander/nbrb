@@ -9,4 +9,6 @@ public interface ICurrencyService extends ICRUDService<CurrencyDTO, CurrencyCrea
     int getCount();
 
     int getCurID(String curAbbreviation);
+
+    boolean currencyValidate(String item);
 }
