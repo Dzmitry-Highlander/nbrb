@@ -7,7 +7,9 @@ import java.time.LocalDate;
 public interface IRateService  extends ICRUDService<RateCreateDTO, RateCreateDTO>{
     void upload(RateCreateDTO item);
 
-    boolean checkRateData(String curAbbreviation, LocalDate dateStart, LocalDate dateEnd);
+    boolean checkRateDataPeriod(String curAbbreviation, LocalDate dateStart, LocalDate dateEnd);
+
+    boolean checkRateData(RateCreateDTO item);
 
     boolean dateValidate(String item);
 

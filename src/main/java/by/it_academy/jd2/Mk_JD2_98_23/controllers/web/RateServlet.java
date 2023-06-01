@@ -57,7 +57,7 @@ public class RateServlet extends HttpServlet {
                 LocalDate start = LocalDate.parse(startDate);
                 LocalDate end = LocalDate.parse(endDate);
 
-                if (!rateService.checkRateData(currency, start, end)) {
+                if (!rateService.checkRateDataPeriod(currency, start, end)) {
                     String url = "https://api.nbrb.by/exrates/rates/dynamics/" + cur + "?startdate=" + start
                             + "&enddate=" + end;
                     URL obj = new URL(url);
@@ -70,7 +70,9 @@ public class RateServlet extends HttpServlet {
                             objectMapper.getTypeFactory().constructCollectionType(List.class, RateCreateDTO.class));
 
                     for (RateCreateDTO rateCreateDTO : rateCreateDTOS) {
-                        rateService.upload(rateCreateDTO);
+                        if (rateService.checkRateData(rateCreateDTO)) {
+                            rateService.upload(rateCreateDTO);
+                        }
                     }
 
                     writer.write(objectMapper.writeValueAsString(rateCreateDTOS));

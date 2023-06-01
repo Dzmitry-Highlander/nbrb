@@ -7,5 +7,7 @@ import java.time.LocalDate;
 public interface IRateDao extends ICRUDDao<RateCreateDTO> {
     void save(RateCreateDTO item);
 
-    boolean checkRateData(String curAbbreviation, LocalDate dateStart, LocalDate dateEnd);
+    boolean checkRateDataPeriod(String curAbbreviation, LocalDate dateStart, LocalDate dateEnd);
+
+    boolean checkRateData(RateCreateDTO item);
 }

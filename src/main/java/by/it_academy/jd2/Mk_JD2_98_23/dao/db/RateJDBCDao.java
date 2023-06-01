@@ -81,7 +81,7 @@ public class RateJDBCDao implements IRateDao {
     }
 
     @Override
-    public boolean checkRateData(String curAbbreviation, LocalDate dateStart, LocalDate dateEnd) {
+    public boolean checkRateDataPeriod(String curAbbreviation, LocalDate dateStart, LocalDate dateEnd) {
         boolean result = false;
         long dateBetween = ChronoUnit.DAYS.between(dateStart, dateEnd) + 1;
 
@@ -100,6 +100,26 @@ public class RateJDBCDao implements IRateDao {
 
             if (rs.next() && dateBetween == rs.getLong(1)) {
                 result = true;
+            }
+        } catch (SQLException e) {
+            throw new AccessDataException("Ошибка подключения к базе данных", e);
+        }
+
+        return result;
+    }
+
+    @Override
+    public boolean checkRateData(RateCreateDTO item) {
+        boolean result = true;
+        try (Connection conn = DatabaseConnectionFactory.getConnection();
+             PreparedStatement st = conn
+                     .prepareStatement("SELECT cur_id, cur_date FROM " +
+                             "app.rate WHERE cur_id = " + item.getCurID() +" AND cur_date = '" +
+                             item.getDate() + "' ORDER BY cur_id ASC")) {
+            ResultSet rs = st.executeQuery();
+
+            if (rs.next()) {
+                result = false;
             }
         } catch (SQLException e) {
             throw new AccessDataException("Ошибка подключения к базе данных", e);
