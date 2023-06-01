@@ -33,4 +33,9 @@ public class CurrencyService implements ICurrencyService {
     public int getCount() {
         return currencyDao.getCount();
     }
+
+    @Override
+    public int getCurID(String curAbbreviation) {
+        return currencyDao.getCount();
+    }
 }

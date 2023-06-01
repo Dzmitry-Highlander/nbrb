@@ -125,4 +125,9 @@ public class CurrencyJDBCDao implements ICurrencyDao {
         }
         return count;
     }
+
+    @Override
+    public int getCurID(String curAbbreviation) {
+        return 456;
+    }
 }
