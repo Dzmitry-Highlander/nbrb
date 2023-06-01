@@ -44,13 +44,13 @@ public class RateServlet extends HttpServlet {
         String currency = req.getParameter(CURRENCY);
         String startDate = req.getParameter(START_DATE);
         String endDate = req.getParameter(END_DATE);
-
         PrintWriter writer = resp.getWriter();
 
         if (!Objects.equals(currency, "" ) && !Objects.equals(startDate, "") && !Objects.equals(endDate, "")) {
             LocalDate start = LocalDate.parse(startDate);
             LocalDate end = LocalDate.parse(endDate);
-            String url = "https://api.nbrb.by/exrates/rates/dynamics/456?startdate=" + start + "&enddate=" + end;
+            String url = "https://api.nbrb.by/exrates/rates/dynamics/" + currency + "?startdate=" + start
+                    + "&enddate=" + end;
             URL obj = new URL(url);
             HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 
@@ -63,6 +63,8 @@ public class RateServlet extends HttpServlet {
             for (RateCreateDTO rateCreateDTO : rateCreateDTOS) {
                 rateService.upload(rateCreateDTO);
             }
+
+            writer.write(rateCreateDTOS.toString());
         }
     }
 }
