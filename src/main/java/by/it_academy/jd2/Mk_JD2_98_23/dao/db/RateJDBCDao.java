@@ -127,4 +127,9 @@ public class RateJDBCDao implements IRateDao {
 
         return result;
     }
+
+    @Override
+    public boolean currencyValidate(String item) {
+        return true;
+    }
 }
