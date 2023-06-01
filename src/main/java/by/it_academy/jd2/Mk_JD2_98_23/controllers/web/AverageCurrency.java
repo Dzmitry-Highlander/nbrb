@@ -1,6 +1,8 @@
 package by.it_academy.jd2.Mk_JD2_98_23.controllers.web;
 
+import by.it_academy.jd2.Mk_JD2_98_23.service.api.ICurrencyService;
 import by.it_academy.jd2.Mk_JD2_98_23.service.api.IRateService;
+import by.it_academy.jd2.Mk_JD2_98_23.service.factory.CurrencyServiceFactory;
 import by.it_academy.jd2.Mk_JD2_98_23.service.factory.ObjectMapperFactory;
 import by.it_academy.jd2.Mk_JD2_98_23.service.factory.RateServiceFactory;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -21,11 +23,12 @@ public class AverageCurrency extends HttpServlet {
     private static final String MONTH = "month";
     private static final String YEAR = "year";
     private final IRateService rateService;
-
+    private final ICurrencyService currencyService;
     private final ObjectMapper objectMapper;
 
     public AverageCurrency() {
         this.rateService = RateServiceFactory.getInstance();
+        this.currencyService = CurrencyServiceFactory.getInstance();
         this.objectMapper = ObjectMapperFactory.getInstance();
         this.objectMapper.findAndRegisterModules();
     }
@@ -40,7 +43,11 @@ public class AverageCurrency extends HttpServlet {
         String year = req.getParameter(YEAR);
         PrintWriter writer = resp.getWriter();
 
-        double result =  rateService.getAverageCurrency(currency, year, month);
-        writer.write("Средний курс " + currency + " за месяц равен - " + result);
+        if (currencyService.currencyValidate(currency)) {
+            double result = rateService.getAverageCurrency(currency, year, month);
+            writer.write("Средний курс " + currency + " за месяц равен - " + result);
+        } else {
+            writer.write("Нет такой валюты!");
+        }
     }
 }
