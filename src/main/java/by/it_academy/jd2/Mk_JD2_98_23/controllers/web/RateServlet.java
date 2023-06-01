@@ -50,28 +50,38 @@ public class RateServlet extends HttpServlet {
         String endDate = req.getParameter(END_DATE);
         PrintWriter writer = resp.getWriter();
 
-        if (!Objects.equals(currency, "" ) && !Objects.equals(startDate, "") && !Objects.equals(endDate, "")) {
-            int cur = currencyService.getCurID(currency);
-            LocalDate start = LocalDate.parse(startDate);
-            LocalDate end = LocalDate.parse(endDate);
-            String url = "https://api.nbrb.by/exrates/rates/dynamics/" + cur + "?startdate=" + start
-                    + "&enddate=" + end;
-            URL obj = new URL(url);
-            HttpURLConnection con = (HttpURLConnection) obj.openConnection();
+        int cur = currencyService.getCurID(currency);
+        LocalDate start = LocalDate.parse(startDate);
+        LocalDate end = LocalDate.parse(endDate);
 
-            con.setRequestMethod("GET");
-            con.setRequestProperty("User-Agent", "Mozilla/5.0");
+        try {
+            if (rateService.dateValidate(start) && rateService.dateValidate(end)) {
 
-            List<RateCreateDTO> rateCreateDTOS = objectMapper.readValue(con.getInputStream(),
-                    objectMapper.getTypeFactory().constructCollectionType(List.class, RateCreateDTO.class));
-
-            for (RateCreateDTO rateCreateDTO : rateCreateDTOS) {
-                if (rateService.validate(rateCreateDTO)) {
-                    rateService.upload(rateCreateDTO);
-                }
+            } else {
+                throw new ServletException("TEST");
             }
-
-            writer.write(rateCreateDTOS.toString());
+        } catch (Exception e) {
+            writer.write(e.getMessage());
         }
+
+        String url = "https://api.nbrb.by/exrates/rates/dynamics/" + cur + "?startdate=" + start
+                + "&enddate=" + end;
+        URL obj = new URL(url);
+        HttpURLConnection con = (HttpURLConnection) obj.openConnection();
+
+        con.setRequestMethod("GET");
+        con.setRequestProperty("User-Agent", "Mozilla/5.0");
+
+        List<RateCreateDTO> rateCreateDTOS = objectMapper.readValue(con.getInputStream(),
+                objectMapper.getTypeFactory().constructCollectionType(List.class, RateCreateDTO.class));
+
+        for (RateCreateDTO rateCreateDTO : rateCreateDTOS) {
+            if (rateService.validate(rateCreateDTO)) {
+                rateService.upload(rateCreateDTO);
+            }
+        }
+
+        writer.write(rateCreateDTOS.toString());
+
     }
 }

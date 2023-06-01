@@ -4,6 +4,7 @@ import by.it_academy.jd2.Mk_JD2_98_23.core.dto.RateCreateDTO;
 import by.it_academy.jd2.Mk_JD2_98_23.dao.api.IRateDao;
 import by.it_academy.jd2.Mk_JD2_98_23.service.api.IRateService;
 
+import java.time.LocalDate;
 import java.util.List;
 
 public class RateService implements IRateService {
@@ -35,5 +36,10 @@ public class RateService implements IRateService {
     @Override
     public boolean validate(RateCreateDTO item) {
         return rateDao.validate(item);
+    }
+
+    @Override
+    public boolean dateValidate(LocalDate item) {
+        return true;
     }
 }
