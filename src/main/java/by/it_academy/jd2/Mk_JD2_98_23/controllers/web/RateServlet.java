@@ -78,7 +78,9 @@ public class RateServlet extends HttpServlet {
 
                     writer.write(objectMapper.writeValueAsString(rateCreateDTOS));
                 } else {
-                    List<RateCreateDTO> rateCreateDTOS = rateService.getPeriod(start, end);
+                    List<RateCreateDTO> rateGetDTOS = rateService.getPeriod(start, end);
+
+                    writer.write(objectMapper.writeValueAsString(rateGetDTOS));
                 }
             } else {
                 throw new ServletException("Некорректная дата или код валюты! Введите дату в формате yyyy-mm-dd, " +
