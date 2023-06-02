@@ -25,7 +25,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-@WebServlet(urlPatterns = "/save")
+@WebServlet(urlPatterns = "/api/rate-period")
 public class RateServlet extends HttpServlet {
     private static final String CURRENCY = "сur_abbreviation";
     private static final String START_DATE = "dateFrom";

@@ -17,8 +17,8 @@ import java.io.PrintWriter;
 
 
 
-@WebServlet(urlPatterns = "/average-currency")
-public class AverageCurrency extends HttpServlet {
+@WebServlet(urlPatterns = "/api/average-currency")
+public class AverageCurrencyServlet extends HttpServlet {
     private static final String CURRENCY = "сur_abbreviation";
     private static final String MONTH = "month";
     private static final String YEAR = "year";
@@ -26,7 +26,7 @@ public class AverageCurrency extends HttpServlet {
     private final ICurrencyService currencyService;
     private final ObjectMapper objectMapper;
 
-    public AverageCurrency() {
+    public AverageCurrencyServlet() {
         this.rateService = RateServiceFactory.getInstance();
         this.currencyService = CurrencyServiceFactory.getInstance();
         this.objectMapper = ObjectMapperFactory.getInstance();

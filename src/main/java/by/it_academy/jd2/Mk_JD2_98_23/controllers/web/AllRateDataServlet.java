@@ -19,7 +19,7 @@ import java.util.List;
 import java.util.Objects;
 
 
-@WebServlet(urlPatterns = "/all-rate")
+@WebServlet(urlPatterns = "/api/all-rate")
 public class AllRateDataServlet extends HttpServlet {
     private static final String CURRENCY = "сur_abbreviation";
 
