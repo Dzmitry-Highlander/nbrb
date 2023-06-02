@@ -5,7 +5,12 @@ import by.it_academy.jd2.Mk_JD2_98_23.core.dto.RateDTO;
 import by.it_academy.jd2.Mk_JD2_98_23.dao.api.IRateDao;
 import by.it_academy.jd2.Mk_JD2_98_23.service.api.IRateService;
 import by.it_academy.jd2.Mk_JD2_98_23.service.exceptions.ServiceException;
+import by.it_academy.jd2.Mk_JD2_98_23.service.factory.ObjectMapperFactory;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
+import java.io.IOException;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -33,22 +38,25 @@ public class RateService implements IRateService {
 
     @Override
     public double getAverageCurrency(String currency, String year, String month) {
-
         try {
-            LocalDate date;
-            if (year == null || year.isEmpty() && monthValidate(month)) {
-                date = LocalDate.now().withMonth(Integer.parseInt(month)).withDayOfMonth(1);
-                if (dateValidate(date)) { return rateDao.getAverageCurrency(date, currency);}
-
-            } else if (monthValidate(month) || yearValidate(year)) {
+            LocalDate date = null;
+            if (year != null && !year.isEmpty() && yearValidate(year) && monthValidate(month)) {
+                if (month.length() == 1) { // проверяем длину строки
+                    month = "0" + month;
+                }
                 date = LocalDate.parse(year + "-" + month + "-01");
-                if (dateValidate(date)) { return rateDao.getAverageCurrency(date, currency);}
+            } else if (monthValidate(month)) {
+                date = LocalDate.now().withMonth(Integer.parseInt(month)).withDayOfMonth(1);
+            } else {
+                throw new ServiceException("Дата не прошла валидацию, требуется диапазон с 01.12.2022 по 31.05.2023");
             }
+            if (!dateValidate(date)) {
+                throw new ServiceException("Дата не прошла валидацию, требуется диапазон с 01.12.2022 по 31.05.2023");
+            }
+            return rateDao.getAverageCurrency(date, currency);
         } catch (NumberFormatException e) {
             throw new ServiceException("Ошибка при формировании даты для среднего курса", e);
         }
-
-        return 0;
     }
 
 
@@ -94,7 +102,7 @@ public class RateService implements IRateService {
         LocalDate after = LocalDate.parse("2022-12-01");
         LocalDate before = LocalDate.parse("2023-05-31");
 
-        if (date.isBefore(before) && date.isAfter(after)) {
+        if ((date.isEqual(after) || !date.isBefore(after)) && !date.isAfter(before)) {
             result = true;
         }
 
@@ -102,8 +110,8 @@ public class RateService implements IRateService {
     }
 
     @Override
-    public List<RateCreateDTO> getPeriod(LocalDate dateStart, LocalDate dateEnd) {
-        return rateDao.getPeriod(dateStart, dateEnd);
+    public List<RateDTO> getPeriod(String curAbbreviation,  LocalDate dateStart, LocalDate dateEnd) {
+        return rateDao.getPeriod(curAbbreviation, dateStart, dateEnd);
     }
 
     public boolean monthValidate(String month) {
@@ -123,4 +131,25 @@ public class RateService implements IRateService {
             return false;
         }
     }
+
+    public List<RateCreateDTO> getRatesFromExternalAPI(int cur, String currency, LocalDate start, LocalDate end) {
+        String url = "https://api.nbrb.by/exrates/rates/dynamics/" + cur + "?startdate=" + start + "&enddate=" + end;
+        URL obj = null;
+        HttpURLConnection con = null;
+        List<RateCreateDTO> rateCreateDTOS = null;
+        try {
+            obj = new URL(url);
+            con = (HttpURLConnection) obj.openConnection();
+            con.setRequestMethod("GET");
+            con.setRequestProperty("User-Agent", "Mozilla/5.0");
+            ObjectMapper objectMapper = ObjectMapperFactory.getInstance();
+            rateCreateDTOS = objectMapper.readValue(con.getInputStream(),
+                    objectMapper.getTypeFactory().constructCollectionType(List.class, RateCreateDTO.class));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+        return rateCreateDTOS;
+    }
+
 }

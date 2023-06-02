@@ -167,7 +167,7 @@ public class RateJDBCDao implements IRateDao {
                              "  FROM app.rate" +
                              " JOIN app.currency USING (cur_id)" +
                              " JOIN  app.weekends ON app.rate.cur_date = app.weekends.calendar_date" +
-                             " WHERE cur_abbreviation  = '"+ curAbbreviation +"' AND is_day_off > 0 " +
+                             " WHERE cur_abbreviation  = '"+ curAbbreviation +"' AND is_day_off = 0 " +
                              " AND  EXTRACT(MONTH FROM cur_date) = EXTRACT(MONTH FROM DATE '"+ date +"')" +
                              " AND EXTRACT(YEAR FROM cur_date) = EXTRACT(YEAR FROM DATE '"+ date +"')" +
                              "ORDER BY cur_date) as sub;")) {
@@ -187,20 +187,23 @@ public class RateJDBCDao implements IRateDao {
     }
 
     @Override
-    public List<RateCreateDTO> getPeriod(LocalDate dateStart, LocalDate dateEnd) {
-        List<RateCreateDTO> data = new ArrayList<>();
+    public List<RateDTO> getPeriod(String curAbbreviation,  LocalDate dateStart, LocalDate dateEnd) {
+        List<RateDTO> data = new ArrayList<>();
 
         try (Connection conn = DatabaseConnectionFactory.getConnection();
-             PreparedStatement ps = conn.prepareStatement("SELECT cur_id, cur_date, cur_official_rate " +
+             PreparedStatement ps = conn.prepareStatement("SELECT cur_abbreviation, DATE(cur_date) AS date_cur, cur_official_rate " +
                      "FROM app.rate " +
-                     "WHERE DATE(cur_date) BETWEEN DATE('"+ dateStart.toString() +"') AND DATE('"+ dateEnd.toString() +
-                     "');")) {
+                     "JOIN app.currency USING (cur_id) " +
+                     "WHERE DATE(cur_date) BETWEEN DATE('"+ dateStart +"') " +
+                     "AND DATE('"+ dateEnd +"') " +
+                     "AND cur_abbreviation = '"+ curAbbreviation +"' " +
+                     "ORDER BY date_cur;")) {
             ResultSet rs = ps.executeQuery();
 
             while (rs.next()) {
-                RateCreateDTO dto = new RateCreateDTO();
-                dto.setCurID(rs.getInt("cur_id"));
-                dto.setDate(rs.getDate("cur_date").toLocalDate().atStartOfDay());
+                RateDTO dto = new RateDTO();
+                dto.setCurAbbreviation(rs.getString("cur_abbreviation"));
+                dto.setDate(rs.getDate("date_cur").toLocalDate());
                 dto.setCurOfficialRate(rs.getDouble("cur_official_rate"));
 
                 data.add(dto);

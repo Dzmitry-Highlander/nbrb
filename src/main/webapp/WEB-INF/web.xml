@@ -11,4 +11,17 @@
         <listener-class>by.it_academy.jd2.Mk_JD2_98_23.controllers.listeners.AppServletContextListener</listener-class>
     </listener>
 
+    <filter>
+        <filter-name>EncodingFilter</filter-name>
+        <filter-class>by.it_academy.jd2.Mk_JD2_98_23.controllers.filters.EncodingFilter</filter-class>
+        <init-param>
+            <param-name>encoding</param-name>
+            <param-value>UTF-8</param-value>
+        </init-param>
+    </filter>
+    <filter-mapping>
+        <filter-name>EncodingFilter</filter-name>
+        <url-pattern>/ui/*</url-pattern>
+    </filter-mapping>
+
 </web-app>

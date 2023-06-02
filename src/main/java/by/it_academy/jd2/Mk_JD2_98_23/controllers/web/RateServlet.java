@@ -43,8 +43,6 @@ public class RateServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        req.setCharacterEncoding("UTF-8");
-        resp.setContentType("application/json; charset=UTF-8");
 
         String currency = req.getParameter(CURRENCY).toUpperCase();
         String startDate = req.getParameter(START_DATE);
@@ -59,28 +57,21 @@ public class RateServlet extends HttpServlet {
                 LocalDate end = LocalDate.parse(endDate);
 
                 if (!rateService.checkRateDataPeriod(currency, start, end)) {
-                    String url = "https://api.nbrb.by/exrates/rates/dynamics/" + cur + "?startdate=" + start
-                            + "&enddate=" + end;
-                    URL obj = new URL(url);
-                    HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 
-                    con.setRequestMethod("GET");
-                    con.setRequestProperty("User-Agent", "Mozilla/5.0");
-
-                    List<RateCreateDTO> rateCreateDTOS = objectMapper.readValue(con.getInputStream(),
-                            objectMapper.getTypeFactory().constructCollectionType(List.class, RateCreateDTO.class));
+                    List<RateCreateDTO> rateCreateDTOS = rateService.getRatesFromExternalAPI(cur,currency,start,end);
 
                     for (RateCreateDTO rateCreateDTO : rateCreateDTOS) {
                         if (rateService.checkRateData(rateCreateDTO)) {
                             rateService.upload(rateCreateDTO);
                         }
                     }
+                    List<RateDTO> rateDTOS = rateService.getPeriod(currency, start, end);
 
-                    writer.write(objectMapper.writeValueAsString(rateCreateDTOS));
+                    writer.write(objectMapper.writeValueAsString(rateDTOS));
                 } else {
-                    List<RateCreateDTO> rateGetDTOS = rateService.getPeriod(start, end);
+                    List<RateDTO> rateDTOS = rateService.getPeriod(currency, start, end);
 
-                    writer.write(objectMapper.writeValueAsString(rateGetDTOS));
+                    writer.write(objectMapper.writeValueAsString(rateDTOS));
                 }
             } else {
                 throw new ServletException("Некорректная дата или код валюты! Введите дату в формате yyyy-mm-dd, " +
