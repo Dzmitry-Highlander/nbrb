@@ -65,12 +65,13 @@ public class RateServlet extends HttpServlet {
                             rateService.upload(rateCreateDTO);
                         }
                     }
+                    List<RateDTO> rateDTOS = rateService.getPeriod(currency, start, end);
 
-                    writer.write(objectMapper.writeValueAsString(rateCreateDTOS));
+                    writer.write(objectMapper.writeValueAsString(rateDTOS));
                 } else {
-                    List<RateCreateDTO> rateGetDTOS = rateService.getPeriod(start, end);
+                    List<RateDTO> rateDTOS = rateService.getPeriod(currency, start, end);
 
-                    writer.write(objectMapper.writeValueAsString(rateGetDTOS));
+                    writer.write(objectMapper.writeValueAsString(rateDTOS));
                 }
             } else {
                 throw new ServletException("Некорректная дата или код валюты! Введите дату в формате yyyy-mm-dd, " +
