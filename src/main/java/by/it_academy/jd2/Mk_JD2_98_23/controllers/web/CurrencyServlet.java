@@ -17,7 +17,7 @@ import java.io.PrintWriter;
 import java.util.List;
 
 
-@WebServlet(urlPatterns = "/allCurrency")
+@WebServlet(urlPatterns = "/api/all-currency")
 public class CurrencyServlet extends HttpServlet {
 
     private final ICurrencyService currencyService;
