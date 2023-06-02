@@ -194,9 +194,9 @@ public class RateJDBCDao implements IRateDao {
              PreparedStatement ps = conn.prepareStatement("SELECT cur_abbreviation, DATE(cur_date) AS date_cur, cur_official_rate " +
                      "FROM app.rate " +
                      "JOIN app.currency USING (cur_id) " +
-                     "WHERE DATE(cur_date) BETWEEN DATE('2023-01-01') " +
-                     "AND DATE('2023-01-11') " +
-                     "AND cur_abbreviation = 'USD' " +
+                     "WHERE DATE(cur_date) BETWEEN DATE('"+ dateStart +"') " +
+                     "AND DATE('"+ dateEnd +"') " +
+                     "AND cur_abbreviation = '"+ curAbbreviation +"' " +
                      "ORDER BY date_cur;")) {
             ResultSet rs = ps.executeQuery();
 
