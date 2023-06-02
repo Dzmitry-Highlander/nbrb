@@ -110,8 +110,8 @@ public class RateService implements IRateService {
     }
 
     @Override
-    public List<RateCreateDTO> getPeriod(LocalDate dateStart, LocalDate dateEnd) {
-        return rateDao.getPeriod(dateStart, dateEnd);
+    public List<RateDTO> getPeriod(String curAbbreviation,  LocalDate dateStart, LocalDate dateEnd) {
+        return rateDao.getPeriod(curAbbreviation, dateStart, dateEnd);
     }
 
     public boolean monthValidate(String month) {
