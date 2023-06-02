@@ -9,6 +9,7 @@ import by.it_academy.jd2.Mk_JD2_98_23.service.factory.ObjectMapperFactory;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.time.LocalDate;
@@ -134,22 +135,20 @@ public class RateService implements IRateService {
 
     public List<RateCreateDTO> getRatesFromExternalAPI(int cur, String currency, LocalDate start, LocalDate end) {
         String url = "https://api.nbrb.by/exrates/rates/dynamics/" + cur + "?startdate=" + start + "&enddate=" + end;
-        URL obj = null;
-        HttpURLConnection con = null;
         List<RateCreateDTO> rateCreateDTOS = null;
         try {
-            obj = new URL(url);
-            con = (HttpURLConnection) obj.openConnection();
+            URL obj = new URL(url);
+            HttpURLConnection con = (HttpURLConnection) obj.openConnection();
             con.setRequestMethod("GET");
             con.setRequestProperty("User-Agent", "Mozilla/5.0");
             ObjectMapper objectMapper = ObjectMapperFactory.getInstance();
-            rateCreateDTOS = objectMapper.readValue(con.getInputStream(),
-                    objectMapper.getTypeFactory().constructCollectionType(List.class, RateCreateDTO.class));
+            try (InputStream inputStream = con.getInputStream()) {
+                rateCreateDTOS = objectMapper.readValue(inputStream,
+                        objectMapper.getTypeFactory().constructCollectionType(List.class, RateCreateDTO.class));
+            }
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-
         return rateCreateDTOS;
     }
-
 }
