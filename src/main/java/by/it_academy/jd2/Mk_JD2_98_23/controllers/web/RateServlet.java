@@ -49,12 +49,14 @@ public class RateServlet extends HttpServlet {
         String endDate = req.getParameter(END_DATE);
         PrintWriter writer = resp.getWriter();
 
+        int cur = currencyService.getCurID(currency);
+        LocalDate start = LocalDate.parse(startDate);
+        LocalDate end = LocalDate.parse(endDate);
+
         try {
             if (rateService.dateValidate(startDate) && rateService.dateValidate(endDate)
                     && currencyService.currencyValidate(currency)) {
-                int cur = currencyService.getCurID(currency);
-                LocalDate start = LocalDate.parse(startDate);
-                LocalDate end = LocalDate.parse(endDate);
+
 
                 if (!rateService.checkRateDataPeriod(currency, start, end)) {
 
@@ -65,14 +67,11 @@ public class RateServlet extends HttpServlet {
                             rateService.upload(rateCreateDTO);
                         }
                     }
-                    List<RateDTO> rateDTOS = rateService.getPeriod(currency, start, end);
-
-                    writer.write(objectMapper.writeValueAsString(rateDTOS));
-                } else {
-                    List<RateDTO> rateDTOS = rateService.getPeriod(currency, start, end);
-
-                    writer.write(objectMapper.writeValueAsString(rateDTOS));
                 }
+                List<RateDTO> rateDTOS = rateService.getPeriod(currency, start, end);
+
+                writer.write(objectMapper.writeValueAsString(rateDTOS));
+
             } else {
                 throw new ServletException("Некорректная дата или код валюты! Введите дату в формате yyyy-mm-dd, " +
                         "с 2022-12-01 до 2023-05-31. Код валюты например USD.");
