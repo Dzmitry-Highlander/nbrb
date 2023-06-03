@@ -7,7 +7,10 @@ import by.it_academy.jd2.Mk_JD2_98_23.dao.db.ds.DatabaseConnectionFactory;
 import by.it_academy.jd2.Mk_JD2_98_23.dao.exceptions.AccessDataException;
 import by.it_academy.jd2.Mk_JD2_98_23.dao.exceptions.DataInsertionErrorException;
 
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
@@ -21,7 +24,7 @@ public class RateJDBCDao implements IRateDao {
         try (Connection conn = DatabaseConnectionFactory.getConnection();
              PreparedStatement ps = conn.prepareStatement("SELECT cur_id, cur_date, cur_official_rate FROM " +
                      "app.rate ORDER BY cur_id ASC")) {
-             ResultSet rs = ps.executeQuery();
+            ResultSet rs = ps.executeQuery();
 
             while (rs.next()) {
                 RateCreateDTO dto = new RateCreateDTO();
@@ -42,11 +45,13 @@ public class RateJDBCDao implements IRateDao {
     public RateCreateDTO get(int id) {
         RateCreateDTO dto = null;
         try (Connection conn = DatabaseConnectionFactory.getConnection();
-             PreparedStatement st = conn
+             PreparedStatement ps = conn
                      .prepareStatement("SELECT cur_id, cur_date, cur_official_rate FROM " +
                              "app.rate WHERE cur_id = ? ORDER BY cur_id ASC")) {
-            st.setInt(1, id);
-            ResultSet rs = st.executeQuery();
+
+            ps.setInt(1, id);
+
+            ResultSet rs = ps.executeQuery();
 
             if (rs.next()) {
                 dto = new RateCreateDTO();
@@ -67,10 +72,13 @@ public class RateJDBCDao implements IRateDao {
 
         try (Connection conn = DatabaseConnectionFactory.getConnection();
              PreparedStatement ps = conn.prepareStatement("SELECT DATE(cur_date) as cur_date, cur_abbreviation, cur_official_rate " +
-                                                                    "FROM app.rate " +
-                                                                    "JOIN app.currency USING (cur_id) " +
-                                                                    "WHERE cur_abbreviation  = '" + curAbbreviation + "' " +
-                                                                    "ORDER BY cur_date;")) {
+                     "FROM app.rate " +
+                     "JOIN app.currency USING (cur_id) " +
+                     "WHERE cur_abbreviation  = ? " +
+                     "ORDER BY cur_date;")) {
+
+            ps.setString(1, curAbbreviation);
+
             ResultSet rs = ps.executeQuery();
 
             while (rs.next()) {
@@ -93,9 +101,10 @@ public class RateJDBCDao implements IRateDao {
         try (Connection conn = DatabaseConnectionFactory.getConnection();
              PreparedStatement ps = conn.prepareStatement("INSERT INTO app.rate(cur_id, cur_date, " +
                      "cur_official_rate) VALUES (?, ?, ?);")) {
-            ps.setObject(1, item.getCurID());
+
+            ps.setInt(1, item.getCurID());
             ps.setObject(2, item.getDate());
-            ps.setObject(3, item.getCurOfficialRate());
+            ps.setDouble(3, item.getCurOfficialRate());
 
             int rowsInserted = ps.executeUpdate();
             if (rowsInserted == 0) {
@@ -114,17 +123,23 @@ public class RateJDBCDao implements IRateDao {
         long dateBetween = ChronoUnit.DAYS.between(dateStart, dateEnd) + 1;
 
         try (Connection conn = DatabaseConnectionFactory.getConnection();
-             PreparedStatement st = conn
+             PreparedStatement ps = conn
                      .prepareStatement("SELECT COUNT(*) FROM ( " +
                              "    SELECT cur_id, DATE(cur_date) AS hoho, COUNT(cur_abbreviation) " +
                              "    FROM app.rate " +
                              "    JOIN app.currency USING (cur_id) " +
-                             "    WHERE DATE(cur_date) BETWEEN DATE('"+ dateStart + "') " +
-                             "      AND DATE('"+ dateEnd +"') " +
-                             "      AND cur_abbreviation = '" + curAbbreviation + "' " +
+                             "    WHERE DATE(cur_date) BETWEEN DATE(?) " +
+                             "      AND DATE(?) " +
+                             "      AND cur_abbreviation = ? " +
                              "    GROUP BY cur_id, hoho " +
                              ") AS sub;")) {
-            ResultSet rs = st.executeQuery();
+
+            ps.setObject(1, dateStart);
+            ps.setObject(2, dateEnd);
+            ps.setString(3, curAbbreviation);
+
+
+            ResultSet rs = ps.executeQuery();
 
             if (rs.next() && dateBetween == rs.getLong(1)) {
                 result = true;
@@ -140,11 +155,14 @@ public class RateJDBCDao implements IRateDao {
     public boolean checkRateData(RateCreateDTO item) {
         boolean result = true;
         try (Connection conn = DatabaseConnectionFactory.getConnection();
-             PreparedStatement st = conn
+             PreparedStatement ps = conn
                      .prepareStatement("SELECT cur_id, cur_date FROM " +
-                             "app.rate WHERE cur_id = " + item.getCurID() +" AND cur_date = '" +
-                             item.getDate() + "' ORDER BY cur_id ASC")) {
-            ResultSet rs = st.executeQuery();
+                             "app.rate WHERE cur_id = ? AND cur_date = ? ORDER BY cur_id ASC")) {
+
+            ps.setInt(1, item.getCurID());
+            ps.setObject(2, item.getDate());
+
+            ResultSet rs = ps.executeQuery();
 
             if (rs.next()) {
                 result = false;
@@ -158,8 +176,7 @@ public class RateJDBCDao implements IRateDao {
 
     @Override
     public double getAverageCurrency(LocalDate date, String curAbbreviation) {
-
-        double result = 0;
+        double result;
         try (Connection conn = DatabaseConnectionFactory.getConnection();
              PreparedStatement ps = conn
                      .prepareStatement("SELECT ROUND(AVG(cur_official_rate)::numeric, 4)  FROM (SELECT DATE(cur_date) as cur_date, cur_abbreviation," +
@@ -167,10 +184,12 @@ public class RateJDBCDao implements IRateDao {
                              "  FROM app.rate" +
                              " JOIN app.currency USING (cur_id)" +
                              " JOIN  app.weekends ON app.rate.cur_date = app.weekends.calendar_date" +
-                             " WHERE cur_abbreviation  = '"+ curAbbreviation +"' AND is_day_off = 0 " +
-                             " AND  EXTRACT(MONTH FROM cur_date) = EXTRACT(MONTH FROM DATE '"+ date +"')" +
-                             " AND EXTRACT(YEAR FROM cur_date) = EXTRACT(YEAR FROM DATE '"+ date +"')" +
+                             " WHERE cur_abbreviation  = ? AND is_day_off = 0 " +
+                             " AND  EXTRACT(MONTH FROM cur_date) = EXTRACT(MONTH FROM DATE '" + date + "')" +
+                             " AND EXTRACT(YEAR FROM cur_date) = EXTRACT(YEAR FROM DATE '" + date + "')" +
                              "ORDER BY cur_date) as sub;")) {
+
+            ps.setString(1, curAbbreviation);
 
             ResultSet rs = ps.executeQuery();
             if (rs.next()) {
@@ -187,17 +206,20 @@ public class RateJDBCDao implements IRateDao {
     }
 
     @Override
-    public List<RateDTO> getPeriod(String curAbbreviation,  LocalDate dateStart, LocalDate dateEnd) {
+    public List<RateDTO> getPeriod(String curAbbreviation, LocalDate dateStart, LocalDate dateEnd) {
         List<RateDTO> data = new ArrayList<>();
-
         try (Connection conn = DatabaseConnectionFactory.getConnection();
              PreparedStatement ps = conn.prepareStatement("SELECT cur_abbreviation, DATE(cur_date) AS date_cur, cur_official_rate " +
-                     "FROM app.rate " +
-                     "JOIN app.currency USING (cur_id) " +
-                     "WHERE DATE(cur_date) BETWEEN DATE('"+ dateStart +"') " +
-                     "AND DATE('"+ dateEnd +"') " +
-                     "AND cur_abbreviation = '"+ curAbbreviation +"' " +
-                     "ORDER BY date_cur;")) {
+                                "FROM app.rate " +
+                                   "JOIN app.currency USING (cur_id) " +
+                                   "WHERE DATE(cur_date) BETWEEN DATE(?) " +
+                                     "AND DATE(?) AND cur_abbreviation = ? " +
+                                   "ORDER BY date_cur;")) {
+
+            ps.setObject(1, dateStart);
+            ps.setObject(2, dateEnd);
+            ps.setString(3, curAbbreviation);
+
             ResultSet rs = ps.executeQuery();
 
             while (rs.next()) {
