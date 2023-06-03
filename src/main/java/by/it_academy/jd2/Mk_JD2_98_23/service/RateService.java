@@ -8,6 +8,7 @@ import by.it_academy.jd2.Mk_JD2_98_23.service.api.IRateService;
 import by.it_academy.jd2.Mk_JD2_98_23.service.exceptions.ServiceException;
 import by.it_academy.jd2.Mk_JD2_98_23.service.factory.ObjectMapperFactory;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import jakarta.servlet.ServletException;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -84,8 +85,8 @@ public class RateService implements IRateService {
     @Override
     public boolean dateValidate(String item) {
         boolean result = false;
-        LocalDate after = LocalDate.parse("2022-12-01");
-        LocalDate before = LocalDate.parse("2023-05-31");
+        LocalDate after = LocalDate.of(2022, 12, 1);
+        LocalDate before = LocalDate.of(2023, 5, 31);
 
         if (item.matches("\\d{4}-\\d{2}-\\d{2}")) {
             LocalDate dateToCheck = LocalDate.parse(item);
@@ -101,8 +102,8 @@ public class RateService implements IRateService {
     @Override
     public boolean dateValidate(LocalDate date) {
         boolean result = false;
-        LocalDate after = LocalDate.parse("2022-12-01");
-        LocalDate before = LocalDate.parse("2023-05-31");
+        LocalDate after = LocalDate.of(2022, 12, 1);
+        LocalDate before = LocalDate.of(2023, 5, 31);
 
         if ((date.isEqual(after) || !date.isBefore(after)) && !date.isAfter(before)) {
             result = true;
@@ -151,5 +152,34 @@ public class RateService implements IRateService {
             throw new RuntimeException(e);
         }
         return rateCreateDTOS;
+    }
+
+    @Override
+    public List<RateDTO> checkAndLoadDataFromApi(int cur, RatePeriodDTO item) {
+        List<RateDTO> rateDTOS;
+        if (dateValidate(item.getStartDate()) && dateValidate(item.getEndDate())) {
+
+            if (!checkRateDataPeriod(item)) {
+
+                List<RateCreateDTO> rateCreateDTOS = getRatesFromExternalAPI(cur,item);
+
+                for (RateCreateDTO rateCreateDTO : rateCreateDTOS) {
+                    if (checkRateData(rateCreateDTO)) {
+                        upload(rateCreateDTO);
+                    }
+                }
+            }
+
+            rateDTOS = getPeriod(item);
+
+        } else {
+            try {
+                throw new ServletException("Некорректная дата или код валюты! Введите дату в формате yyyy-mm-dd, " +
+                        "с 2022-12-01 до 2023-05-31. Код валюты например USD.");
+            } catch (ServletException e) {
+                throw new RuntimeException(e);
+            }
+        }
+        return rateDTOS;
     }
 }

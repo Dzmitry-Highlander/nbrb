@@ -1,10 +1,7 @@
 package by.it_academy.jd2.Mk_JD2_98_23.controllers.web;
 
-import by.it_academy.jd2.Mk_JD2_98_23.core.dto.RateCreateDTO;
 import by.it_academy.jd2.Mk_JD2_98_23.core.dto.RateDTO;
 import by.it_academy.jd2.Mk_JD2_98_23.core.dto.RatePeriodDTO;
-import by.it_academy.jd2.Mk_JD2_98_23.dao.api.IRateDao;
-import by.it_academy.jd2.Mk_JD2_98_23.dao.db.factory.RateDaoFactory;
 import by.it_academy.jd2.Mk_JD2_98_23.service.api.ICurrencyService;
 import by.it_academy.jd2.Mk_JD2_98_23.service.api.IRateService;
 import by.it_academy.jd2.Mk_JD2_98_23.service.factory.CurrencyServiceFactory;
@@ -19,12 +16,8 @@ import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.net.HttpURLConnection;
-import java.net.URL;
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 @WebServlet(urlPatterns = "/api/rate-period")
 public class RateServlet extends HttpServlet {
@@ -53,21 +46,9 @@ public class RateServlet extends HttpServlet {
         int cur = currencyService.getCurID(currency);
 
         try {
-            if (rateService.dateValidate(startDate) && rateService.dateValidate(endDate)
-                    && currencyService.currencyValidate(currency)) {
+            if (currencyService.currencyValidate(currency)) {
 
-
-                if (!rateService.checkRateDataPeriod(new RatePeriodDTO(currency,LocalDate.parse(startDate),LocalDate.parse(endDate)))) {
-
-                    List<RateCreateDTO> rateCreateDTOS = rateService.getRatesFromExternalAPI(cur,new RatePeriodDTO(currency,LocalDate.parse(startDate),LocalDate.parse(endDate)));
-
-                    for (RateCreateDTO rateCreateDTO : rateCreateDTOS) {
-                        if (rateService.checkRateData(rateCreateDTO)) {
-                            rateService.upload(rateCreateDTO);
-                        }
-                    }
-                }
-                List<RateDTO> rateDTOS = rateService.getPeriod(new RatePeriodDTO(currency,LocalDate.parse(startDate),LocalDate.parse(endDate)));
+                List<RateDTO> rateDTOS = rateService.checkAndLoadDataFromApi(cur,new RatePeriodDTO(currency,LocalDate.parse(startDate),LocalDate.parse(endDate)));
 
                 writer.write(objectMapper.writeValueAsString(rateDTOS));
 
