@@ -2,6 +2,7 @@ package by.it_academy.jd2.Mk_JD2_98_23.service;
 
 import by.it_academy.jd2.Mk_JD2_98_23.core.dto.RateCreateDTO;
 import by.it_academy.jd2.Mk_JD2_98_23.core.dto.RateDTO;
+import by.it_academy.jd2.Mk_JD2_98_23.core.dto.RatePeriodDTO;
 import by.it_academy.jd2.Mk_JD2_98_23.dao.api.IRateDao;
 import by.it_academy.jd2.Mk_JD2_98_23.service.api.IRateService;
 import by.it_academy.jd2.Mk_JD2_98_23.service.exceptions.ServiceException;
@@ -71,8 +72,8 @@ public class RateService implements IRateService {
     }
 
     @Override
-    public boolean checkRateDataPeriod(String curAbbreviation, LocalDate dateStart, LocalDate dateEnd) {
-        return rateDao.checkRateDataPeriod(curAbbreviation, dateStart, dateEnd);
+    public boolean checkRateDataPeriod(RatePeriodDTO item) {
+        return rateDao.checkRateDataPeriod(item);
     }
 
     @Override
@@ -111,8 +112,8 @@ public class RateService implements IRateService {
     }
 
     @Override
-    public List<RateDTO> getPeriod(String curAbbreviation,  LocalDate dateStart, LocalDate dateEnd) {
-        return rateDao.getPeriod(curAbbreviation, dateStart, dateEnd);
+    public List<RateDTO> getPeriod(RatePeriodDTO item) {
+        return rateDao.getPeriod(item);
     }
 
     public boolean monthValidate(String month) {
@@ -133,8 +134,8 @@ public class RateService implements IRateService {
         }
     }
 
-    public List<RateCreateDTO> getRatesFromExternalAPI(int cur, String currency, LocalDate start, LocalDate end) {
-        String url = "https://api.nbrb.by/exrates/rates/dynamics/" + cur + "?startdate=" + start + "&enddate=" + end;
+    public List<RateCreateDTO> getRatesFromExternalAPI(int cur, RatePeriodDTO item) {
+        String url = "https://api.nbrb.by/exrates/rates/dynamics/" + cur + "?startdate=" + item.getStartDate() + "&enddate=" + item.getEndDate();
         List<RateCreateDTO> rateCreateDTOS = null;
         try {
             URL obj = new URL(url);

@@ -2,6 +2,7 @@ package by.it_academy.jd2.Mk_JD2_98_23.dao.db;
 
 import by.it_academy.jd2.Mk_JD2_98_23.core.dto.RateCreateDTO;
 import by.it_academy.jd2.Mk_JD2_98_23.core.dto.RateDTO;
+import by.it_academy.jd2.Mk_JD2_98_23.core.dto.RatePeriodDTO;
 import by.it_academy.jd2.Mk_JD2_98_23.dao.api.IRateDao;
 import by.it_academy.jd2.Mk_JD2_98_23.dao.db.ds.DatabaseConnectionFactory;
 import by.it_academy.jd2.Mk_JD2_98_23.dao.exceptions.AccessDataException;
@@ -118,9 +119,9 @@ public class RateJDBCDao implements IRateDao {
     }
 
     @Override
-    public boolean checkRateDataPeriod(String curAbbreviation, LocalDate dateStart, LocalDate dateEnd) {
+    public boolean checkRateDataPeriod(RatePeriodDTO item) {
         boolean result = false;
-        long dateBetween = ChronoUnit.DAYS.between(dateStart, dateEnd) + 1;
+        long dateBetween = ChronoUnit.DAYS.between(item.getStartDate(), item.getEndDate()) + 1;
 
         try (Connection conn = DatabaseConnectionFactory.getConnection();
              PreparedStatement ps = conn
@@ -134,9 +135,9 @@ public class RateJDBCDao implements IRateDao {
                              "    GROUP BY cur_id, hoho " +
                              ") AS sub;")) {
 
-            ps.setObject(1, dateStart);
-            ps.setObject(2, dateEnd);
-            ps.setString(3, curAbbreviation);
+            ps.setObject(1, item.getStartDate());
+            ps.setObject(2, item.getEndDate());
+            ps.setString(3, item.getCurAbbreviation());
 
 
             ResultSet rs = ps.executeQuery();
@@ -206,7 +207,7 @@ public class RateJDBCDao implements IRateDao {
     }
 
     @Override
-    public List<RateDTO> getPeriod(String curAbbreviation, LocalDate dateStart, LocalDate dateEnd) {
+    public List<RateDTO> getPeriod(RatePeriodDTO item) {
         List<RateDTO> data = new ArrayList<>();
         try (Connection conn = DatabaseConnectionFactory.getConnection();
              PreparedStatement ps = conn.prepareStatement("SELECT cur_abbreviation, DATE(cur_date) AS date_cur, cur_official_rate " +
@@ -216,9 +217,9 @@ public class RateJDBCDao implements IRateDao {
                                      "AND DATE(?) AND cur_abbreviation = ? " +
                                    "ORDER BY date_cur;")) {
 
-            ps.setObject(1, dateStart);
-            ps.setObject(2, dateEnd);
-            ps.setString(3, curAbbreviation);
+            ps.setObject(1, item.getStartDate());
+            ps.setObject(2, item.getEndDate());
+            ps.setString(3, item.getCurAbbreviation());
 
             ResultSet rs = ps.executeQuery();
 

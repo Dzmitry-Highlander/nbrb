@@ -2,6 +2,7 @@ package by.it_academy.jd2.Mk_JD2_98_23.controllers.web;
 
 import by.it_academy.jd2.Mk_JD2_98_23.core.dto.RateCreateDTO;
 import by.it_academy.jd2.Mk_JD2_98_23.core.dto.RateDTO;
+import by.it_academy.jd2.Mk_JD2_98_23.core.dto.RatePeriodDTO;
 import by.it_academy.jd2.Mk_JD2_98_23.dao.api.IRateDao;
 import by.it_academy.jd2.Mk_JD2_98_23.dao.db.factory.RateDaoFactory;
 import by.it_academy.jd2.Mk_JD2_98_23.service.api.ICurrencyService;
@@ -50,17 +51,15 @@ public class RateServlet extends HttpServlet {
         PrintWriter writer = resp.getWriter();
 
         int cur = currencyService.getCurID(currency);
-        LocalDate start = LocalDate.parse(startDate);
-        LocalDate end = LocalDate.parse(endDate);
 
         try {
             if (rateService.dateValidate(startDate) && rateService.dateValidate(endDate)
                     && currencyService.currencyValidate(currency)) {
 
 
-                if (!rateService.checkRateDataPeriod(currency, start, end)) {
+                if (!rateService.checkRateDataPeriod(new RatePeriodDTO(currency,LocalDate.parse(startDate),LocalDate.parse(endDate)))) {
 
-                    List<RateCreateDTO> rateCreateDTOS = rateService.getRatesFromExternalAPI(cur,currency,start,end);
+                    List<RateCreateDTO> rateCreateDTOS = rateService.getRatesFromExternalAPI(cur,new RatePeriodDTO(currency,LocalDate.parse(startDate),LocalDate.parse(endDate)));
 
                     for (RateCreateDTO rateCreateDTO : rateCreateDTOS) {
                         if (rateService.checkRateData(rateCreateDTO)) {
@@ -68,7 +67,7 @@ public class RateServlet extends HttpServlet {
                         }
                     }
                 }
-                List<RateDTO> rateDTOS = rateService.getPeriod(currency, start, end);
+                List<RateDTO> rateDTOS = rateService.getPeriod(new RatePeriodDTO(currency,LocalDate.parse(startDate),LocalDate.parse(endDate)));
 
                 writer.write(objectMapper.writeValueAsString(rateDTOS));
 
