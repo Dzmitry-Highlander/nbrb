@@ -4,24 +4,21 @@ import by.it_academy.jd2.Mk_JD2_98_23.core.dto.RateCreateDTO;
 import by.it_academy.jd2.Mk_JD2_98_23.core.dto.RateDTO;
 import by.it_academy.jd2.Mk_JD2_98_23.core.dto.RatePeriodDTO;
 import by.it_academy.jd2.Mk_JD2_98_23.dao.api.IRateDao;
+import by.it_academy.jd2.Mk_JD2_98_23.service.api.IBankApiService;
 import by.it_academy.jd2.Mk_JD2_98_23.service.api.IRateService;
 import by.it_academy.jd2.Mk_JD2_98_23.service.exceptions.ServiceException;
-import by.it_academy.jd2.Mk_JD2_98_23.service.factory.ObjectMapperFactory;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.ServletException;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.HttpURLConnection;
-import java.net.URL;
 import java.time.LocalDate;
 import java.util.List;
 
 public class RateService implements IRateService {
     private final IRateDao rateDao;
+    private final IBankApiService bankApiService;
 
-    public RateService(IRateDao rateDao) {
+    public RateService(IRateDao rateDao, IBankApiService bankApiService) {
         this.rateDao = rateDao;
+        this.bankApiService = bankApiService;
     }
 
     @Override
@@ -42,9 +39,9 @@ public class RateService implements IRateService {
     @Override
     public double getAverageCurrency(String currency, String year, String month) {
         try {
-            LocalDate date = null;
+            LocalDate date;
             if (year != null && !year.isEmpty() && yearValidate(year) && monthValidate(month)) {
-                if (month.length() == 1) { // проверяем длину строки
+                if (month.length() == 1) {
                     month = "0" + month;
                 }
                 date = LocalDate.parse(year + "-" + month + "-01");
@@ -135,25 +132,6 @@ public class RateService implements IRateService {
         }
     }
 
-    public List<RateCreateDTO> getRatesFromExternalAPI(int cur, RatePeriodDTO item) {
-        String url = "https://api.nbrb.by/exrates/rates/dynamics/" + cur + "?startdate=" + item.getStartDate() + "&enddate=" + item.getEndDate();
-        List<RateCreateDTO> rateCreateDTOS = null;
-        try {
-            URL obj = new URL(url);
-            HttpURLConnection con = (HttpURLConnection) obj.openConnection();
-            con.setRequestMethod("GET");
-            con.setRequestProperty("User-Agent", "Mozilla/5.0");
-            ObjectMapper objectMapper = ObjectMapperFactory.getInstance();
-            try (InputStream inputStream = con.getInputStream()) {
-                rateCreateDTOS = objectMapper.readValue(inputStream,
-                        objectMapper.getTypeFactory().constructCollectionType(List.class, RateCreateDTO.class));
-            }
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-        return rateCreateDTOS;
-    }
-
     @Override
     public List<RateDTO> checkAndLoadDataFromApi(int cur, RatePeriodDTO item) {
         List<RateDTO> rateDTOS;
@@ -161,7 +139,7 @@ public class RateService implements IRateService {
 
             if (!checkRateDataPeriod(item)) {
 
-                List<RateCreateDTO> rateCreateDTOS = getRatesFromExternalAPI(cur,item);
+                List<RateCreateDTO> rateCreateDTOS = bankApiService.getRatesFromExternalAPI(cur,item);
 
                 for (RateCreateDTO rateCreateDTO : rateCreateDTOS) {
                     if (checkRateData(rateCreateDTO)) {
