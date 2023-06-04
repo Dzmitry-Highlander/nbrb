@@ -47,7 +47,7 @@ public class AllRateDataServlet extends HttpServlet {
             List<RateDTO> rateDTOList =  rateService.get(currency);
             writer.write(objectMapper.writeValueAsString(rateDTOList));
         } else {
-            writer.write("Нет такой валюты или неправильный год!");
+            writer.write("Нет такой валюты!");
         }
     }
 }
