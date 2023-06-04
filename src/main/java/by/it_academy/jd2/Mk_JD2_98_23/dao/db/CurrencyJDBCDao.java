@@ -23,7 +23,7 @@ public class CurrencyJDBCDao implements ICurrencyDao {
              PreparedStatement ps = conn
                      .prepareStatement("SELECT cur_id, cur_code, cur_abbreviation, cur_name, cur_name_bel, " +
                              "cur_name_eng, cur_quotname, cur_quotname_bel, cur_quotname_eng, cur_scale FROM " +
-                             "app.currency ORDER BY cur_id ASC")) {
+                             "app.currency JOIN app.cur_lang USING (cur_id) ORDER BY cur_id ASC")) {
             ResultSet rs = ps.executeQuery();
 
             while (rs.next()) {
@@ -79,36 +79,94 @@ public class CurrencyJDBCDao implements ICurrencyDao {
         return dto;
     }
 
+//    @Override
+//    public void uploadData(CurrencyCreateDTO item) {
+//        try (Connection conn = DatabaseConnectionFactory.getConnection();
+//             PreparedStatement ps = conn
+//                     .prepareStatement("INSERT INTO app.currency(cur_id, cur_code, cur_abbreviation, cur_name, " +
+//                             "cur_name_bel, cur_name_eng, cur_quotname, cur_quotname_bel, cur_quotname_eng, " +
+//                             "cur_namemulti, cur_name_belmulti, cur_name_engmulti, cur_scale, cur_date_start, cur_date_end) " +
+//                             "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);")) {
+//
+//            ps.setInt(1, item.getCurID());
+//            ps.setInt(2, Integer.parseInt(item.getCurCode()));
+//            ps.setString(3, item.getCurAbbreviation());
+//            ps.setString(4, item.getCurName());
+//            ps.setString(5, item.getCurNameBel());
+//            ps.setString(6, item.getCurNameEng());
+//            ps.setString(7, item.getCurQuotName());
+//            ps.setString(8, item.getCurQuotNameBel());
+//            ps.setString(9, item.getCurQuotNameEng());
+//            ps.setString(10, item.getCurNameMulti());
+//            ps.setString(11, item.getCurNameBelMulti());
+//            ps.setString(12, item.getCurNameEngMulti());
+//            ps.setInt(13, item.getCurScale());
+//            ps.setObject(14, item.getCurDateStart());
+//            ps.setObject(15, item.getCurDateEnd());
+//
+//            int rowsInserted = ps.executeUpdate();
+//            if (rowsInserted == 0) {
+//                throw new DataInsertionErrorException("Ошибка вставки данных: ни одна строка не была добавлена в " +
+//                        "таблицу.");
+//            }
+//        } catch (SQLException e) {
+//            throw new AccessDataException("Ошибка подключения к базе данных", e);
+//        }
+//    }
+
     @Override
     public void uploadData(CurrencyCreateDTO item) {
         try (Connection conn = DatabaseConnectionFactory.getConnection();
-             PreparedStatement ps = conn
+             PreparedStatement psCurrency = conn
                      .prepareStatement("INSERT INTO app.currency(cur_id, cur_code, cur_abbreviation, cur_name, " +
-                             "cur_name_bel, cur_name_eng, cur_quotname, cur_quotname_bel, cur_quotname_eng, " +
-                             "cur_namemulti, cur_name_belmulti, cur_name_engmulti, cur_scale, cur_date_start, cur_date_end) " +
-                             "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);")) {
+                             " cur_scale) " +
+                             "VALUES (?, ?, ?, ?, ?);");
+             PreparedStatement psCurrencyLang = conn
+                     .prepareStatement("INSERT INTO app.cur_lang(cur_id, cur_name_bel, cur_name_eng, cur_quotname, " +
+                             "cur_quotname_bel, cur_quotname_eng, cur_namemulti, cur_name_belmulti, cur_name_engmulti) " +
+                             "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?);");
+             PreparedStatement psCurrencyExpDate  = conn
+                     .prepareStatement("INSERT INTO app.cur_expdate(cur_id, cur_date_start, cur_date_end) " +
+                             "VALUES (?, ?, ?);")) {
 
-            ps.setInt(1, item.getCurID());
-            ps.setInt(2, Integer.parseInt(item.getCurCode()));
-            ps.setString(3, item.getCurAbbreviation());
-            ps.setString(4, item.getCurName());
-            ps.setString(5, item.getCurNameBel());
-            ps.setString(6, item.getCurNameEng());
-            ps.setString(7, item.getCurQuotName());
-            ps.setString(8, item.getCurQuotNameBel());
-            ps.setString(9, item.getCurQuotNameEng());
-            ps.setString(10, item.getCurNameMulti());
-            ps.setString(11, item.getCurNameBelMulti());
-            ps.setString(12, item.getCurNameEngMulti());
-            ps.setInt(13, item.getCurScale());
-            ps.setObject(14, item.getCurDateStart());
-            ps.setObject(15, item.getCurDateEnd());
+            psCurrency.setInt(1, item.getCurID());
+            psCurrency.setInt(2, Integer.parseInt(item.getCurCode()));
+            psCurrency.setString(3, item.getCurAbbreviation());
+            psCurrency.setString(4, item.getCurName());
+            psCurrency.setInt(5, item.getCurScale());
 
-            int rowsInserted = ps.executeUpdate();
-            if (rowsInserted == 0) {
+            int currencyRowsInserted = psCurrency.executeUpdate();
+            if (currencyRowsInserted == 0) {
                 throw new DataInsertionErrorException("Ошибка вставки данных: ни одна строка не была добавлена в " +
-                        "таблицу.");
+                        "таблицу currency.");
             }
+
+            psCurrencyLang.setInt(1, item.getCurID());
+            psCurrencyLang.setString(2, item.getCurNameBel());
+            psCurrencyLang.setString(3, item.getCurNameEng());
+            psCurrencyLang.setString(4, item.getCurQuotName());
+            psCurrencyLang.setString(5, item.getCurQuotNameBel());
+            psCurrencyLang.setString(6, item.getCurQuotNameEng());
+            psCurrencyLang.setString(7, item.getCurNameMulti());
+            psCurrencyLang.setString(8, item.getCurNameBelMulti());
+            psCurrencyLang.setString(9, item.getCurNameEngMulti());
+
+            int currencyLangRowsInserted = psCurrencyLang.executeUpdate();
+            if (currencyLangRowsInserted == 0) {
+                throw new DataInsertionErrorException("Ошибка вставки данных: ни одна строка не была добавлена в " +
+                        "таблицу cur_lang");
+            }
+
+            psCurrencyExpDate.setInt(1, item.getCurID());
+            psCurrencyExpDate.setObject(2, item.getCurDateStart());
+            psCurrencyExpDate.setObject(3, item.getCurDateEnd());
+
+            int currencyExpDateRowsInserted= psCurrencyExpDate.executeUpdate();
+            if (currencyExpDateRowsInserted == 0) {
+                throw new DataInsertionErrorException("Ошибка вставки данных: ни одна строка не была добавлена в " +
+                        "таблицу app.cur_expdate");
+            }
+
         } catch (SQLException e) {
             throw new AccessDataException("Ошибка подключения к базе данных", e);
         }
