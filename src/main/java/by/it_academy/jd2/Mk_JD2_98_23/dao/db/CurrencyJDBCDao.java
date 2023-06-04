@@ -87,6 +87,7 @@ public class CurrencyJDBCDao implements ICurrencyDao {
                              "cur_name_bel, cur_name_eng, cur_quotname, cur_quotname_bel, cur_quotname_eng, " +
                              "cur_namemulti, cur_name_belmulti, cur_name_engmulti, cur_scale, cur_date_start, cur_date_end) " +
                              "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);")) {
+
             ps.setInt(1, item.getCurID());
             ps.setInt(2, Integer.parseInt(item.getCurCode()));
             ps.setString(3, item.getCurAbbreviation());
@@ -134,7 +135,9 @@ public class CurrencyJDBCDao implements ICurrencyDao {
         int id = 0;
         try (Connection conn = DatabaseConnectionFactory.getConnection();
              PreparedStatement ps = conn.prepareStatement("SELECT cur_id FROM app.currency WHERE " +
-                     "cur_abbreviation = '" + curAbbreviation + "' ORDER BY cur_id DESC LIMIT 1;")) {
+                     "cur_abbreviation = ? ORDER BY cur_id DESC LIMIT 1;")) {
+
+            ps.setString(1, curAbbreviation);
             ResultSet rs = ps.executeQuery();
 
             if (rs.next()) {
@@ -148,13 +151,14 @@ public class CurrencyJDBCDao implements ICurrencyDao {
     }
 
     @Override
-    public boolean currencyValidate(String item) {
+    public boolean currencyValidate(String curAbbreviation) {
         boolean result = false;
         try (Connection conn = DatabaseConnectionFactory.getConnection();
-             PreparedStatement st = conn
-                     .prepareStatement("SELECT cur_abbreviation FROM app.currency WHERE cur_abbreviation = " +
-                             "'" + item.toUpperCase() + "';")) {
-            ResultSet rs = st.executeQuery();
+             PreparedStatement ps = conn
+                     .prepareStatement("SELECT cur_abbreviation FROM app.currency WHERE cur_abbreviation = ?;")) {
+
+            ps.setString(1, curAbbreviation);
+            ResultSet rs = ps.executeQuery();
 
             if (rs.next()) {
                 result = true;

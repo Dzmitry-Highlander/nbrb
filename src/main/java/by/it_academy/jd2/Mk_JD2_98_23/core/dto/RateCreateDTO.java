@@ -45,12 +45,4 @@ public class RateCreateDTO {
         this.curOfficialRate = curOfficialRate;
     }
 
-    @Override
-    public String toString() {
-        return "{ \n" +
-                "Cur_ID: " + getCurID() + "\n" +
-                "Date: " + getDate() + "\n" +
-                "Cur_OfficialRate: " + getCurOfficialRate() + "\n" +
-                "}";
-    }
 }

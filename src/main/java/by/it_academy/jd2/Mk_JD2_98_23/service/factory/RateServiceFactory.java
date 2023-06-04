@@ -14,7 +14,7 @@ public class RateServiceFactory {
         if (instance == null)  {
             synchronized (RateServiceFactory.class) {
                 if (instance == null) {
-                    instance =new RateService(RateDaoFactory.getInstance());
+                    instance =new RateService(RateDaoFactory.getInstance(), BankApiServiceFactory.getInstance());
                 }
             }
 
