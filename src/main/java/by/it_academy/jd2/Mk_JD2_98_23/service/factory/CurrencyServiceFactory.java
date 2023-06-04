@@ -14,7 +14,7 @@ public class CurrencyServiceFactory {
         if (instance == null)  {
             synchronized (CurrencyServiceFactory.class) {
                 if (instance == null) {
-                    instance =new CurrencyService(CurrencyDaoFactory.getInstance());
+                    instance =new CurrencyService(CurrencyDaoFactory.getInstance(), BankApiServiceFactory.getInstance());
                 }
             }
 
